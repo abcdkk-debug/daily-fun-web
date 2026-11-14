@@ -2,6 +2,14 @@
 
 每日一期，用世界各地**開放數據平台**（open data platforms）的真實數據，整一版有趣網頁：排行榜、互動圖表、冷知識同小測驗。
 
+重點係整**會用到呢啲數據的網頁**：揀真實數據集，將數據本身放入頁面入面用 — 即時讀取官方 API，或者嵌入已核實的數據集快照，再用圖表、排序、篩選等方式呈現同探索。
+
+## 數據應用 Apps
+
+| # | 應用 | 用到的數據 |
+|---|---|---|
+| 001 | [香港天氣即時版](apps/hk-weather-live.html) | 香港天文台開放數據 API（經 DATA.GOV.HK）：本港天氣報告 rhrread + 九天天氣預報 fnd，開啟頁面時即時讀取 |
+
 - 最新一期：repo 根目錄的 `index.html`（用瀏覽器開就睇到）
 - 歷史存檔：`archive/YYYY-MM-DD.html`
 - 想公開成網站：repo Settings → Pages → Source 揀 `main` branch / root，就可以經 GitHub Pages 發布
