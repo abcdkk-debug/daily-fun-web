@@ -12,6 +12,7 @@
 | 002 | [USGS 地震即時版](apps/usgs-earthquakes-live.html)（同時係 2026-11-15 當日的 `index.html`） | USGS 地震 GeoJSON Feed「All Earthquakes, Past Day」：過去 24 小時 191 次地震，即時讀取 + M ≥ 4 快照，震級篩選/搜尋/排序 |
 
 - `index.html` 就係**當日製作嗰一頁**（每日更新取代；今日 2026-11-15 係「USGS 地震即時版」）
+- 📚 過往期數總覽：[archive/index.html](archive/index.html) — 網站每一頁開頭都有連結去到呢個總覽頁
 - 歷史存檔：`archive/YYYY-MM-DD.html`；數據應用另存 `apps/`
 - 🌐 公開網站（GitHub Pages）：https://abcdkk-debug.github.io/daily-fun-web/ — 打開就係當日嗰頁，每日更新
 

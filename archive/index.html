@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📚 過往期數總覽 — Daily Fun Web</title>
+<style>
+  :root{--ink:#1d2440;--paper:#fff8ec;--yellow:#ffc93c;--teal:#2ec4b6;--blue:#4361ee;--purple:#7b2fbe}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei",system-ui,sans-serif;background:var(--paper);color:var(--ink)}
+  header{background:linear-gradient(135deg,var(--purple),var(--blue) 60%,var(--teal));color:#fff;padding:40px 20px 30px;text-align:center}
+  header h1{font-size:clamp(26px,6vw,44px);margin:0 0 8px}
+  header p{opacity:.93;max-width:640px;margin:0 auto;line-height:1.7}
+  main{max-width:860px;margin:0 auto;padding:24px 16px 50px}
+  .item{background:#fff;border:2.5px solid var(--ink);border-radius:16px;box-shadow:4px 4px 0 var(--ink);padding:18px 20px;margin:16px 0}
+  .item .date{display:inline-block;background:var(--yellow);border-radius:999px;padding:2px 12px;font-weight:800;font-size:14px}
+  .item h2{margin:10px 0 6px;font-size:21px}
+  .item p{margin:4px 0;line-height:1.65;color:#3c4257}
+  .item a.go{display:inline-block;margin-top:8px;background:var(--teal);color:#06251f;font-weight:800;text-decoration:none;border:2.5px solid var(--ink);border-radius:999px;padding:8px 18px;box-shadow:3px 3px 0 var(--ink)}
+  a{color:var(--blue)}
+  footer{max-width:860px;margin:0 auto;padding:0 16px 38px;color:#5a6076;font-size:14px;line-height:1.8}
+</style>
+</head>
+<body>
+<div style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">🏠 <a href="../index.html" style="color:#ffc93c;font-weight:700">返去今日最新一期</a>　·　📚 過往期數總覽（你喺呢度）</div>
+<header>
+  <h1>📚 過往期數總覽</h1>
+  <p>Daily Fun Web 每日一頁，全部都用世界各地開放數據平台嘅真實數據整成。呢度齊晒之前發佈過嘅每一頁，撳入去就睇得返。</p>
+</header>
+<main>
+  <!-- 每日新一期喺最上面加一格 -->
+  <div class="item">
+    <span class="date">2026-11-15 · 第 002 期</span>
+    <h2>🌍 地球過去 24 小時震咗幾多次？— USGS 地震即時版</h2>
+    <p>用美國地質調查局 USGS 地震 GeoJSON Feed：開頁即時讀過去一日全球地震，可篩選震級、搜尋地點、排序。查核快照：191 次地震、M ≥ 4 共 19 次、最大 M5.5。</p>
+    <a class="go" href="2026-11-15.html">睇呢一期 →</a>
+  </div>
+  <div class="item">
+    <span class="date">2026-11-14 · 數據應用 #001</span>
+    <h2>🌦️ 香港天氣即時版</h2>
+    <p>用香港天文台開放數據 API（經 DATA.GOV.HK）：開頁即時讀全港各站氣溫、濕度、雨量同九日預報，仲有「使唔使帶遮」判斷。</p>
+    <a class="go" href="../apps/hk-weather-live.html">睇呢一期 →</a>
+  </div>
+  <div class="item">
+    <span class="date">2026-11-14 · 第 001 期</span>
+    <h2>🌍 全球開放數據大冒險</h2>
+    <p>開場期：八大開放數據平台數據集數量大比拼 — 歐洲、美國、印度、英國、加拿大、日本、香港、新加坡，連互動排行榜同小測驗。</p>
+    <a class="go" href="2026-11-14.html">睇呢一期 →</a>
+  </div>
+</main>
+<footer>Daily Fun Web · 每日更新 · 首頁（當日最新一期）：<a href="../index.html">../index.html</a></footer>
+</body>
+</html>
