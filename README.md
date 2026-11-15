@@ -12,7 +12,7 @@
 
 - `index.html` 就係**當日製作嗰一頁**（每日更新取代；今日 2026-11-14 係「香港天氣即時版」）
 - 歷史存檔：`archive/YYYY-MM-DD.html`；數據應用另存 `apps/`
-- 想公開成網站：repo Settings → Pages → Source 揀 `main` branch / root，就可以經 GitHub Pages 發布
+- 🌐 公開網站（GitHub Pages）：https://abcdkk-debug.github.io/daily-fun-web/ — 打開就係當日嗰頁，每日更新
 
 ## 期數一覽
 
