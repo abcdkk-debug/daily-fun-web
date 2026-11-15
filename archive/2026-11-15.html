@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 002 期｜地球過去 24 小時震咗幾多次？— USGS 地震即時版</title>
+<style>
+  :root{--ink:#1d2733;--muted:#5b6b7c;--bg:#f4efe6;--card:#fffdf8;--accent:#c0392b;--accent2:#e67e22;--line:#e2d9c8}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  header{background:linear-gradient(135deg,#2c3e50,#c0392b);color:#fff;padding:34px 20px 28px;text-align:center}
+  header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.85}
+  header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
+  header p{margin:.2em auto;max-width:640px;opacity:.92}
+  main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .stat{background:#2c3e50;color:#fff;border-radius:12px;padding:16px;text-align:center}
+  .stat b{display:block;font-size:2em;line-height:1.1}
+  .stat span{font-size:.85em;opacity:.85}
+  .stat.hot{background:var(--accent)}
+  .stat.warm{background:var(--accent2)}
+  .bars div{display:flex;align-items:center;gap:10px;margin:8px 0}
+  .bars label{width:90px;flex:none;font-size:.9em}
+  .bar{height:22px;background:linear-gradient(90deg,#e67e22,#c0392b);border-radius:6px;min-width:4px}
+  .bars .n{font-variant-numeric:tabular-nums;font-weight:700}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .controls button{border:1px solid #c9bfa9;background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em}
+  .controls button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .controls input,.controls select{border:1px solid #c9bfa9;border-radius:8px;padding:8px 10px;font-size:.95em}
+  .controls input{flex:1;min-width:180px}
+  table{width:100%;border-collapse:collapse;font-size:.93em}
+  th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{cursor:pointer;white-space:nowrap}
+  th:hover{color:var(--accent)}
+  td.mag{font-weight:800;font-size:1.1em;white-space:nowrap}
+  .m5{color:#c0392b}.m4{color:#e67e22}.m3{color:#7d6608}.m2{color:#5b6b7c}
+  .pill{display:inline-block;background:#fdebd0;border-radius:999px;padding:1px 9px;font-size:.8em}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #c9bfa9;background:#fff;border-radius:10px;cursor:pointer;font-size:1em}
+  .quiz button:hover{border-color:var(--accent)}
+  .quiz .right{background:#d5f5e3;border-color:#27ae60}
+  .quiz .wrong{background:#fadbd8;border-color:#c0392b}
+  #status{font-size:.9em;color:var(--muted)}
+  footer{font-size:.85em;color:var(--muted);text-align:center;padding:0 16px 30px}
+  footer a{color:#7d3c98}
+  .note{background:#fef9e7;border:1px dashed #d4ac0d;border-radius:10px;padding:12px 14px;font-size:.92em}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">DAILY FUN WEB · 第 002 期 · 2026-11-15</div>
+  <h1>🌍 地球過去 24 小時震咗幾多次？</h1>
+  <p>即時讀取美國地質調查局（USGS）地震資料，睇下呢個星球有幾「唔安靜」。</p>
+</header>
+<main>
+
+  <div class="card">
+    <p id="status">⏳ 載入緊 USGS 最新地震數據……</p>
+    <div class="stats">
+      <div class="stat hot"><b id="stTotal">—</b><span>過去 24 小時地震總數</span></div>
+      <div class="stat warm"><b id="stMax">—</b><span>最大震級（M）</span></div>
+      <div class="stat"><b id="stM4">—</b><span>M ≥ 4.0 嘅次數</span></div>
+      <div class="stat"><b id="stM5">—</b><span>M ≥ 5.0 嘅次數</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 震級分佈：細震多定大震多？</h2>
+    <p>地震有個規律：震級細一級，數量就多大約十倍。睇下過去 24 小時係咪咁：</p>
+    <div class="bars" id="bars"><p>等即時數據載入後先畫到圖表。</p></div>
+    <p class="note">💡 震級每大 1 級，釋放嘅能量大約係 32 倍。M5.5 比 M4.5 勁成 32 倍，唔係「大少少」咁簡單！</p>
+  </div>
+
+  <div class="card">
+    <h2>🔎 地震清單：篩選、搜尋、排序</h2>
+    <div class="controls">
+      <button data-min="0" class="on">全部</button>
+      <button data-min="2">M ≥ 2</button>
+      <button data-min="3">M ≥ 3</button>
+      <button data-min="4">M ≥ 4</button>
+      <button data-min="5">M ≥ 5</button>
+      <input id="q" type="search" placeholder="搜尋地點，例如 Philippines、Japan、Alaska…">
+      <select id="sort">
+        <option value="mag-desc">震級：大 → 細</option>
+        <option value="time-desc">時間：新 → 舊</option>
+        <option value="depth-desc">深度：深 → 淺</option>
+      </select>
+    </div>
+    <p id="count"></p>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr>
+        <th data-k="mag">震級 ↕</th><th data-k="place">地點</th>
+        <th data-k="time">時間（香港時間） ↕</th><th data-k="depth">深度 ↕</th><th>詳情</th>
+      </tr></thead>
+      <tbody id="rows"><tr><td colspan="5">載入中……</td></tr></tbody>
+    </table>
+    </div>
+    <p style="font-size:.85em;color:var(--muted)">撳表頭都可以排序。地點用返 USGS 原文，費事翻譯走樣。</p>
+  </div>
+
+  <div class="card quiz">
+    <h2>🎲 估下先：過去 24 小時，全球發生咗幾多次地震？</h2>
+    <p>（計埋好細、得儀器先測到嗰啲。）</p>
+    <button data-a="19">A. 19 次</button>
+    <button data-a="91">B. 91 次</button>
+    <button data-a="191">C. 191 次</button>
+    <button data-a="911">D. 911 次</button>
+    <p id="quizAns"></p>
+  </div>
+
+  <div class="card">
+    <h2>🤓 冷知識：今次數據入面最誇張嘅幾單</h2>
+    <ul>
+      <li><b>最大：M5.5</b>，北大西洋中脊（northern Mid-Atlantic Ridge），2026-11-14 17:26 香港時間，深度僅 10 公里。</li>
+      <li><b>最深：M4.5</b>，斐濟地區（Fiji region），深度 587.4 公里——深過香港去台北來回嘅距離！另外日本四國東南對開 M4.1 深 506.9 公里、玻利維亞 M4.7 深 506.3 公里。</li>
+      <li><b>有人感覺到：</b>新西蘭 Dannevirke 東北 M4.3 有 4 人回報感覺到；蘇門答臘西岸對開 M5.2 有 1 人回報。</li>
+      <li><b>最「密」：</b>美國加州 Little Lake 以東一日內震咗多次細震——呢啲叫「震群」（earthquake swarm）。</li>
+      <li>香港位於板塊內部，地震相對少，就算有都好少感覺到。</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>📖 數據來源</h2>
+    <p>數據：美國地質調查局 USGS 地震 GeoJSON Feed —「All Earthquakes, Past Day」（過去一日所有地震）。</p>
+    <p>即時 API：<a href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson">earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson</a>（免金鑰、支援 CORS，開頁即讀最新數據）。</p>
+    <p>快照查核：2026-11-15 09:13 香港時間，feed 顯示過去 24 小時共 <b>191 次</b>地震；M ≥ 4.0 共 19 次（查詢時段 2026-11-14 09:00 至 2026-11-15 09:15 香港時間）。如果即時讀取失敗，頁面會自動用呢個已核實快照顯示 M ≥ 4 嘅 19 次地震。</p>
+    <p>授權：美國政府作品，屬於公共領域（public domain），可自由使用。時間全部轉做香港時間（UTC+8）顯示。</p>
+  </div>
+
+</main>
+<footer>
+  Daily Fun Web · 第 002 期 · 2026-11-15 · <a href="https://github.com/abcdkk-debug/daily-fun-web">GitHub repo</a> ·
+  上一期：<a href="apps/hk-weather-live.html">2026-11-14 香港天氣即時版</a>
+</footer>
+
+<script>
+// 已核實快照：2026-11-15 09:13 HKT 查核；M ≥ 4.0 共 19 次
+// 來源：USGS FDSN Event API（starttime 2026-11-14T01:00:00Z，minmagnitude 4，orderby magnitude）
+const SNAPSHOT = {
+  generatedHKT: "2026-11-15 09:13",
+  total24h: 191,
+  events: [
+    {mag:5.5, place:"northern Mid-Atlantic Ridge", time:"2026-11-14 17:26", depth:10, id:"us7000ty84"},
+    {mag:5.2, place:"off the west coast of northern Sumatra", time:"2026-11-14 10:59", depth:10, id:"us7000ty6n", felt:1},
+    {mag:5.2, place:"State of Yap, Federated States of Micronesia", time:"2026-11-14 14:52", depth:10, id:"us7000ty7d"},
+    {mag:4.9, place:"south of the Kermadec Islands", time:"2026-11-14 21:17", depth:12.0, id:"us7000ty90"},
+    {mag:4.9, place:"7 km SE of Tagbina, Philippines", time:"2026-11-15 00:04", depth:154.1, id:"us7000ty9l"},
+    {mag:4.8, place:"West Chile Rise", time:"2026-11-14 14:33", depth:10, id:"us7000ty7b"},
+    {mag:4.7, place:"54 km NW of San Antonio de los Cobres, Argentina", time:"2026-11-14 11:18", depth:216.1, id:"us7000ty6p"},
+    {mag:4.7, place:"24 km S of Yacuiba, Bolivia", time:"2026-11-15 02:04", depth:506.3, id:"us7000ty9z"},
+    {mag:4.7, place:"east central Pacific Ocean", time:"2026-11-15 06:23", depth:10, id:"us7000tyay"},
+    {mag:4.6, place:"102 km NNE of Hihifo, Tonga", time:"2026-11-14 15:02", depth:10, id:"us7000ty7h"},
+    {mag:4.6, place:"62 km WNW of San Antonio de los Cobres, Argentina", time:"2026-11-15 00:36", depth:197.6, id:"us7000ty9n"},
+    {mag:4.6, place:"96 km SSE of Pondaguitan, Philippines", time:"2026-11-15 00:56", depth:65.4, id:"us7000ty9v"},
+    {mag:4.5, place:"western Indian-Antarctic Ridge", time:"2026-11-14 12:59", depth:10, id:"us7000ty73"},
+    {mag:4.5, place:"Fiji region", time:"2026-11-14 10:21", depth:587.4, id:"us7000ty6e"},
+    {mag:4.5, place:"137 km SE of Petropavlovsk-Kamchatsky, Russia", time:"2026-11-14 20:28", depth:17.4, id:"us7000ty8u"},
+    {mag:4.5, place:"25 km N of Ruteng, Indonesia", time:"2026-11-15 05:24", depth:10, id:"us7000tyan"},
+    {mag:4.3, place:"29 km NE of Dannevirke, New Zealand", time:"2026-11-15 01:51", depth:27.9, id:"us7000ty9x", felt:4},
+    {mag:4.1, place:"southeast of Shikoku, Japan", time:"2026-11-14 15:24", depth:506.9, id:"us7000ty7m"},
+    {mag:4.0, place:"32 km SE of Kargil, India", time:"2026-11-14 12:59", depth:10, id:"us7000ty72"}
+  ]
+};
+
+const API = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+let all = [];       // 全部事件 {mag, place, time(ms), depth, id, felt}
+let live = false;  // 是否即時數據
+let minMag = 0, sortKey = "mag-desc";
+
+const $ = s => document.querySelector(s);
+const fmtT = ms => new Date(ms).toLocaleString("zh-HK", {timeZone:"Asia/Hong_Kong", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", hour12:false});
+const magCls = m => m>=5?"m5":m>=4?"m4":m>=3?"m3":"m2";
+
+function renderStats(){
+  const max = all.length ? Math.max(...all.map(e=>e.mag)) : null;
+  $("#stTotal").textContent = live ? all.length : SNAPSHOT.total24h + "（快照）";
+  $("#stMax").textContent = max==null ? "—" : "M" + max.toFixed(1);
+  $("#stM4").textContent = all.filter(e=>e.mag>=4).length;
+  $("#stM5").textContent = all.filter(e=>e.mag>=5).length;
+}
+
+function renderBars(){
+  if(!live){
+    $("#bars").innerHTML = "<p>分佈圖需要即時數據——而家顯示緊快照，只列出 M ≥ 4 嘅 19 次地震。撳上面篩選掣可以睇晒佢哋。</p>";
+    return;
+  }
+  const bands = [["M < 2", e=>e.mag<2],["M 2–3", e=>e.mag>=2&&e.mag<3],["M 3–4", e=>e.mag>=3&&e.mag<4],["M 4–5", e=>e.mag>=4&&e.mag<5],["M ≥ 5", e=>e.mag>=5]];
+  const counts = bands.map(([l,f])=>[l, all.filter(f).length]);
+  const top = Math.max(...counts.map(c=>c[1]), 1);
+  $("#bars").innerHTML = counts.map(([l,n])=>
+    `<div><label>${l}</label><div class="bar" style="width:${Math.max(2, n/top*100)}%"></div><span class="n">${n} 次</span></div>`).join("");
+}
+
+function renderRows(){
+  const q = ($("#q").value||"").trim().toLowerCase();
+  let list = all.filter(e=>e.mag>=minMag && (!q || e.place.toLowerCase().includes(q)));
+  const [k,dir] = sortKey.split("-");
+  list.sort((a,b)=> dir==="desc" ? b[k]-a[k] : a[k]-b[k]);
+  $("#count").textContent = `顯示 ${list.length} 次（共 ${all.length} 次${live?"":"；快照只收錄 M ≥ 4 嘅 19 次"}）`;
+  $("#rows").innerHTML = list.length ? list.map(e=>`<tr>
+    <td class="mag ${magCls(e.mag)}">M${e.mag.toFixed(1)}</td>
+    <td>${e.place}${e.felt?` <span class="pill">👀 ${e.felt} 人感覺到</span>`:""}</td>
+    <td>${typeof e.time==="number"?fmtT(e.time):e.time}</td>
+    <td>${e.depth.toFixed(1)} 公里</td>
+    <td><a href="https://earthquake.usgs.gov/earthquakes/eventpage/${e.id}" target="_blank" rel="noopener">USGS ↗</a></td>
+  </tr>`).join("") : `<tr><td colspan="5">搵唔到符合條件嘅地震，試下放寬篩選。</td></tr>`;
+}
+
+function renderAll(){ renderStats(); renderBars(); renderRows(); }
+
+async function load(){
+  try{
+    const r = await fetch(API);
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    const j = await r.json();
+    all = j.features.map(f=>({mag:f.properties.mag, place:f.properties.place,
+      time:f.properties.time, depth:f.geometry.coordinates[2], id:f.id, felt:f.properties.felt}))
+      .filter(e=>e.mag!=null);
+    live = true;
+    const gen = new Date(j.metadata.generated).toLocaleString("zh-HK",{timeZone:"Asia/Hong_Kong"});
+    $("#status").textContent = "✅ 即時數據載入成功 — USGS feed 更新時間：" + gen + "（香港時間）";
+  }catch(err){
+    all = SNAPSHOT.events.map(e=>({...e, time:new Date(e.time.replace(" ","T")+":00+08:00").getTime()}));
+    live = false;
+    $("#status").textContent = "⚠️ 即時讀取失敗，顯示已核實快照（" + SNAPSHOT.generatedHKT + " 香港時間查核，過去 24 小時共 " + SNAPSHOT.total24h + " 次）。";
+    minMag = 4;
+    document.querySelectorAll(".controls button").forEach(b=>b.classList.toggle("on", +b.dataset.min===4));
+  }
+  renderAll();
+}
+
+document.querySelectorAll(".controls button").forEach(b=>b.addEventListener("click",()=>{
+  minMag = +b.dataset.min;
+  document.querySelectorAll(".controls button").forEach(x=>x.classList.toggle("on", x===b));
+  renderRows();
+}));
+$("#q").addEventListener("input", renderRows);
+$("#sort").addEventListener("change", e=>{ sortKey=e.target.value; renderRows(); });
+document.querySelectorAll("th[data-k]").forEach(th=>th.addEventListener("click",()=>{
+  const k = th.dataset.k;
+  sortKey = (sortKey===k+"-desc") ? k+"-asc" : k+"-desc";
+  $("#sort").value = sortKey; renderRows();
+}));
+
+// 小測驗：正確答案 C（191 次）
+document.querySelectorAll(".quiz button").forEach(b=>b.addEventListener("click",()=>{
+  const ok = b.dataset.a==="191";
+  document.querySelectorAll(".quiz button").forEach(x=>x.classList.remove("right","wrong"));
+  b.classList.add(ok?"right":"wrong");
+  if(!ok) document.querySelector('.quiz button[data-a="191"]').classList.add("right");
+  $("#quizAns").innerHTML = ok
+    ? "🎉 答啱！過去 24 小時全球一共震咗 <b>191 次</b>，絕大部分都係細到感覺唔到嘅小震。"
+    : "😅 唔係呢個。正確答案係 <b>191 次</b>——19 次只係 M ≥ 4 嗰啲，細震先係大多數！";
+}));
+
+load();
+</script>
+</body>
+</html>
