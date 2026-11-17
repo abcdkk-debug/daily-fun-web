@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 004 期｜巴士仲有幾耐到？— 九巴即時到站時間</title>
+<style>
+  :root{--ink:#1d2733;--muted:#5b6b7c;--bg:#f4efe6;--card:#fffdf8;--accent:#0e7c6b;--accent2:#f39c12;--line:#e2d9c8}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  header{background:linear-gradient(135deg,#7b1e1e,#c0392b);color:#fff;padding:34px 20px 28px;text-align:center}
+  header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.85}
+  header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
+  header p{margin:.2em auto;max-width:640px;opacity:.92}
+  main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .stat{background:#7b1e1e;color:#fff;border-radius:12px;padding:16px;text-align:center}
+  .stat b{display:block;font-size:2em;line-height:1.1}
+  .stat span{font-size:.85em;opacity:.85}
+  .stat.hot{background:#c0392b}
+  .stat.warm{background:#e67e22}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .controls button{border:1px solid #c9bfa9;background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em}
+  .controls button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .controls button.go{background:#c0392b;color:#fff;border-color:#c0392b;font-weight:700}
+  .controls input,.controls select{border:1px solid #c9bfa9;border-radius:8px;padding:8px 10px;font-size:.95em}
+  .controls input{flex:1;min-width:180px}
+  .controls label.chk{font-size:.95em}
+  .dirbtn{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #c9bfa9;background:#fff;border-radius:10px;cursor:pointer;font-size:1em}
+  .dirbtn:hover{border-color:#c0392b}
+  .dirbtn.on{background:#fadbd8;border-color:#c0392b}
+  table{width:100%;border-collapse:collapse;font-size:.93em}
+  th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{cursor:pointer;white-space:nowrap}
+  th:hover{color:#c0392b}
+  td.mins{font-weight:800;font-size:1.15em;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .soon{color:#c0392b}.mid{color:#e67e22}.later{color:#0e7c6b}.na{color:#5b6b7c}
+  .pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:.8em;font-weight:700}
+  .pill.soon{background:#fadbd8;color:#922b21}
+  .pill.mid{background:#fdebd0;color:#7e5109}
+  .pill.later{background:#d5f5e3;color:#145a32}
+  .pill.na{background:#eaecee;color:#5b6b7c}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #c9bfa9;background:#fff;border-radius:10px;cursor:pointer;font-size:1em}
+  .quiz button:hover{border-color:#c0392b}
+  .quiz .right{background:#d5f5e3;border-color:#27ae60}
+  .quiz .wrong{background:#fadbd8;border-color:#c0392b}
+  #status,#status2{font-size:.9em;color:var(--muted)}
+  footer{font-size:.85em;color:var(--muted);text-align:center;padding:0 16px 30px}
+  footer a{color:#7d3c98}
+  .note{background:#fef9e7;border:1px dashed #d4ac0d;border-radius:10px;padding:12px 14px;font-size:.92em}
+  .hotgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+  .hotcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .hotcard h3{margin:0 0 6px;font-size:1.05em}
+  .hotcard .big{font-size:1.6em;font-weight:800;color:#c0392b}
+</style>
+</head>
+<body>
+<div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">📚 想睇返之前發佈過嘅嘢？ <a href="archive/index.html" style="color:#ffc93c;font-weight:700">去「過往期數」總覽 →</a></div>
+<header>
+  <div class="kicker">DAILY FUN WEB · 第 004 期 · 2026-11-17</div>
+  <h1>🚌 巴士仲有幾耐到？</h1>
+  <p>即時讀取九巴實時到站時間 API，全港 773 條九巴路線，入路線編號就知下一班車幾時到你個站。</p>
+</header>
+<main>
+  <div class="card">
+    <p id="status">⏳ 載入緊九巴路線清單……</p>
+    <div class="stats">
+      <div class="stat"><b id="st-routes">773</b><span>九巴路線數目</span></div>
+      <div class="stat"><b id="st-entries">1,573</b><span>方向班次組合</span></div>
+      <div class="stat"><b>35</b><span>1A 全程站數（去程）</span></div>
+      <div class="stat hot"><b id="st-next">3 分鐘</b><span>快照時 1A 下一班（中秀茂坪開出）</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🔴 即時查車 — 揀路線，睇全線各站下一班</h2>
+    <div class="controls">
+      <input id="routeInput" list="routeList" placeholder="輸入路線編號，例如：1A、968、101…" aria-label="路線編號">
+      <datalist id="routeList"></datalist>
+      <button class="go" id="goBtn">查呢條線 →</button>
+    </div>
+    <div id="dirs"></div>
+    <div id="liveBox" style="display:none">
+      <div class="controls">
+        <input id="q" type="search" placeholder="搜尋站名，例如：旺角、鑽石山…" aria-label="搜尋站名">
+        <select id="sort" aria-label="排序">
+          <option value="seq">站序：頭 → 尾</option>
+          <option value="mins">下一班：快 → 慢</option>
+        </select>
+        <label class="chk"><input type="checkbox" id="onlySoon"> 只顯示 10 分鐘內有車</label>
+        <button id="refreshBtn">↻ 重新整理</button>
+      </div>
+      <p id="count"></p>
+      <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>站序</th><th>巴士站</th><th>下一班</th><th>再下一班</th><th>第三班</th><th>備註</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      </div>
+      <p style="font-size:.9em;color:#5b6b7c">分鐘數係相對而家計；「即將埋站」即係班車已經到咗或者一分鐘內到。撳表頭可以排序。</p>
+    </div>
+    <p id="liveStatus"></p>
+  </div>
+
+  <div class="card">
+    <h2>🔥 熱門路線總站 — 快照：今朝 09:17 下一班車</h2>
+    <div class="hotgrid" id="hotgrid"><p>載入中……</p></div>
+    <p style="font-size:.9em;color:#5b6b7c">968 喺 09:16 嗰班開出嗰陣，快照時間 09:17 啱啱過咗一分鐘，所以顯示「剛開出」。</p>
+  </div>
+
+  <div class="card">
+    <h2>📸 快照：1A 去程全線 35 個站 — 今朝 09:17 每一站下一班車</h2>
+    <p style="font-size:.95em">1A 由<b>中秀茂坪</b>去<b>尖沙咀碼頭</b>，快照時間 2026-11-17 09:17 HKT。分鐘數係相對快照時間計，唔係而家。</p>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>站序</th><th>巴士站</th><th>下一班</th><th>再下一班</th><th>第三班</th></tr></thead>
+      <tbody id="snapRows"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card quiz">
+    <h2>🧠 冷知識小測驗</h2>
+    <p><b>1A 由中秀茂坪去尖沙咀碼頭，中間連總站一共有幾多個站？</b></p>
+    <button data-a="18">A. 18 個</button>
+    <button data-a="35">B. 35 個</button>
+    <button data-a="20">C. 20 個</button>
+    <p id="quizAns"></p>
+  </div>
+
+  <div class="card note">
+    <h2 style="margin-top:0">📌 數據來源</h2>
+    <p>數據集：九巴／龍運「實時到站時間」API（data.etabus.gov.hk），經 DATA.GOV.HK（香港政府一站通開放數據平台）發布，免金鑰，支援 CORS。<br>
+    用到嘅端點：<code>/v1/transport/kmb/route</code>（路線清單）、<code>/v1/transport/kmb/route-stop/{route}/{bound}/{service_type}</code>（全線站頭）、<code>/v1/transport/kmb/stop/{stop_id}</code>（站名）、<code>/v1/transport/kmb/route-eta/{route}/{service_type}</code>（全線各站預計到站時間）。<br>
+    查核快照：<b>2026-11-17 09:17 HKT</b> — 當時九巴路線 773 條、方向班次組合 1,573 個；1A 去程 35 個站、全部有預計到站時間，總站下一班 09:20（3 分鐘後開出）；968 總站下一班 09:16、101 總站下一班 09:25、2 號總站下一班 09:35。頁面載入時會先即時讀取最新數據，讀唔到先用呢個快照。<br>
+    備註：驗證嗰陣，逐站查詢嘅 <code>stop-eta</code> 端點回覆 422「Invalid/Missing parameter(s)」，所以呢頁改用一次過攞全線各站 ETA 嘅 <code>route-eta</code> 端點。備註欄「原定班次」係按時間表嘅班次，空白一般係實時預測班次。</p>
+  </div>
+</main>
+<footer>Daily Fun Web · 第 004 期 · 2026-11-17 · 數據來源：九巴／龍運實時到站時間 API（data.etabus.gov.hk，經 DATA.GOV.HK）</footer>
+<script>
+const API='https://data.etabus.gov.hk/v1/transport/kmb';
+const SNAPSHOT={"as_of": "2026-11-17T09:17:00+08:00", "routes_unique": 773, "route_entries": 1573, "route_list_generated": "2026-11-17T09:14:30+08:00", "route_1A_outbound_stops": 35, "stops_1A_outbound": [{"seq": 1, "name": "中秀茂坪", "eta": [{"eta": "2026-11-17T09:20:00+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:29:00+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:38:00+08:00", "rmk": "原定班次"}]}, {"seq": 2, "name": "秀茂坪邨秀安樓", "eta": [{"eta": "2026-11-17T09:21:47+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:30:47+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:39:47+08:00", "rmk": "原定班次"}]}, {"seq": 3, "name": "秀茂坪邨秀明樓", "eta": [{"eta": "2026-11-17T09:23:00+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:32:00+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:41:00+08:00", "rmk": "原定班次"}]}, {"seq": 4, "name": "梁式芝書院", "eta": [{"eta": "2026-11-17T09:16:53+08:00", "rmk": ""}, {"eta": "2026-11-17T09:24:53+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:33:53+08:00", "rmk": "原定班次"}]}, {"seq": 5, "name": "曉茵邨", "eta": [{"eta": "2026-11-17T09:17:15+08:00", "rmk": ""}, {"eta": "2026-11-17T09:25:15+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:34:15+08:00", "rmk": "原定班次"}]}, {"seq": 6, "name": "曉麗苑", "eta": [{"eta": "2026-11-17T09:18:20+08:00", "rmk": ""}, {"eta": "2026-11-17T09:26:20+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:35:20+08:00", "rmk": "原定班次"}]}, {"seq": 7, "name": "祥和苑", "eta": [{"eta": "2026-11-17T09:21:10+08:00", "rmk": ""}, {"eta": "2026-11-17T09:29:11+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:38:11+08:00", "rmk": "原定班次"}]}, {"seq": 8, "name": "和樂邨", "eta": [{"eta": "2026-11-17T09:23:07+08:00", "rmk": ""}, {"eta": "2026-11-17T09:31:01+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:40:01+08:00", "rmk": "原定班次"}]}, {"seq": 9, "name": "觀塘(裕民坊)總站", "eta": [{"eta": "2026-11-17T09:26:39+08:00", "rmk": ""}, {"eta": "2026-11-17T09:34:33+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:43:33+08:00", "rmk": "原定班次"}]}, {"seq": 10, "name": "觀塘轉車站 - 創紀之城", "eta": [{"eta": "2026-11-17T09:18:10+08:00", "rmk": ""}, {"eta": "2026-11-17T09:18:32+08:00", "rmk": ""}, {"eta": "2026-11-17T09:30:32+08:00", "rmk": ""}]}, {"seq": 11, "name": "觀塘定富街", "eta": [{"eta": "2026-11-17T09:20:31+08:00", "rmk": ""}, {"eta": "2026-11-17T09:20:52+08:00", "rmk": ""}, {"eta": "2026-11-17T09:32:53+08:00", "rmk": ""}]}, {"seq": 12, "name": "牛頭角下邨", "eta": [{"eta": "2026-11-17T09:21:45+08:00", "rmk": ""}, {"eta": "2026-11-17T09:22:06+08:00", "rmk": ""}, {"eta": "2026-11-17T09:34:07+08:00", "rmk": ""}]}, {"seq": 13, "name": "德福花園", "eta": [{"eta": "2026-11-17T09:22:27+08:00", "rmk": ""}, {"eta": "2026-11-17T09:22:48+08:00", "rmk": ""}, {"eta": "2026-11-17T09:34:49+08:00", "rmk": ""}]}, {"seq": 14, "name": "九龍灣站", "eta": [{"eta": "2026-11-17T09:23:30+08:00", "rmk": ""}, {"eta": "2026-11-17T09:23:51+08:00", "rmk": ""}, {"eta": "2026-11-17T09:35:52+08:00", "rmk": ""}]}, {"seq": 15, "name": "啟業邨", "eta": [{"eta": "2026-11-17T09:25:06+08:00", "rmk": ""}, {"eta": "2026-11-17T09:25:28+08:00", "rmk": ""}, {"eta": "2026-11-17T09:37:28+08:00", "rmk": ""}]}, {"seq": 16, "name": "麗晶花園", "eta": [{"eta": "2026-11-17T09:26:19+08:00", "rmk": ""}, {"eta": "2026-11-17T09:26:40+08:00", "rmk": ""}, {"eta": "2026-11-17T09:38:41+08:00", "rmk": ""}]}, {"seq": 17, "name": "采頤花園", "eta": [{"eta": "2026-11-17T09:27:34+08:00", "rmk": ""}, {"eta": "2026-11-17T09:27:55+08:00", "rmk": ""}, {"eta": "2026-11-17T09:39:56+08:00", "rmk": ""}]}, {"seq": 18, "name": "新蒲崗譽．港灣", "eta": [{"eta": "2026-11-17T09:16:12+08:00", "rmk": ""}, {"eta": "2026-11-17T09:29:07+08:00", "rmk": ""}, {"eta": "2026-11-17T09:29:28+08:00", "rmk": ""}]}, {"seq": 19, "name": "九龍城轉車站", "eta": [{"eta": "2026-11-17T09:17:23+08:00", "rmk": ""}, {"eta": "2026-11-17T09:18:08+08:00", "rmk": ""}, {"eta": "2026-11-17T09:31:03+08:00", "rmk": ""}]}, {"seq": 20, "name": "侯王道", "eta": [{"eta": "2026-11-17T09:18:32+08:00", "rmk": ""}, {"eta": "2026-11-17T09:19:17+08:00", "rmk": ""}, {"eta": "2026-11-17T09:32:12+08:00", "rmk": ""}]}, {"seq": 21, "name": "喇沙利道", "eta": [{"eta": "2026-11-17T09:21:06+08:00", "rmk": ""}, {"eta": "2026-11-17T09:21:51+08:00", "rmk": ""}, {"eta": "2026-11-17T09:34:46+08:00", "rmk": ""}]}, {"seq": 22, "name": "伯爵街", "eta": [{"eta": "2026-11-17T09:22:08+08:00", "rmk": ""}, {"eta": "2026-11-17T09:22:53+08:00", "rmk": ""}, {"eta": "2026-11-17T09:35:48+08:00", "rmk": ""}]}, {"seq": 23, "name": "勵德街", "eta": [{"eta": "2026-11-17T09:23:32+08:00", "rmk": ""}, {"eta": "2026-11-17T09:24:17+08:00", "rmk": ""}, {"eta": "2026-11-17T09:37:13+08:00", "rmk": ""}]}, {"seq": 24, "name": "拔萃男書院,太子道西", "eta": [{"eta": "2026-11-17T09:24:29+08:00", "rmk": ""}, {"eta": "2026-11-17T09:25:14+08:00", "rmk": ""}, {"eta": "2026-11-17T09:38:09+08:00", "rmk": ""}]}, {"seq": 25, "name": "協和小學, MOKO", "eta": [{"eta": "2026-11-17T09:25:30+08:00", "rmk": ""}, {"eta": "2026-11-17T09:26:15+08:00", "rmk": ""}, {"eta": "2026-11-17T09:39:10+08:00", "rmk": ""}]}, {"seq": 26, "name": "太子站, 旺角花墟", "eta": [{"eta": "2026-11-17T09:27:00+08:00", "rmk": ""}, {"eta": "2026-11-17T09:27:45+08:00", "rmk": ""}, {"eta": "2026-11-17T09:40:40+08:00", "rmk": ""}]}, {"seq": 27, "name": "旺角奶路臣街", "eta": [{"eta": "2026-11-17T09:30:58+08:00", "rmk": ""}, {"eta": "2026-11-17T09:31:43+08:00", "rmk": ""}, {"eta": "2026-11-17T09:44:38+08:00", "rmk": ""}]}, {"seq": 28, "name": "旺角豉油街", "eta": [{"eta": "2026-11-17T09:32:15+08:00", "rmk": ""}, {"eta": "2026-11-17T09:33:00+08:00", "rmk": ""}, {"eta": "2026-11-17T09:45:55+08:00", "rmk": ""}]}, {"seq": 29, "name": "油麻地永星里", "eta": [{"eta": "2026-11-17T09:34:50+08:00", "rmk": ""}, {"eta": "2026-11-17T09:35:35+08:00", "rmk": ""}, {"eta": "2026-11-17T09:48:30+08:00", "rmk": ""}]}, {"seq": 30, "name": "油麻地長樂街", "eta": [{"eta": "2026-11-17T09:37:12+08:00", "rmk": ""}, {"eta": "2026-11-17T09:37:57+08:00", "rmk": ""}, {"eta": "2026-11-17T09:50:52+08:00", "rmk": ""}]}, {"seq": 31, "name": "尖沙咀德成街", "eta": [{"eta": "2026-11-17T09:39:06+08:00", "rmk": ""}, {"eta": "2026-11-17T09:39:51+08:00", "rmk": ""}, {"eta": "2026-11-17T09:52:46+08:00", "rmk": ""}]}, {"seq": 32, "name": "金馬倫道,清真寺", "eta": [{"eta": "2026-11-17T09:18:01+08:00", "rmk": ""}, {"eta": "2026-11-17T09:18:21+08:00", "rmk": ""}, {"eta": "2026-11-17T09:42:35+08:00", "rmk": ""}]}, {"seq": 33, "name": "尖沙咀轉車站 - 中間道", "eta": [{"eta": "2026-11-17T09:20:23+08:00", "rmk": ""}, {"eta": "2026-11-17T09:20:43+08:00", "rmk": ""}, {"eta": "2026-11-17T09:44:57+08:00", "rmk": ""}]}, {"seq": 34, "name": "香港文化中心", "eta": [{"eta": "2026-11-17T09:23:05+08:00", "rmk": ""}, {"eta": "2026-11-17T09:23:25+08:00", "rmk": ""}, {"eta": "2026-11-17T09:47:39+08:00", "rmk": ""}]}, {"seq": 35, "name": "尖沙咀碼頭,海港城", "eta": [{"eta": "2026-11-17T09:23:47+08:00", "rmk": ""}, {"eta": "2026-11-17T09:24:07+08:00", "rmk": ""}, {"eta": "2026-11-17T09:48:21+08:00", "rmk": ""}]}], "hot_origins": {"1A": {"origin": "中秀茂坪", "eta": [{"eta": "2026-11-17T09:20:00+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:29:00+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:38:00+08:00", "rmk": "原定班次"}]}, "968": {"origin": "元朗(西)", "eta": [{"eta": "2026-11-17T09:16:00+08:00", "rmk": ""}, {"eta": "2026-11-17T09:26:00+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:36:00+08:00", "rmk": "原定班次"}]}, "101": {"origin": "觀塘(裕民坊)", "eta": [{"eta": "2026-11-17T09:25:00+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:35:00+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T09:45:00+08:00", "rmk": "原定班次"}]}, "2": {"origin": "尖沙咀碼頭", "eta": [{"eta": "2026-11-17T09:35:00+08:00", "rmk": "原定班次"}, {"eta": "2026-11-17T10:00:00+08:00", "rmk": "原定班次"}]}}, "route_stop_counts": {"1A": 35, "968": 20, "101": 35, "2": 18}};
+const BOUND_LABEL={O:'去程',I:'回程',outbound:'去程',inbound:'回程'};
+
+function minsFrom(iso, ref){
+  const m=Math.round((new Date(iso)-ref)/60000);
+  if(m<=0) return {t:'即將埋站', cls:'soon', m:m};
+  if(m<=5) return {t:m+' 分鐘', cls:'soon', m:m};
+  if(m<=10) return {t:m+' 分鐘', cls:'mid', m:m};
+  return {t:m+' 分鐘', cls:'later', m:m};
+}
+function etaCell(list, ref, idx){
+  if(!list || !list[idx]) return '<td class="na">—</td>';
+  const r=minsFrom(list[idx].eta, ref);
+  const clock=new Date(list[idx].eta).toTimeString().slice(0,5);
+  return '<td class="mins '+r.cls+'">'+r.t+'<br><span style="font-size:.75em;font-weight:400;color:#5b6b7c">'+clock+'</span></td>';
+}
+function renderSnapshot(){
+  const ref=new Date(SNAPSHOT.as_of);
+  document.getElementById('snapRows').innerHTML=SNAPSHOT.stops_1A_outbound.map(function(s){
+    return '<tr><td>'+s.seq+'</td><td>'+s.name+'</td>'+etaCell(s.eta,ref,0)+etaCell(s.eta,ref,1)+etaCell(s.eta,ref,2)+'</tr>';
+  }).join('');
+  const hot=SNAPSHOT.hot_origins;
+  document.getElementById('hotgrid').innerHTML=Object.keys(hot).map(function(r){
+    const h=hot[r];
+    const cells=h.eta.map(function(e){
+      const m=Math.round((new Date(e.eta)-ref)/60000);
+      return m<=0?'剛開出':m+' 分鐘';
+    });
+    return '<div class="hotcard"><h3>🚌 '+r+' 號</h3><div style="color:#5b6b7c;font-size:.9em">'+h.origin+' → 總站開出</div><div class="big">'+cells[0]+'</div><div style="font-size:.9em">之後：'+cells.slice(1).join('、')+'</div></div>';
+  }).join('');
+}
+renderSnapshot();
+
+/* ---- live lookup ---- */
+let routeIndex={}; let routeNums=[];
+let cur=null; // {route,bound,service_type,orig_tc,dest_tc}
+let liveStops=[]; // {seq,name,eta:[{eta,rmk}]}
+
+async function loadRoutes(){
+  try{
+    const res=await fetch(API+'/route');
+    const j=await res.json();
+    routeIndex={};
+    j.data.forEach(function(r){
+      (routeIndex[r.route]=routeIndex[r.route]||[]).push(r);
+    });
+    routeNums=Object.keys(routeIndex).sort(function(a,b){return a.localeCompare(b,'en',{numeric:true});});
+    document.getElementById('routeList').innerHTML=routeNums.map(function(n){return '<option value="'+n+'">';}).join('');
+    document.getElementById('st-routes').textContent=j.data.length? new Set(j.data.map(function(r){return r.route;})).size : '–';
+    document.getElementById('st-entries').textContent=j.data.length.toLocaleString();
+    document.getElementById('status').textContent='✅ 已即時讀到九巴路線清單（'+new Date(j.generated_timestamp).toLocaleString('zh-HK',{hour12:false})+' 更新）。輸入路線編號，撳「查呢條線」。';
+  }catch(e){
+    document.getElementById('status').textContent='⚠️ 即時讀唔到路線清單（可能離線），下面仲有今朝 09:17 嘅 1A 全線快照可以睇。';
+    // fallback: allow snapshot routes only
+    routeNums=Object.keys(SNAPSHOT.hot_origins);
+    document.getElementById('routeList').innerHTML=routeNums.map(function(n){return '<option value="'+n+'">';}).join('');
+  }
+}
+loadRoutes();
+
+document.getElementById('goBtn').addEventListener('click', function(){
+  const r=document.getElementById('routeInput').value.trim().toUpperCase();
+  const box=document.getElementById('dirs');
+  if(!routeIndex[r]){
+    box.innerHTML='<p style="color:#c0392b">搵唔到 '+r+' 呢條路線。試下 1A、968、101、2 號，或者由下拉清單揀。</p>';
+    return;
+  }
+  box.innerHTML='<p>揀方向：</p>'+routeIndex[r].map(function(v,i){
+    return '<button class="dirbtn" data-i="'+i+'">🚌 '+v.route+' 號 · '+(BOUND_LABEL[v.bound]||v.bound)+' · '+v.orig_tc+' → '+v.dest_tc+'（服務類別 '+v.service_type+'）</button>';
+  }).join('');
+  box.querySelectorAll('.dirbtn').forEach(function(b){
+    b.addEventListener('click', function(){
+      box.querySelectorAll('.dirbtn').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      loadLive(routeIndex[r][+b.dataset.i]);
+    });
+  });
+});
+
+async function loadLive(v){
+  cur=v;
+  document.getElementById('liveStatus').textContent='⏳ 載入緊 '+v.route+' 號'+(BOUND_LABEL[v.bound]||v.bound)+'各站到站時間……';
+  document.getElementById('liveBox').style.display='none';
+  try{
+    const boundCode = v.bound==='O'?'outbound':(v.bound==='I'?'inbound':v.bound);
+    const [rs, re] = await Promise.all([
+      fetch(API+'/route-stop/'+v.route+'/'+boundCode+'/'+v.service_type).then(function(r){return r.json();}),
+      fetch(API+'/route-eta/'+v.route+'/'+v.service_type).then(function(r){return r.json();})
+    ]);
+    const dirCode = v.bound; // 'O' or 'I'
+    const etaBySeq={};
+    re.data.forEach(function(e){
+      if(e.dir===dirCode) (etaBySeq[e.seq]=etaBySeq[e.seq]||[]).push({eta:e.eta, rmk:e.rmk_tc});
+    });
+    const stops=rs.data.slice().sort(function(a,b){return +a.seq-+b.seq;});
+    const names=await Promise.all(stops.map(function(s){
+      return fetch(API+'/stop/'+s.stop).then(function(r){return r.json();}).then(function(j){return j.data.name_tc;}).catch(function(){return s.stop;});
+    }));
+    liveStops=stops.map(function(s,i){
+      return {seq:+s.seq, name:names[i], eta:(etaBySeq[s.seq]||[]).slice(0,3)};
+    });
+    document.getElementById('liveStatus').textContent='✅ '+v.route+' 號 · '+(BOUND_LABEL[v.bound]||v.bound)+' · '+v.orig_tc+' → '+v.dest_tc+'（'+liveStops.length+' 個站，'+new Date(re.generated_timestamp).toLocaleString('zh-HK',{hour12:false})+' 更新）';
+    document.getElementById('liveBox').style.display='block';
+    renderLive();
+  }catch(e){
+    document.getElementById('liveStatus').textContent='⚠️ 即時讀唔到呢條線嘅到站時間，請稍後再試，或者睇下面 1A 快照。';
+  }
+}
+
+function renderLive(){
+  const q=(document.getElementById('q').value||'').trim();
+  const onlySoon=document.getElementById('onlySoon').checked;
+  const sort=document.getElementById('sort').value;
+  const now=new Date();
+  let rows=liveStops.filter(function(s){
+    if(q && s.name.indexOf(q)===-1) return false;
+    if(onlySoon){
+      const m=s.eta.length? Math.round((new Date(s.eta[0].eta)-now)/60000): 9999;
+      if(m>10) return false;
+    }
+    return true;
+  });
+  if(sort==='mins'){
+    rows=rows.slice().sort(function(a,b){
+      const ma=a.eta.length? new Date(a.eta[0].eta): new Date(8640000000000000);
+      const mb=b.eta.length? new Date(b.eta[0].eta): new Date(8640000000000000);
+      return ma-mb;
+    });
+  }
+  document.getElementById('count').textContent='顯示 '+rows.length+' / '+liveStops.length+' 個站';
+  document.getElementById('rows').innerHTML=rows.map(function(s){
+    const rmk=(s.eta[0]&&s.eta[0].rmk)||'';
+    const pill=s.eta.length? (function(){const m=minsFrom(s.eta[0].eta,now);return '<span class="pill '+m.cls+'">'+m.t+'</span>';})() : '<span class="pill na">暫無班次</span>';
+    return '<tr><td>'+s.seq+'</td><td>'+s.name+'</td>'+etaCell(s.eta,now,0)+etaCell(s.eta,now,1)+etaCell(s.eta,now,2)+'<td>'+rmk+' '+pill+'</td></tr>';
+  }).join('') || '<tr><td colspan="6">冇站符合篩選條件。</td></tr>';
+}
+['q','sort','onlySoon'].forEach(function(id){
+  document.getElementById(id).addEventListener('input', renderLive);
+  document.getElementById(id).addEventListener('change', renderLive);
+});
+document.getElementById('refreshBtn').addEventListener('click', function(){ if(cur) loadLive(cur); });
+
+/* quiz */
+document.querySelectorAll('.quiz button').forEach(function(b){
+  b.addEventListener('click', function(){
+    const ok=b.dataset.a==='35';
+    document.querySelectorAll('.quiz button').forEach(function(x){x.classList.remove('right','wrong');});
+    b.classList.add(ok?'right':'wrong');
+    document.getElementById('quizAns').textContent= ok? '✅ 啱晒！1A 去程由中秀茂坪去尖沙咀碼頭，連頭尾一共 35 個站。' : '❌ 唔係喎，再估下？提示：去程站數同 101 號一樣。';
+  });
+});
+</script>
+</body>
+</html>
