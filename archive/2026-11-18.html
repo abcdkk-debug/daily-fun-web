@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 005 期｜今日空氣吸唔吸得過？— 全港空氣質素健康指數 AQHI</title>
+<style>
+  :root{--ink:#1d2733;--muted:#5b6b7c;--bg:#eef7f6;--card:#fffdf8;--accent:#0e7c6b;--accent2:#0284c7;--line:#d7e5e2}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  header{background:linear-gradient(135deg,#0c4a6e,#0284c7 55%,#2ec4b6);color:#fff;padding:34px 20px 28px;text-align:center}
+  header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.85}
+  header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
+  header p{margin:.2em auto;max-width:640px;opacity:.93}
+  main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .stat{background:#0c4a6e;color:#fff;border-radius:12px;padding:16px;text-align:center}
+  .stat b{display:block;font-size:2em;line-height:1.1}
+  .stat span{font-size:.85em;opacity:.88}
+  .stat.green{background:#15803d}
+  .stat.yellow{background:#ca8a04}
+  .stat.teal{background:#0e7c6b}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .controls button{border:1px solid #b8d4cf;background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em}
+  .controls button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .controls input,.controls select{border:1px solid #b8d4cf;border-radius:8px;padding:8px 10px;font-size:.95em}
+  .controls input{flex:1;min-width:180px}
+  table{width:100%;border-collapse:collapse;font-size:.95em}
+  th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+  th{cursor:pointer;white-space:nowrap}
+  th:hover{color:var(--accent2)}
+  .aqhi{display:inline-block;min-width:34px;text-align:center;border-radius:8px;padding:4px 8px;font-weight:800;font-size:1.1em;color:#fff}
+  .aq-low{background:#22a35a}
+  .aq-mod{background:#eab308;color:#3f3000}
+  .aq-high{background:#f97316}
+  .aq-vhigh{background:#dc2626}
+  .aq-serious{background:#7f1d1d}
+  .bar-row{display:grid;grid-template-columns:92px 1fr 46px;gap:10px;align-items:center;margin:7px 0;font-size:.92em}
+  .bar-row .nm{text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar-track{background:#e3efec;border-radius:999px;height:18px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:999px}
+  .legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}
+  .leg{border-radius:10px;padding:10px 12px;font-size:.92em;color:#fff}
+  .leg b{display:block;font-size:1.05em}
+  .leg small{opacity:.92}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #b8d4cf;background:#fff;border-radius:10px;cursor:pointer;font-size:1em}
+  .quiz button:hover{border-color:var(--accent2)}
+  .quiz .right{background:#d5f5e3;border-color:#27ae60}
+  .quiz .wrong{background:#fadbd8;border-color:#c0392b}
+  .pill{display:inline-block;border-radius:999px;padding:1px 10px;font-size:.8em;font-weight:700}
+  .pill.gen{background:#dbeafe;color:#1e40af}
+  .pill.road{background:#fef3c7;color:#92400e}
+  #status{font-size:.9em;color:var(--muted)}
+  footer{font-size:.85em;color:var(--muted);text-align:center;padding:0 16px 30px}
+  footer a{color:#0369a1}
+  .note{background:#fef9e7;border:1px dashed #d4ac0d;border-radius:10px;padding:12px 14px;font-size:.92em}
+  .verdict{font-size:1.15em;font-weight:800}
+</style>
+</head>
+<body>
+<div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">🏠 <a href="../index.html" style="color:#ffc93c;font-weight:700">返去今日最新一期</a>　·　📚 過往期數總覽</div>
+<header>
+  <div class="kicker">DAILY FUN WEB · 第 005 期 · 2026-11-18</div>
+  <h1>🌬️ 今日空氣吸唔吸得過？</h1>
+  <p>即時讀取環保署空氣質素健康指數（AQHI），全港 18 個監測站逐個數，邊區最清新、邊區要留意，一眼睇晒。</p>
+</header>
+<main>
+  <div class="card">
+    <p id="status">⏳ 載入緊最新 AQHI……</p>
+    <p class="verdict" id="verdict"></p>
+    <div class="stats">
+      <div class="stat"><b id="st-count">18</b><span>監測站數目</span></div>
+      <div class="stat yellow"><b id="st-max">東區 4</b><span>最高指數（中）</span></div>
+      <div class="stat green"><b id="st-min">2</b><span>最低指數（低）</span></div>
+      <div class="stat teal"><b id="st-avg">2.8</b><span>全港平均指數</span></div>
+      <div class="stat"><b id="st-low">17 低 · 1 中</b><span>健康風險分布</span></div>
+    </div>
+    <p style="font-size:.9em;color:var(--muted)" id="snapNote">快照：2026-11-18 08:30 HKT（環保署每小時更新一次）。開頁會即時讀取最新數據；讀唔到就顯示呢個已核實快照。</p>
+  </div>
+
+  <div class="card">
+    <h2>📊 各區空氣大比拼</h2>
+    <p style="margin-top:0">AQHI 愈低愈好。條 bar 愈長，代表空氣質素健康風險愈高。</p>
+    <div id="bars"></div>
+  </div>
+
+  <div class="card">
+    <h2>🔍 逐站查 — 搜尋、篩選、排序</h2>
+    <div class="controls">
+      <input id="q" placeholder="搜尋監測站，例如：東區、旺角、沙田…" aria-label="搜尋監測站">
+      <select id="typeFilter" aria-label="監測站種類">
+        <option value="all">全部種類</option>
+        <option value="general">一般監測站</option>
+        <option value="roadside">路邊監測站</option>
+      </select>
+      <select id="regionFilter" aria-label="地區">
+        <option value="all">全部地區</option>
+        <option value="港島">港島</option>
+        <option value="九龍">九龍</option>
+        <option value="新界">新界</option>
+      </select>
+      <select id="sortSel" aria-label="排序">
+        <option value="aqhi-desc">按指數：高 → 低</option>
+        <option value="aqhi-asc">按指數：低 → 高</option>
+        <option value="name">按站名</option>
+      </select>
+      <button id="refreshBtn">🔄 重新讀取最新數據</button>
+    </div>
+    <p id="countLine" style="font-size:.9em;color:var(--muted)"></p>
+    <table>
+      <thead><tr><th data-sort="name">監測站 ↕</th><th>種類</th><th>地區</th><th data-sort="aqhi-desc">AQHI ↕</th><th>健康風險</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🎨 AQHI 健康風險顏色圖</h2>
+    <p style="margin-top:0">指數 1 至 10 同 10+，分五級。記住：<b>1–3 低</b>可以放心出街；<b>4–6 中</b>敏感人士要留意；<b>7 或以上</b>就要認真諗下係咪要減少戶外活動。</p>
+    <div class="legend">
+      <div class="leg" style="background:#22a35a"><b>1–3 · 低</b><small>健康風險低，一般人無問題</small></div>
+      <div class="leg" style="background:#eab308;color:#3f3000"><b>4–6 · 中</b><small>兒童、長者同心肺病患者要留意</small></div>
+      <div class="leg" style="background:#f97316"><b>7 · 高</b><small>減少戶外體力活動</small></div>
+      <div class="leg" style="background:#dc2626"><b>8–10 · 甚高</b><small>避免戶外體力活動</small></div>
+      <div class="leg" style="background:#7f1d1d"><b>10+ · 嚴重</b><small>盡量留喺室內</small></div>
+    </div>
+  </div>
+
+  <div class="card quiz">
+    <h2>🧠 冷知識小測驗</h2>
+    <p>考下你有幾留意今朝嘅空氣：</p>
+    <div id="quiz1">
+      <p><b>Q1：</b>今朝全港邊個監測站 AQHI 最高？</p>
+      <button data-a="東區">東區</button>
+      <button data-a="旺角">旺角</button>
+      <button data-a="元朗">元朗</button>
+      <button data-a="中環">中環</button>
+      <p class="ans"></p>
+    </div>
+    <div id="quiz2">
+      <p><b>Q2：</b>AQHI 係 4，代表咩健康風險級別？</p>
+      <button data-a="低">低</button>
+      <button data-a="中">中</button>
+      <button data-a="高">高</button>
+      <button data-a="甚高">甚高</button>
+      <p class="ans"></p>
+    </div>
+    <div id="quiz3">
+      <p><b>Q3：</b>全港 18 個監測站入面，有幾多個係路邊監測站？</p>
+      <button data-a="2 個">2 個</button>
+      <button data-a="3 個">3 個</button>
+      <button data-a="5 個">5 個</button>
+      <button data-a="15 個">15 個</button>
+      <p class="ans"></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>💡 關於 AQHI，你未必知嘅嘢</h2>
+    <ul>
+      <li>空氣質素健康指數（AQHI）喺 <b>2013 年 12 月 30 日</b>推出，取代舊嘅空氣污染指數（API）；計算方法喺 <b>2025 年 3 月 22 日</b>更新過。</li>
+      <li>每小時嘅 AQHI 係用臭氧（O₃）、二氧化氮（NO₂）、二氧化硫（SO₂）同懸浮粒子（PM₁₀ 或 PM₂.₅，邊個風險高用邊個）嘅<b>三小時移動平均濃度</b>計出嚟，反映空氣污染對心肺疾病入院嘅短期風險。</li>
+      <li>全港有 <b>15 個一般監測站</b>（量度你平時呼吸到嘅空氣）同 <b>3 個路邊監測站</b>（銅鑼灣、中環、旺角，量度馬路邊車多樓高嘅空氣）。</li>
+      <li>今朝快照：<b>17 個站「低」、得東區一個「中」</b>；路邊站平均 3.0，同一般站平均 2.8 差唔多，朝早繁忙時間都算唔錯。</li>
+      <li>空氣最清新係 <b>東涌、沙田、北區、塔門</b>，齊齊得 2，全部都係新界區。</li>
+    </ul>
+    <div class="note">💡 溫馨提示：AQHI 係健康風險指標，唔係污染物濃度本身。數值低唔等於零污染，敏感人士就算「低」都要留意自己身體反應。</div>
+  </div>
+
+  <div class="card">
+    <h2>📚 數據來源</h2>
+    <p>數據：環保署「各監測站現時空氣質素健康指數」，經 DATA.GOV.HK 開放數據平台（City Dashboard 版本，Digital Policy Office 提供）。<br>
+    即時來源：<a href="https://dashboard.data.gov.hk/api/aqhi-individual?format=json">dashboard.data.gov.hk/api/aqhi-individual</a>（JSON，每小時更新，支援跨域讀取）；原始 RSS：<a href="https://www.aqhi.gov.hk/epd/ddata/html/out/aqhi_ind_rss_Eng.xml">aqhi.gov.hk AQHI RSS</a>。<br>
+    數據集頁：<a href="https://data.gov.hk/en-data/dataset/hk-epd-airteam-current-aqhi-of-individual-air-quality-monitoring-stations">DATA.GOV.HK — Current AQHI of individual Air Quality Monitoring stations</a>；主題頁：<a href="https://www.aqhi.gov.hk/en">www.aqhi.gov.hk</a>。<br>
+    快照查核時間：<b>2026-11-18 08:30 HKT</b>（18 個監測站全部有數據）。AQHI 級別同健康建議來自環保署官方說明。</p>
+  </div>
+</main>
+<footer>Daily Fun Web · 第 005 期 · 2026-11-18 · 數據來自環保署經 DATA.GOV.HK · <a href="index.html">過往期數總覽</a></footer>
+<script>
+var SNAPSHOT=[
+ {en:"Central/Western",zh:"中西區",type:"general",region:"港島",aqhi:3,risk:"Low"},
+ {en:"Southern",zh:"南區",type:"general",region:"港島",aqhi:3,risk:"Low"},
+ {en:"Eastern",zh:"東區",type:"general",region:"港島",aqhi:4,risk:"Moderate"},
+ {en:"Kwun Tong",zh:"觀塘",type:"general",region:"九龍",aqhi:3,risk:"Low"},
+ {en:"Sham Shui Po",zh:"深水埗",type:"general",region:"九龍",aqhi:3,risk:"Low"},
+ {en:"Kwai Chung",zh:"葵涌",type:"general",region:"新界",aqhi:3,risk:"Low"},
+ {en:"Tsuen Wan",zh:"荃灣",type:"general",region:"新界",aqhi:3,risk:"Low"},
+ {en:"Tseung Kwan O",zh:"將軍澳",type:"general",region:"新界",aqhi:3,risk:"Low"},
+ {en:"Yuen Long",zh:"元朗",type:"general",region:"新界",aqhi:3,risk:"Low"},
+ {en:"Tuen Mun",zh:"屯門",type:"general",region:"新界",aqhi:3,risk:"Low"},
+ {en:"Tung Chung",zh:"東涌",type:"general",region:"新界",aqhi:2,risk:"Low"},
+ {en:"Tai Po",zh:"大埔",type:"general",region:"新界",aqhi:3,risk:"Low"},
+ {en:"Sha Tin",zh:"沙田",type:"general",region:"新界",aqhi:2,risk:"Low"},
+ {en:"North",zh:"北區",type:"general",region:"新界",aqhi:2,risk:"Low"},
+ {en:"Tap Mun",zh:"塔門",type:"general",region:"新界",aqhi:2,risk:"Low"},
+ {en:"Causeway Bay",zh:"銅鑼灣",type:"roadside",region:"港島",aqhi:3,risk:"Low"},
+ {en:"Central",zh:"中環",type:"roadside",region:"港島",aqhi:3,risk:"Low"},
+ {en:"Mong Kok",zh:"旺角",type:"roadside",region:"九龍",aqhi:3,risk:"Low"}
+];
+var META={
+ "Central/Western":{zh:"中西區",type:"general",region:"港島"},
+ "Southern":{zh:"南區",type:"general",region:"港島"},
+ "Eastern":{zh:"東區",type:"general",region:"港島"},
+ "Kwun Tong":{zh:"觀塘",type:"general",region:"九龍"},
+ "Sham Shui Po":{zh:"深水埗",type:"general",region:"九龍"},
+ "Kwai Chung":{zh:"葵涌",type:"general",region:"新界"},
+ "Tsuen Wan":{zh:"荃灣",type:"general",region:"新界"},
+ "Tseung Kwan O":{zh:"將軍澳",type:"general",region:"新界"},
+ "Yuen Long":{zh:"元朗",type:"general",region:"新界"},
+ "Tuen Mun":{zh:"屯門",type:"general",region:"新界"},
+ "Tung Chung":{zh:"東涌",type:"general",region:"新界"},
+ "Tai Po":{zh:"大埔",type:"general",region:"新界"},
+ "Sha Tin":{zh:"沙田",type:"general",region:"新界"},
+ "North":{zh:"北區",type:"general",region:"新界"},
+ "Tap Mun":{zh:"塔門",type:"general",region:"新界"},
+ "Causeway Bay":{zh:"銅鑼灣",type:"roadside",region:"港島"},
+ "Central":{zh:"中環",type:"roadside",region:"港島"},
+ "Mong Kok":{zh:"旺角",type:"roadside",region:"九龍"}
+};
+var RISK_ZH={Low:"低",Moderate:"中",High:"高","Very High":"甚高",Serious:"嚴重"};
+var data=SNAPSHOT.slice();
+var live=false, liveTime="";
+function aqhiClass(v){return v<=3?"aq-low":v<=6?"aq-mod":v===7?"aq-high":v<=10?"aq-vhigh":"aq-serious";}
+function barColor(v){return v<=3?"#22a35a":v<=6?"#eab308":v===7?"#f97316":v<=10?"#dc2626":"#7f1d1d";}
+function fmtTime(s){return s?s.replace("T"," ").slice(0,16):"";}
+function render(){
+  var q=document.getElementById("q").value.trim();
+  var tf=document.getElementById("typeFilter").value;
+  var rf=document.getElementById("regionFilter").value;
+  var sort=document.getElementById("sortSel").value;
+  var rows=data.filter(function(d){
+    if(tf!=="all"&&d.type!==tf)return false;
+    if(rf!=="all"&&d.region!==rf)return false;
+    if(q&&d.zh.indexOf(q)<0&&d.en.toLowerCase().indexOf(q.toLowerCase())<0)return false;
+    return true;
+  });
+  rows.sort(function(a,b){
+    if(sort==="aqhi-desc")return b.aqhi-a.aqhi||a.zh.localeCompare(b.zh,"zh-Hant");
+    if(sort==="aqhi-asc")return a.aqhi-b.aqhi||a.zh.localeCompare(b.zh,"zh-Hant");
+    return a.zh.localeCompare(b.zh,"zh-Hant");
+  });
+  var tb=document.getElementById("tbody");
+  tb.innerHTML=rows.map(function(d){
+    return "<tr><td><b>"+d.zh+"</b><br><small style='color:var(--muted)'>"+d.en+"</small></td><td><span class='pill "+(d.type==="general"?"gen":"road")+"'>"+(d.type==="general"?"一般站":"路邊站")+"</span></td><td>"+d.region+"</td><td><span class='aqhi "+aqhiClass(d.aqhi)+"'>"+d.aqhi+"</span></td><td>"+(RISK_ZH[d.risk]||d.risk)+"</td></tr>";
+  }).join("")||"<tr><td colspan='5'>搵唔到符合條件嘅監測站，試下改吓篩選。</td></tr>";
+  document.getElementById("countLine").textContent="顯示 "+rows.length+" / "+data.length+" 個監測站";
+  var sorted=data.slice().sort(function(a,b){return b.aqhi-a.aqhi||a.zh.localeCompare(b.zh,"zh-Hant");});
+  document.getElementById("bars").innerHTML=sorted.map(function(d){
+    return "<div class='bar-row'><div class='nm'>"+d.zh+"</div><div class='bar-track'><div class='bar-fill' style='width:"+(d.aqhi/10*100)+"%;background:"+barColor(d.aqhi)+"'></div></div><div><b>"+d.aqhi+"</b> "+(RISK_ZH[d.risk]||d.risk)+"</div></div>";
+  }).join("");
+  var max=Math.max.apply(null,data.map(function(d){return d.aqhi;}));
+  var min=Math.min.apply(null,data.map(function(d){return d.aqhi;}));
+  var avg=(data.reduce(function(s,d){return s+d.aqhi;},0)/data.length).toFixed(1);
+  var maxStations=data.filter(function(d){return d.aqhi===max;}).map(function(d){return d.zh;}).join("、");
+  var lowN=data.filter(function(d){return d.aqhi<=3;}).length;
+  var modN=data.filter(function(d){return d.aqhi>=4&&d.aqhi<=6;}).length;
+  document.getElementById("st-max").textContent=maxStations+" "+max;
+  document.getElementById("st-min").textContent=min;
+  document.getElementById("st-avg").textContent=avg;
+  document.getElementById("st-low").textContent=lowN+" 低 · "+modN+" 中";
+  document.getElementById("verdict").textContent=max<=3?"✅ 全港空氣大致良好，出街跑步都得！":max<=6?"🙂 大致唔錯，得 "+maxStations+" 係「中」，敏感人士留意下就得。":"⚠️ 有監測站去到「高」或以上，戶外活動要小心。";
+}
+function setStatus(msg){document.getElementById("status").textContent=msg;}
+async function loadLive(){
+  setStatus("⏳ 載入緊最新 AQHI……");
+  try{
+    var res=await fetch("https://dashboard.data.gov.hk/api/aqhi-individual?format=json");
+    if(!res.ok)throw new Error("HTTP "+res.status);
+    var j=await res.json();
+    var fresh=j.filter(function(x){return META[x.station];}).map(function(x){
+      var m=META[x.station];
+      return {en:x.station,zh:m.zh,type:m.type,region:m.region,aqhi:Number(x.aqhi),risk:x.health_risk};
+    });
+    if(fresh.length<10)throw new Error("數據唔齊全");
+    data=fresh;live=true;liveTime=fmtTime(j[0].publish_date);
+    setStatus("✅ 已即時讀取最新數據（發布時間 "+liveTime+" HKT，共 "+fresh.length+" 個監測站）。");
+    document.getElementById("snapNote").textContent="即時數據發布時間："+liveTime+" HKT；快照備份：2026-11-18 08:30 HKT。";
+  }catch(e){
+    live=false;
+    setStatus("⚠️ 即時讀取唔到（"+e.message+"），顯示 2026-11-18 08:30 HKT 已核實快照。");
+  }
+  render();
+}
+["q","typeFilter","regionFilter","sortSel"].forEach(function(id){
+  document.getElementById(id).addEventListener("input",render);
+  document.getElementById(id).addEventListener("change",render);
+});
+document.getElementById("refreshBtn").addEventListener("click",loadLive);
+document.querySelectorAll("th[data-sort]").forEach(function(th){
+  th.addEventListener("click",function(){
+    document.getElementById("sortSel").value=th.getAttribute("data-sort");
+    render();
+  });
+});
+var QUIZ={"quiz1":"東區","quiz2":"中","quiz3":"3 個"};
+Object.keys(QUIZ).forEach(function(id){
+  var box=document.getElementById(id);
+  box.querySelectorAll("button").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      box.querySelectorAll("button").forEach(function(b){b.classList.remove("right","wrong");});
+      var ok=btn.getAttribute("data-a")===QUIZ[id];
+      btn.classList.add(ok?"right":"wrong");
+      box.querySelector(".ans").textContent=ok?"✅ 答啱咗！":"❌ 唔係呢個，正確答案係「"+QUIZ[id]+"」。";
+    });
+  });
+});
+render();
+loadLive();
+</script>
+</body>
+</html>
