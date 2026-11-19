@@ -3,309 +3,250 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>第 005 期｜今日空氣吸唔吸得過？— 全港空氣質素健康指數 AQHI</title>
+<title>第 006 期｜邊個國家最離唔開上網？— 世界銀行各國互聯網使用率</title>
 <style>
-  :root{--ink:#1d2733;--muted:#5b6b7c;--bg:#eef7f6;--card:#fffdf8;--accent:#0e7c6b;--accent2:#0284c7;--line:#d7e5e2}
+  :root{--ink:#1d2733;--muted:#5b6b7c;--bg:#eef4fb;--card:#fffdf8;--accent:#1d4ed8;--accent2:#7c3aed;--line:#d7e3f0}
   *{box-sizing:border-box}
   body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
-  header{background:linear-gradient(135deg,#0c4a6e,#0284c7 55%,#2ec4b6);color:#fff;padding:34px 20px 28px;text-align:center}
+  header{background:linear-gradient(135deg,#1e3a8a,#2563eb 55%,#7c3aed);color:#fff;padding:34px 20px 28px;text-align:center}
   header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.85}
   header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
-  header p{margin:.2em auto;max-width:640px;opacity:.93}
+  header p{margin:.2em auto;max-width:660px;opacity:.93}
   main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(0,0,0,.05)}
   .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-  .stat{background:#0c4a6e;color:#fff;border-radius:12px;padding:16px;text-align:center}
+  .stat{background:#1e3a8a;color:#fff;border-radius:12px;padding:16px;text-align:center}
   .stat b{display:block;font-size:2em;line-height:1.1}
   .stat span{font-size:.85em;opacity:.88}
   .stat.green{background:#15803d}
-  .stat.yellow{background:#ca8a04}
-  .stat.teal{background:#0e7c6b}
+  .stat.purple{background:#7c3aed}
+  .stat.orange{background:#c2410c}
   .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
-  .controls button{border:1px solid #b8d4cf;background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em}
+  .controls button{border:1px solid #b8cde8;background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em}
   .controls button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .controls input,.controls select{border:1px solid #b8d4cf;border-radius:8px;padding:8px 10px;font-size:.95em}
+  .controls input,.controls select{border:1px solid #b8cde8;border-radius:8px;padding:8px 10px;font-size:.95em}
   .controls input{flex:1;min-width:180px}
   table{width:100%;border-collapse:collapse;font-size:.95em}
   th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
   th{cursor:pointer;white-space:nowrap}
-  th:hover{color:var(--accent2)}
-  .aqhi{display:inline-block;min-width:34px;text-align:center;border-radius:8px;padding:4px 8px;font-weight:800;font-size:1.1em;color:#fff}
-  .aq-low{background:#22a35a}
-  .aq-mod{background:#eab308;color:#3f3000}
-  .aq-high{background:#f97316}
-  .aq-vhigh{background:#dc2626}
-  .aq-serious{background:#7f1d1d}
-  .bar-row{display:grid;grid-template-columns:92px 1fr 46px;gap:10px;align-items:center;margin:7px 0;font-size:.92em}
-  .bar-row .nm{text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .bar-track{background:#e3efec;border-radius:999px;height:18px;overflow:hidden}
-  .bar-fill{height:100%;border-radius:999px}
-  .legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}
-  .leg{border-radius:10px;padding:10px 12px;font-size:.92em;color:#fff}
-  .leg b{display:block;font-size:1.05em}
-  .leg small{opacity:.92}
-  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #b8d4cf;background:#fff;border-radius:10px;cursor:pointer;font-size:1em}
-  .quiz button:hover{border-color:var(--accent2)}
+  th:hover{color:var(--accent)}
+  .bar{height:12px;border-radius:999px;background:linear-gradient(90deg,#2563eb,#7c3aed);min-width:2px}
+  .barwrap{background:#e3ecf7;border-radius:999px;height:12px;overflow:hidden;min-width:90px}
+  .pct{font-weight:800;white-space:nowrap}
+  .rank{font-weight:800;color:var(--muted);white-space:nowrap}
+  .medal{font-size:1.1em}
+  #status{font-size:.9em;color:var(--muted)}
+  .trend-picks{display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0}
+  .trend-picks label{font-size:.92em;cursor:pointer;white-space:nowrap}
+  .trend-picks input{accent-color:var(--accent)}
+  svg.chart{width:100%;height:auto;display:block}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.88em;margin-top:8px}
+  .legend span{white-space:nowrap}
+  .legend i{display:inline-block;width:14px;height:4px;border-radius:2px;vertical-align:middle;margin-right:5px}
+  .facts li{margin:8px 0}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #b8cde8;background:#fff;border-radius:10px;cursor:pointer;font-size:1em}
+  .quiz button:hover{border-color:var(--accent)}
   .quiz .right{background:#d5f5e3;border-color:#27ae60}
   .quiz .wrong{background:#fadbd8;border-color:#c0392b}
-  .pill{display:inline-block;border-radius:999px;padding:1px 10px;font-size:.8em;font-weight:700}
-  .pill.gen{background:#dbeafe;color:#1e40af}
-  .pill.road{background:#fef3c7;color:#92400e}
-  #status{font-size:.9em;color:var(--muted)}
-  footer{font-size:.85em;color:var(--muted);text-align:center;padding:0 16px 30px}
-  footer a{color:#0369a1}
   .note{background:#fef9e7;border:1px dashed #d4ac0d;border-radius:10px;padding:12px 14px;font-size:.92em}
-  .verdict{font-size:1.15em;font-weight:800}
+  footer{font-size:.85em;color:var(--muted);text-align:center;padding:0 16px 30px}
+  footer a{color:#1d4ed8}
 </style>
 </head>
 <body>
 <div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">📚 想睇返之前發佈過嘅嘢？ <a href="archive/index.html" style="color:#ffc93c;font-weight:700">去「過往期數」總覽 →</a></div>
 <header>
-  <div class="kicker">DAILY FUN WEB · 第 005 期 · 2026-11-18</div>
-  <h1>🌬️ 今日空氣吸唔吸得過？</h1>
-  <p>即時讀取環保署空氣質素健康指數（AQHI），全港 18 個監測站逐個數，邊區最清新、邊區要留意，一眼睇晒。</p>
+  <div class="kicker">第 006 期 · 2026-11-19 · WORLD BANK OPEN DATA</div>
+  <h1>🌐 邊個國家最離唔開上網？</h1>
+  <p>世界銀行開放數據：全球 213 個國家／地區 2023 年互聯網使用率大比拼 — 邊個地方幾乎人人上網，邊個地方仲係得好少人上到網？</p>
 </header>
 <main>
-  <div class="card">
-    <p id="status">⏳ 載入緊最新 AQHI……</p>
-    <p class="verdict" id="verdict"></p>
-    <div class="stats">
-      <div class="stat"><b id="st-count">18</b><span>監測站數目</span></div>
-      <div class="stat yellow"><b id="st-max">東區 4</b><span>最高指數（中）</span></div>
-      <div class="stat green"><b id="st-min">2</b><span>最低指數（低）</span></div>
-      <div class="stat teal"><b id="st-avg">2.8</b><span>全港平均指數</span></div>
-      <div class="stat"><b id="st-low">17 低 · 1 中</b><span>健康風險分布</span></div>
-    </div>
-    <p style="font-size:.9em;color:var(--muted)" id="snapNote">快照：2026-11-18 08:30 HKT（環保署每小時更新一次）。開頁會即時讀取最新數據；讀唔到就顯示呢個已核實快照。</p>
+  <div class="stats">
+    <div class="stat"><b>69.2%</b><span>🌍 世界平均（2023）</span></div>
+    <div class="stat green"><b>100%</b><span>🥇 最高：巴林、沙特、阿聯酋</span></div>
+    <div class="stat orange"><b>7.2%</b><span>📉 最低：布隆迪</span></div>
+    <div class="stat purple"><b>96.0%</b><span>🇭🇰 香港（2023）</span></div>
   </div>
 
   <div class="card">
-    <h2>📊 各區空氣大比拼</h2>
-    <p style="margin-top:0">AQHI 愈低愈好。條 bar 愈長，代表空氣質素健康風險愈高。</p>
-    <div id="bars"></div>
-  </div>
-
-  <div class="card">
-    <h2>🔍 逐站查 — 搜尋、篩選、排序</h2>
+    <h2 style="margin-top:0">🏆 2023 年全球互聯網使用率排行榜</h2>
+    <p id="status">⏳ 載入緊 World Bank 最新數據…</p>
     <div class="controls">
-      <input id="q" placeholder="搜尋監測站，例如：東區、旺角、沙田…" aria-label="搜尋監測站">
-      <select id="typeFilter" aria-label="監測站種類">
-        <option value="all">全部種類</option>
-        <option value="general">一般監測站</option>
-        <option value="roadside">路邊監測站</option>
+      <input id="q" type="search" placeholder="🔍 搜尋國家（中文或英文，例如：香港、Japan）">
+      <button data-f="all" class="on">全部 213 個</button>
+      <button data-f="high">≥ 90% 上網大國</button>
+      <button data-f="mid">50–89%</button>
+      <button data-f="low">&lt; 50%</button>
+      <select id="sort">
+        <option value="desc">使用率由高到低 ↓</option>
+        <option value="asc">使用率由低到高 ↑</option>
+        <option value="name">國家名 A–Z</option>
       </select>
-      <select id="regionFilter" aria-label="地區">
-        <option value="all">全部地區</option>
-        <option value="港島">港島</option>
-        <option value="九龍">九龍</option>
-        <option value="新界">新界</option>
-      </select>
-      <select id="sortSel" aria-label="排序">
-        <option value="aqhi-desc">按指數：高 → 低</option>
-        <option value="aqhi-asc">按指數：低 → 高</option>
-        <option value="name">按站名</option>
-      </select>
-      <button id="refreshBtn">🔄 重新讀取最新數據</button>
     </div>
-    <p id="countLine" style="font-size:.9em;color:var(--muted)"></p>
+    <p id="count" style="color:var(--muted);font-size:.92em"></p>
+    <div style="overflow-x:auto">
     <table>
-      <thead><tr><th data-sort="name">監測站 ↕</th><th>種類</th><th>地區</th><th data-sort="aqhi-desc">AQHI ↕</th><th>健康風險</th></tr></thead>
+      <thead><tr><th>#</th><th>國家／地區</th><th>使用率</th><th style="min-width:120px">比例</th></tr></thead>
       <tbody id="tbody"></tbody>
     </table>
+    </div>
   </div>
 
   <div class="card">
-    <h2>🎨 AQHI 健康風險顏色圖</h2>
-    <p style="margin-top:0">指數 1 至 10 同 10+，分五級。記住：<b>1–3 低</b>可以放心出街；<b>4–6 中</b>敏感人士要留意；<b>7 或以上</b>就要認真諗下係咪要減少戶外活動。</p>
-    <div class="legend">
-      <div class="leg" style="background:#22a35a"><b>1–3 · 低</b><small>健康風險低，一般人無問題</small></div>
-      <div class="leg" style="background:#eab308;color:#3f3000"><b>4–6 · 中</b><small>兒童、長者同心肺病患者要留意</small></div>
-      <div class="leg" style="background:#f97316"><b>7 · 高</b><small>減少戶外體力活動</small></div>
-      <div class="leg" style="background:#dc2626"><b>8–10 · 甚高</b><small>避免戶外體力活動</small></div>
-      <div class="leg" style="background:#7f1d1d"><b>10+ · 嚴重</b><small>盡量留喺室內</small></div>
-    </div>
+    <h2 style="margin-top:0">📈 十年走勢：2014 → 2023</h2>
+    <p>剔走啲國家，睇下佢哋十年間上網率點變。預設揀咗香港、中國、世界平均同印度。</p>
+    <div class="trend-picks" id="picks"></div>
+    <div id="chartwrap"></div>
+    <div class="legend" id="chartlegend"></div>
+  </div>
+
+  <div class="card facts">
+    <h2 style="margin-top:0">🤯 睇完會「嘩」一聲嘅冷知識</h2>
+    <ul>
+      <li><b>十年差唔多翻倍：</b>世界平均上網率由 2014 年 37.4% 升到 2023 年 69.2% — 十年前每 10 個人得唔夠 4 個上網，而家有成 7 個。</li>
+      <li><b>中國衝刺：</b>由 2014 年 47.9% 升到 2023 年 90.6%，十年升咗 42.7 個百分點；單係 2022 → 2023 年就由 75.6% 跳升到 90.6%。</li>
+      <li><b>印度追趕：</b>由 2014 年 13.5% 升到 2023 年 60.3%，十年升咗 4 倍幾，追過世界平均升幅。</li>
+      <li><b>滿分三國：</b>巴林、沙特阿拉伯、阿聯酋 2023 年全部錄得 100% — 理論上人人上網。</li>
+      <li><b>另一端：</b>布隆迪得 7.2%，即係大約每 14 個人先得 1 個上網，同 100% 嘅國家差成 13 倍幾。</li>
+      <li><b>過半數門檻：</b>213 個有數據嘅國家／地區入面，52 個使用率 ≥ 90%，163 個 ≥ 50% — 即係有 50 個地方仲未有一半人口上網。</li>
+    </ul>
   </div>
 
   <div class="card quiz">
-    <h2>🧠 冷知識小測驗</h2>
-    <p>考下你有幾留意今朝嘅空氣：</p>
-    <div id="quiz1">
-      <p><b>Q1：</b>今朝全港邊個監測站 AQHI 最高？</p>
-      <button data-a="東區">東區</button>
-      <button data-a="旺角">旺角</button>
-      <button data-a="元朗">元朗</button>
-      <button data-a="中環">中環</button>
-      <p class="ans"></p>
-    </div>
-    <div id="quiz2">
-      <p><b>Q2：</b>AQHI 係 4，代表咩健康風險級別？</p>
-      <button data-a="低">低</button>
-      <button data-a="中">中</button>
-      <button data-a="高">高</button>
-      <button data-a="甚高">甚高</button>
-      <p class="ans"></p>
-    </div>
-    <div id="quiz3">
-      <p><b>Q3：</b>全港 18 個監測站入面，有幾多個係路邊監測站？</p>
-      <button data-a="2 個">2 個</button>
-      <button data-a="3 個">3 個</button>
-      <button data-a="5 個">5 個</button>
-      <button data-a="15 個">15 個</button>
-      <p class="ans"></p>
-    </div>
+    <h2 style="margin-top:0">🧠 快問快答</h2>
+    <p><b>問題 1：</b>估下 2023 年全球平均有幾多人上網？</p>
+    <button data-a="0">約 37% — 得三分之一多啲</button>
+    <button data-a="0">約 55% — 啱啱過半</button>
+    <button data-a="1">約 69% — 差唔多七成</button>
+    <button data-a="0">約 85% — 幾乎人人上網</button>
+    <p id="quiz1"></p>
+    <p><b>問題 2：</b>邊個地方 2023 年上網率最低？</p>
+    <button data-a2="0">尼日利亞（40.1%）</button>
+    <button data-a2="0">印度（60.3%）</button>
+    <button data-a2="1">布隆迪（7.2%）</button>
+    <button data-a2="0">印尼（69.2%）</button>
+    <p id="quiz2"></p>
   </div>
 
-  <div class="card">
-    <h2>💡 關於 AQHI，你未必知嘅嘢</h2>
-    <ul>
-      <li>空氣質素健康指數（AQHI）喺 <b>2013 年 12 月 30 日</b>推出，取代舊嘅空氣污染指數（API）；計算方法喺 <b>2025 年 3 月 22 日</b>更新過。</li>
-      <li>每小時嘅 AQHI 係用臭氧（O₃）、二氧化氮（NO₂）、二氧化硫（SO₂）同懸浮粒子（PM₁₀ 或 PM₂.₅，邊個風險高用邊個）嘅<b>三小時移動平均濃度</b>計出嚟，反映空氣污染對心肺疾病入院嘅短期風險。</li>
-      <li>全港有 <b>15 個一般監測站</b>（量度你平時呼吸到嘅空氣）同 <b>3 個路邊監測站</b>（銅鑼灣、中環、旺角，量度馬路邊車多樓高嘅空氣）。</li>
-      <li>今朝快照：<b>17 個站「低」、得東區一個「中」</b>；路邊站平均 3.0，同一般站平均 2.8 差唔多，朝早繁忙時間都算唔錯。</li>
-      <li>空氣最清新係 <b>東涌、沙田、北區、塔門</b>，齊齊得 2，全部都係新界區。</li>
-    </ul>
-    <div class="note">💡 溫馨提示：AQHI 係健康風險指標，唔係污染物濃度本身。數值低唔等於零污染，敏感人士就算「低」都要留意自己身體反應。</div>
-  </div>
-
-  <div class="card">
-    <h2>📚 數據來源</h2>
-    <p>數據：環保署「各監測站現時空氣質素健康指數」，經 DATA.GOV.HK 開放數據平台（City Dashboard 版本，Digital Policy Office 提供）。<br>
-    即時來源：<a href="https://dashboard.data.gov.hk/api/aqhi-individual?format=json">dashboard.data.gov.hk/api/aqhi-individual</a>（JSON，每小時更新，支援跨域讀取）；原始 RSS：<a href="https://www.aqhi.gov.hk/epd/ddata/html/out/aqhi_ind_rss_Eng.xml">aqhi.gov.hk AQHI RSS</a>。<br>
-    數據集頁：<a href="https://data.gov.hk/en-data/dataset/hk-epd-airteam-current-aqhi-of-individual-air-quality-monitoring-stations">DATA.GOV.HK — Current AQHI of individual Air Quality Monitoring stations</a>；主題頁：<a href="https://www.aqhi.gov.hk/en">www.aqhi.gov.hk</a>。<br>
-    快照查核時間：<b>2026-11-18 08:30 HKT</b>（18 個監測站全部有數據）。AQHI 級別同健康建議來自環保署官方說明。</p>
+  <div class="card note">
+    <b>📌 數據說明：</b>「互聯網使用率」指過去三個月內用過互聯網嘅人口佔總人口百分比。各地統計方法有出入，數字只作趣味比較，唔係精確排名。中國 2023 年升幅較大，係 World Bank 數據本身嘅記錄。
   </div>
 </main>
-<footer>Daily Fun Web · 第 005 期 · 2026-11-18 · 數據來自環保署經 DATA.GOV.HK · <a href="archive/index.html">過往期數總覽</a></footer>
+<footer>
+  資料來源：<a href="https://data.worldbank.org/indicator/IT.NET.USER.ZS" target="_blank" rel="noopener">World Bank Open Data</a> — 指標 IT.NET.USER.ZS「Individuals using the Internet (% of population)」，授權 CC BY 4.0，免金鑰 API（api.worldbank.org）。<br>
+  數據年份：2023（最新完整年份，213 個國家／地區有數據）· 查核／快照時間：2026-11-19 07:00 HKT · 頁面會即時讀取 API，讀唔到就用已核實快照。<br>
+  Daily Fun Web · 第 006 期 · <a href="https://github.com/abcdkk-debug/daily-fun-web">GitHub repo</a>
+</footer>
 <script>
-var SNAPSHOT=[
- {en:"Central/Western",zh:"中西區",type:"general",region:"港島",aqhi:3,risk:"Low"},
- {en:"Southern",zh:"南區",type:"general",region:"港島",aqhi:3,risk:"Low"},
- {en:"Eastern",zh:"東區",type:"general",region:"港島",aqhi:4,risk:"Moderate"},
- {en:"Kwun Tong",zh:"觀塘",type:"general",region:"九龍",aqhi:3,risk:"Low"},
- {en:"Sham Shui Po",zh:"深水埗",type:"general",region:"九龍",aqhi:3,risk:"Low"},
- {en:"Kwai Chung",zh:"葵涌",type:"general",region:"新界",aqhi:3,risk:"Low"},
- {en:"Tsuen Wan",zh:"荃灣",type:"general",region:"新界",aqhi:3,risk:"Low"},
- {en:"Tseung Kwan O",zh:"將軍澳",type:"general",region:"新界",aqhi:3,risk:"Low"},
- {en:"Yuen Long",zh:"元朗",type:"general",region:"新界",aqhi:3,risk:"Low"},
- {en:"Tuen Mun",zh:"屯門",type:"general",region:"新界",aqhi:3,risk:"Low"},
- {en:"Tung Chung",zh:"東涌",type:"general",region:"新界",aqhi:2,risk:"Low"},
- {en:"Tai Po",zh:"大埔",type:"general",region:"新界",aqhi:3,risk:"Low"},
- {en:"Sha Tin",zh:"沙田",type:"general",region:"新界",aqhi:2,risk:"Low"},
- {en:"North",zh:"北區",type:"general",region:"新界",aqhi:2,risk:"Low"},
- {en:"Tap Mun",zh:"塔門",type:"general",region:"新界",aqhi:2,risk:"Low"},
- {en:"Causeway Bay",zh:"銅鑼灣",type:"roadside",region:"港島",aqhi:3,risk:"Low"},
- {en:"Central",zh:"中環",type:"roadside",region:"港島",aqhi:3,risk:"Low"},
- {en:"Mong Kok",zh:"旺角",type:"roadside",region:"九龍",aqhi:3,risk:"Low"}
-];
-var META={
- "Central/Western":{zh:"中西區",type:"general",region:"港島"},
- "Southern":{zh:"南區",type:"general",region:"港島"},
- "Eastern":{zh:"東區",type:"general",region:"港島"},
- "Kwun Tong":{zh:"觀塘",type:"general",region:"九龍"},
- "Sham Shui Po":{zh:"深水埗",type:"general",region:"九龍"},
- "Kwai Chung":{zh:"葵涌",type:"general",region:"新界"},
- "Tsuen Wan":{zh:"荃灣",type:"general",region:"新界"},
- "Tseung Kwan O":{zh:"將軍澳",type:"general",region:"新界"},
- "Yuen Long":{zh:"元朗",type:"general",region:"新界"},
- "Tuen Mun":{zh:"屯門",type:"general",region:"新界"},
- "Tung Chung":{zh:"東涌",type:"general",region:"新界"},
- "Tai Po":{zh:"大埔",type:"general",region:"新界"},
- "Sha Tin":{zh:"沙田",type:"general",region:"新界"},
- "North":{zh:"北區",type:"general",region:"新界"},
- "Tap Mun":{zh:"塔門",type:"general",region:"新界"},
- "Causeway Bay":{zh:"銅鑼灣",type:"roadside",region:"港島"},
- "Central":{zh:"中環",type:"roadside",region:"港島"},
- "Mong Kok":{zh:"旺角",type:"roadside",region:"九龍"}
-};
-var RISK_ZH={Low:"低",Moderate:"中",High:"高","Very High":"甚高",Serious:"嚴重"};
-var data=SNAPSHOT.slice();
-var live=false, liveTime="";
-function aqhiClass(v){return v<=3?"aq-low":v<=6?"aq-mod":v===7?"aq-high":v<=10?"aq-vhigh":"aq-serious";}
-function barColor(v){return v<=3?"#22a35a":v<=6?"#eab308":v===7?"#f97316":v<=10?"#dc2626":"#7f1d1d";}
-function fmtTime(s){return s?s.replace("T"," ").slice(0,16):"";}
+var WB_SNAPSHOT_2023=[["Bahrain", "BHR", 100], ["Saudi Arabia", "SAU", 100], ["United Arab Emirates", "ARE", 100], ["Kuwait", "KWT", 99.7], ["Luxembourg", "LUX", 99.3], ["Norway", "NOR", 99.0], ["Brunei Darussalam", "BRN", 99.0], ["Monaco", "MCO", 98.9], ["Denmark", "DNK", 98.8], ["Qatar", "QAT", 98.2], ["Liechtenstein", "LIE", 98.1], ["Iceland", "ISL", 97.9], ["Malaysia", "MYS", 97.7], ["Korea, Rep.", "KOR", 97.4], ["Switzerland", "CHE", 97.3], ["San Marino", "SMR", 97.3], ["Netherlands", "NLD", 97.0], ["Ireland", "IRL", 96.9], ["Australia", "AUS", 96.1], ["Hong Kong SAR, China", "HKG", 96.0], ["Sweden", "SWE", 95.7], ["United Kingdom", "GBR", 95.4], ["Spain", "ESP", 95.4], ["Austria", "AUT", 95.3], ["Oman", "OMN", 95.3], ["Belgium", "BEL", 94.6], ["Chile", "CHL", 94.5], ["Singapore", "SGP", 94.3], ["Andorra", "AND", 94.2], ["Canada", "CAN", 94.1], ["United States", "USA", 93.5], ["Finland", "FIN", 93.5], ["New Zealand", "NZL", 93.3], ["North America", "NAC", 93.3], ["Estonia", "EST", 93.2], ["Kazakhstan", "KAZ", 92.9], ["Jordan", "JOR", 92.5], ["Germany", "DEU", 92.5], ["Bahamas, The", "BHS", 92.4], ["Russian Federation", "RUS", 92.2], ["Latvia", "LVA", 92.2], ["Malta", "MLT", 92.1], ["High income", "", 91.9], ["Belarus", "BLR", 91.5], ["Hungary", "HUN", 91.5], ["Cyprus", "CYP", 91.2], ["Kyrgyz Republic", "KGZ", 91.0], ["Morocco", "MAR", 91], ["Uruguay", "URY", 90.9], ["China", "CHN", 90.6], ["Slovenia", "SVN", 90.4], ["Bhutan", "BTN", 90.0], ["Macao SAR, China", "MAC", 89.8], ["Europe & Central Asia", "ECS", 89.6], ["Thailand", "THA", 89.5], ["Jamaica", "JAM", 89.5], ["Argentina", "ARG", 89.2], ["Romania", "ROU", 89.2], ["Uzbekistan", "UZB", 89.0], ["Azerbaijan", "AZE", 89], ["Montenegro", "MNE", 88.6], ["Lithuania", "LTU", 88.5], ["North Macedonia", "MKD", 88.5], ["Kiribati", "KIR", 88], ["Suriname", "SUR", 87.4], ["Europe & Central Asia (IDA & IBRD countries)", "TEC", 87.3], ["Slovak Republic", "SVK", 87.2], ["Israel", "ISR", 87.0], ["Italy", "ITA", 87.0], ["France", "FRA", 86.8], ["West Bank and Gaza", "PSE", 86.6], ["Poland", "POL", 86.4], ["Dominican Republic", "DOM", 86.1], ["Seychelles", "SYC", 86.0], ["Czechia", "CZE", 86.0], ["Turkiye", "TUR", 86.0], ["Portugal", "PRT", 85.8], ["Costa Rica", "CRI", 85.4], ["Serbia", "SRB", 85.4], ["Upper middle income", "", 85.3], ["Greece", "GRC", 85.0], ["Japan", "JPN", 85.0], ["East Asia & Pacific (IDA & IBRD countries)", "TEA", 85], ["East Asia & Pacific", "EAS", 84.9], ["Europe & Central Asia (excluding high income)", "ECA", 84.6], ["Maldives", "MDV", 84.6], ["East Asia & Pacific (excluding high income)", "EAP", 84.2], ["Brazil", "BRA", 84.2], ["Mongolia", "MNG", 83.7], ["Iran, Islamic Rep.", "IRN", 83.7], ["Bosnia and Herzegovina", "BIH", 83.4], ["Croatia", "HRV", 83.2], ["Albania", "ALB", 83.1], ["Naoero", "NRU", 83.0], ["Palau", "PLW", 82.9], ["Libya", "LBY", 82.1], ["Trinidad and Tobago", "TTO", 82.0], ["Georgia", "GEO", 81.9], ["Iraq", "IRQ", 81.8], ["Lebanon", "LBN", 81.7], ["Ukraine", "UKR", 81.6], ["Dominica", "DMA", 81.3], ["Mexico", "MEX", 81.2], ["Bulgaria", "BGR", 80.4], ["Latin America & the Caribbean (IDA & IBRD countries)", "TLA", 80.2], ["Latin America & Caribbean", "LCN", 80], ["Armenia", "ARM", 80.0], ["Latin America & Caribbean (excluding high income)", "LAC", 79.7], ["Mauritius", "MUS", 79.5], ["Peru", "PER", 79.5], ["Guyana", "GUY", 79.4], ["South Africa", "ZAF", 78.3], ["Paraguay", "PRY", 78.1], ["Viet Nam", "VNM", 78.1], ["Philippines", "PHL", 77.9], ["Colombia", "COL", 77.3], ["Bolivia", "BOL", 77.3], ["IBRD only", "IBD", 77.3], ["St. Kitts and Nevis", "KNA", 76.6], ["Moldova", "MDA", 76.5], ["Venezuela, RB", "VEN", 76.3], ["Algeria", "DZA", 76.2], ["St. Vincent and the Grenadines", "VCT", 75.5], ["Cabo Verde", "CPV", 74.6], ["Fiji", "FJI", 74.1], ["Egypt, Arab Rep.", "EGY", 74.0], ["Ecuador", "ECU", 72.7], ["Antigua and Barbuda", "ATG", 72.1], ["Small states", "SST", 71.7], ["Ghana", "GHA", 70.7], ["Belize", "BLZ", 70.2], ["Barbados", "BRB", 69.7], ["Cuba", "CUB", 69.6], ["Grenada", "GRD", 69.4], ["Indonesia", "IDN", 69.2], ["World", "WLD", 69.2], ["Cambodia", "KHM", 68.9], ["Panama", "PAN", 68.5], ["Gabon", "GAB", 68.2], ["St. Lucia", "LCA", 67.4], ["IDA & IBRD total", "IBT", 65.5], ["Djibouti", "DJI", 64.8], ["Lao PDR", "LAO", 64.4], ["Tonga", "TON", 64.1], ["Marshall Islands", "MHL", 64.1], ["Namibia", "NAM", 63.7], ["Equatorial Guinea", "GNQ", 63.5], ["El Salvador", "SLV", 62.6], ["Eswatini", "SWZ", 61.3], ["Nicaragua", "NIC", 60.3], ["India", "IND", 60.3], ["Middle East, North Africa, Afghanistan & Pakistan", "MEA", 59.5], ["Senegal", "SEN", 59.2], ["Sao Tome and Principe", "STP", 58.7], ["South Asia", "SAS", 58.3], ["South Asia (IDA & IBRD)", "TSA", 58.3], ["Honduras", "HND", 58.1], ["Guatemala", "GTM", 56.7], ["Middle East, North Africa, Afghanistan & Pakistan (excluding high income)", "MNA", 55.9], ["Middle East, North Africa, Afghanistan & Pakistan (IDA & IBRD)", "TMN", 55.7], ["Lower middle income", "", 55.4], ["Tajikistan", "TJK", 54.4], ["Sri Lanka", "LKA", 51.2], ["Lesotho", "LSO", 49.0], ["Gambia, The", "GMB", 48.7], ["Haiti", "HTI", 48.0], ["Nepal", "NPL", 45.8], ["Mauritania", "MRT", 45.0], ["Bangladesh", "BGD", 44.5], ["Congo, Rep.", "COG", 43.2], ["Cameroon", "CMR", 42.2], ["Cote d'Ivoire", "CIV", 40.7], ["Nigeria", "NGA", 40.1], ["Micronesia, Fed. Sts.", "FSM", 39.4], ["Zimbabwe", "ZWE", 38.7], ["Africa Western and Central", "AFW", 38.5], ["IDA blend", "IDB", 38.3], ["Angola", "AGO", 37.9], ["Togo", "TGO", 37.6], ["Mali", "MLI", 36.0], ["IDA total", "IDA", 34.5], ["Sub-Saharan Africa (excluding high income)", "SSA", 33.5], ["IDA only", "IDX", 32.5], ["Benin", "BEN", 32.4], ["Guinea", "GIN", 32.3], ["Sub-Saharan Africa", "SSF", 32.3], ["Sub-Saharan Africa (IDA & IBRD countries)", "TSS", 32.1], ["Kenya", "KEN", 32.1], ["Comoros", "COM", 31.9], ["Liberia", "LBR", 31.2], ["Least developed countries: UN classification", "LDC", 29.9], ["Rwanda", "RWA", 28.8], ["Guinea-Bissau", "GNB", 28.7], ["Solomon Islands", "SLB", 28.7], ["Tanzania", "TZA", 28.4], ["Africa Eastern and Southern", "AFE", 27.8], ["Somalia, Fed. Rep.", "SOM", 26.1], ["Burkina Faso", "BFA", 25.4], ["Sierra Leone", "SLE", 23.7], ["Low income", "", 22], ["Ethiopia", "ETH", 20.3], ["Mozambique", "MOZ", 19.9], ["Congo, Dem. Rep.", "COD", 19.0], ["Papua New Guinea", "PNG", 18.6], ["Madagascar", "MDG", 18.2], ["Malawi", "MWI", 18.0], ["Zambia", "ZMB", 16.5], ["Afghanistan", "AFG", 15.9], ["Central African Republic", "CAF", 13.8], ["Niger", "NER", 13.0], ["Chad", "TCD", 12.0], ["Uganda", "UGA", 9.3], ["Burundi", "BDI", 7.2]];
+var WB_TREND={"HKG": {"2023": 96.0, "2022": 95.6, "2021": 93.1, "2020": 92.4, "2019": 91.7, "2018": 90.5, "2017": 89.4, "2016": 87.5, "2015": 84.9, "2014": 79.9}, "CHN": {"2023": 90.6, "2022": 75.6, "2021": 73.1, "2020": 70.1, "2019": 64.1, "2018": 65.4, "2017": 54.3, "2016": 53.2, "2015": 50.3, "2014": 47.9}, "WLD": {"2023": 69.2, "2022": 67, "2021": 63.8, "2020": 60.1, "2019": 53.9, "2018": 49.4, "2017": 46.3, "2016": 43.6, "2015": 39.9, "2014": 37.4}, "USA": {"2023": 93.5, "2022": 92.7, "2021": 91.3, "2020": 90.3, "2019": 89.4, "2018": 88.5, "2017": 87.3, "2016": 85.5, "2015": 74.6, "2014": 73}, "GBR": {"2023": 95.4, "2022": 95.5, "2021": 96.2, "2020": 94.8, "2019": 92.5, "2018": 90.7, "2017": 90.4, "2016": 94.8, "2015": 92.0, "2014": 91.6}, "JPN": {"2023": 85.0, "2022": 84.9, "2021": 82.9, "2020": 90.2, "2019": 92.7, "2018": 88.7, "2017": 91.7, "2016": 93.2, "2015": 91.1, "2014": 89.1}, "KOR": {"2023": 97.4, "2022": 97.2, "2021": 97.6, "2020": 96.5, "2019": 96.2, "2018": 96.0, "2017": 95.1, "2016": 92.8, "2015": 89.9, "2014": 87.6}, "SGP": {"2023": 94.3, "2022": 96.0, "2021": 96.9, "2020": 92.0, "2019": 88.9, "2018": 88.2, "2017": 84.5, "2016": 84.5, "2015": 79.0, "2014": 79.0}, "BHR": {"2023": 100, "2022": 100, "2021": 100, "2020": 99.7, "2019": 99.7, "2018": 98.6, "2017": 95.9, "2016": 98.0, "2015": 93.5, "2014": 90.5}, "SAU": {"2023": 100, "2022": 100, "2021": 100, "2020": 97.9, "2019": 95.7, "2018": 93.3, "2017": 94.2, "2016": 74.9, "2015": 69.6, "2014": 64.7}, "ARE": {"2023": 100, "2022": 100, "2021": 100, "2020": 100, "2019": 99.1, "2018": 98.5, "2017": 94.8, "2016": 90.6, "2015": 90.5, "2014": 90.4}, "NOR": {"2023": 99.0, "2022": 99.0, "2021": 99.0, "2020": 94.6, "2019": 98.0, "2018": 96.5, "2017": 96.4, "2016": 97.3, "2015": 96.8, "2014": 96.3}, "DNK": {"2023": 98.8, "2022": 97.9, "2021": 98.9, "2020": 96.5, "2019": 98.0, "2018": 97.3, "2017": 97.1, "2016": 97.0, "2015": 96.3, "2014": 96.0}, "CHE": {"2023": 97.3, "2022": 96.5, "2021": 95.6, "2020": 94.3, "2019": 93.1, "2018": 91.8, "2017": 89.7, "2016": 89.1, "2015": 87.5, "2014": 83.6}, "IND": {"2023": 60.3, "2022": 55.9, "2021": 49.3, "2020": 43.4, "2019": 29.5, "2018": 20.1, "2017": 18.2, "2016": 16.5, "2015": 14.9, "2014": 13.5}, "IDN": {"2023": 69.2, "2022": 66.5, "2021": 62.1, "2020": 53.7, "2019": 47.7, "2018": 39.9, "2017": 32.3, "2016": 25.4, "2015": 22.1, "2014": 17.1}, "VNM": {"2023": 78.1, "2022": 78.6, "2021": 74.2, "2020": 70.3, "2019": 68.7, "2018": 69.8, "2017": 58.1, "2016": 53, "2015": 45, "2014": 41}, "BRA": {"2023": 84.2, "2022": 80.5, "2021": 80.7, "2020": 81.3, "2019": 73.9, "2018": 70.4, "2017": 67.5, "2016": 60.9, "2015": 58.3, "2014": 54.6}, "ZAF": {"2023": 78.3, "2022": 78.3, "2021": 75.0, "2020": 72.1, "2019": 69.7, "2018": 62.4, "2017": 56.2, "2016": 54, "2015": 51.9, "2014": 49}, "NGA": {"2023": 40.1, "2022": 39.1, "2021": 35.5, "2020": 31.9, "2019": 29.7, "2018": 27.7, "2017": 25.9, "2016": 24.1, "2015": 22.5, "2014": 21}, "BDI": {"2023": 7.2, "2022": 7.1, "2021": 6.8, "2020": 6.4, "2019": 6.1, "2018": 4.0, "2017": 2.7, "2016": 2.2, "2015": 2, "2014": 1.0}};
+var ZH={"BHR":"巴林","SAU":"沙特阿拉伯","ARE":"阿聯酋","KWT":"科威特","LUX":"盧森堡","NOR":"挪威","BRN":"汶萊","MCO":"摩納哥","DNK":"丹麥","QAT":"卡塔爾","LIE":"列支敦士登","ISL":"冰島","MYS":"馬來西亞","KOR":"韓國","CHE":"瑞士","HKG":"香港","CHN":"中國","WLD":"世界平均","USA":"美國","GBR":"英國","JPN":"日本","SGP":"新加坡","DEU":"德國","FRA":"法國","AUS":"澳洲","IND":"印度","IDN":"印尼","VNM":"越南","THA":"泰國","BRA":"巴西","ZAF":"南非","NGA":"尼日利亞","BDI":"布隆迪","NLD":"荷蘭","SWE":"瑞典","FIN":"芬蘭","IRL":"愛爾蘭","CAN":"加拿大","NZL":"新西蘭","AUT":"奧地利","BEL":"比利時","ESP":"西班牙","ITA":"意大利","PRT":"葡萄牙","GRC":"希臘","POL":"波蘭","TUR":"土耳其","RUS":"俄羅斯","UKR":"烏克蘭","EGY":"埃及","ISR":"以色列","PHL":"菲律賓","PAK":"巴基斯坦","BGD":"孟加拉","LKA":"斯里蘭卡","MMR":"緬甸","KHM":"柬埔寨","LAO":"老撾","MNG":"蒙古","KAZ":"哈薩克","UZB":"烏茲別克","KEN":"肯雅","ETH":"埃塞俄比亞","GHA":"加納","AGO":"安哥拉","MOZ":"莫桑比克","ZMB":"贊比亞","ZWE":"津巴布韋","COD":"剛果（金）","SDN":"蘇丹","TZA":"坦桑尼亞","UGA":"烏干達","MDG":"馬達加斯加","MWI":"馬拉維","NER":"尼日爾","TCD":"乍得","CAF":"中非共和國","AFG":"阿富汗","PNG":"巴布亞新幾內亞"};
+var TREND_LABEL={"HKG":"香港","CHN":"中國","WLD":"世界平均","USA":"美國","GBR":"英國","JPN":"日本","KOR":"韓國","SGP":"新加坡","BHR":"巴林","SAU":"沙特阿拉伯","ARE":"阿聯酋","NOR":"挪威","DNK":"丹麥","CHE":"瑞士","IND":"印度","IDN":"印尼","VNM":"越南","BRA":"巴西","ZAF":"南非","NGA":"尼日利亞","BDI":"布隆迪"};
+var COLORS=["#2563eb","#dc2626","#059669","#d97706","#7c3aed","#db2777","#0891b2","#65a30d","#ea580c","#4f46e5","#be185d","#0d9488","#b45309","#9333ea","#16a34a","#ca8a04","#0369a1","#b91c1c","#15803d","#a16207","#6d28d9"];
+var rows=[], live=false;
+function nameOf(r){return (ZH[r[1]]?ZH[r[1]]+" · ":"")+r[0];}
 function render(){
-  var q=document.getElementById("q").value.trim();
-  var tf=document.getElementById("typeFilter").value;
-  var rf=document.getElementById("regionFilter").value;
-  var sort=document.getElementById("sortSel").value;
-  var rows=data.filter(function(d){
-    if(tf!=="all"&&d.type!==tf)return false;
-    if(rf!=="all"&&d.region!==rf)return false;
-    if(q&&d.zh.indexOf(q)<0&&d.en.toLowerCase().indexOf(q.toLowerCase())<0)return false;
+  var q=(document.getElementById("q").value||"").trim().toLowerCase();
+  var f=document.querySelector(".controls button.on").dataset.f;
+  var s=document.getElementById("sort").value;
+  var list=rows.filter(function(r){
+    if(f==="high"&&r[2]<90)return false;
+    if(f==="mid"&&(r[2]<50||r[2]>=90))return false;
+    if(f==="low"&&r[2]>=50)return false;
+    if(q&&nameOf(r).toLowerCase().indexOf(q)<0&&r[0].toLowerCase().indexOf(q)<0)return false;
     return true;
   });
-  rows.sort(function(a,b){
-    if(sort==="aqhi-desc")return b.aqhi-a.aqhi||a.zh.localeCompare(b.zh,"zh-Hant");
-    if(sort==="aqhi-asc")return a.aqhi-b.aqhi||a.zh.localeCompare(b.zh,"zh-Hant");
-    return a.zh.localeCompare(b.zh,"zh-Hant");
+  if(s==="asc")list.sort(function(a,b){return a[2]-b[2]});
+  else if(s==="name")list.sort(function(a,b){return a[0].localeCompare(b[0])});
+  else list.sort(function(a,b){return b[2]-a[2]});
+  document.getElementById("count").textContent="顯示 "+list.length+" 個國家／地區（共 "+rows.length+" 個有 2023 年數據）";
+  var html="";
+  list.forEach(function(r,i){
+    var medal=i<3&&s==="desc"?["🥇","🥈","🥉"][i]:"";
+    html+="<tr><td class='rank'>"+medal+(i+1)+"</td><td>"+nameOf(r)+"</td><td class='pct'>"+r[2].toFixed(1)+"%</td><td><div class='barwrap'><div class='bar' style='width:"+r[2]+"%'></div></div></td></tr>";
   });
-  var tb=document.getElementById("tbody");
-  tb.innerHTML=rows.map(function(d){
-    return "<tr><td><b>"+d.zh+"</b><br><small style='color:var(--muted)'>"+d.en+"</small></td><td><span class='pill "+(d.type==="general"?"gen":"road")+"'>"+(d.type==="general"?"一般站":"路邊站")+"</span></td><td>"+d.region+"</td><td><span class='aqhi "+aqhiClass(d.aqhi)+"'>"+d.aqhi+"</span></td><td>"+(RISK_ZH[d.risk]||d.risk)+"</td></tr>";
-  }).join("")||"<tr><td colspan='5'>搵唔到符合條件嘅監測站，試下改吓篩選。</td></tr>";
-  document.getElementById("countLine").textContent="顯示 "+rows.length+" / "+data.length+" 個監測站";
-  var sorted=data.slice().sort(function(a,b){return b.aqhi-a.aqhi||a.zh.localeCompare(b.zh,"zh-Hant");});
-  document.getElementById("bars").innerHTML=sorted.map(function(d){
-    return "<div class='bar-row'><div class='nm'>"+d.zh+"</div><div class='bar-track'><div class='bar-fill' style='width:"+(d.aqhi/10*100)+"%;background:"+barColor(d.aqhi)+"'></div></div><div><b>"+d.aqhi+"</b> "+(RISK_ZH[d.risk]||d.risk)+"</div></div>";
-  }).join("");
-  var max=Math.max.apply(null,data.map(function(d){return d.aqhi;}));
-  var min=Math.min.apply(null,data.map(function(d){return d.aqhi;}));
-  var avg=(data.reduce(function(s,d){return s+d.aqhi;},0)/data.length).toFixed(1);
-  var maxStations=data.filter(function(d){return d.aqhi===max;}).map(function(d){return d.zh;}).join("、");
-  var lowN=data.filter(function(d){return d.aqhi<=3;}).length;
-  var modN=data.filter(function(d){return d.aqhi>=4&&d.aqhi<=6;}).length;
-  document.getElementById("st-max").textContent=maxStations+" "+max;
-  document.getElementById("st-min").textContent=min;
-  document.getElementById("st-avg").textContent=avg;
-  document.getElementById("st-low").textContent=lowN+" 低 · "+modN+" 中";
-  document.getElementById("verdict").textContent=max<=3?"✅ 全港空氣大致良好，出街跑步都得！":max<=6?"🙂 大致唔錯，得 "+maxStations+" 係「中」，敏感人士留意下就得。":"⚠️ 有監測站去到「高」或以上，戶外活動要小心。";
+  document.getElementById("tbody").innerHTML=html||"<tr><td colspan='4'>搵唔到符合條件嘅國家，試下改吓關鍵字。</td></tr>";
 }
-function setStatus(msg){document.getElementById("status").textContent=msg;}
-async function loadLive(){
-  setStatus("⏳ 載入緊最新 AQHI……");
-  try{
-    var res=await fetch("https://dashboard.data.gov.hk/api/aqhi-individual?format=json");
-    if(!res.ok)throw new Error("HTTP "+res.status);
-    var j=await res.json();
-    var fresh=j.filter(function(x){return META[x.station];}).map(function(x){
-      var m=META[x.station];
-      return {en:x.station,zh:m.zh,type:m.type,region:m.region,aqhi:Number(x.aqhi),risk:x.health_risk};
-    });
-    if(fresh.length<10)throw new Error("數據唔齊全");
-    data=fresh;live=true;liveTime=fmtTime(j[0].publish_date);
-    setStatus("✅ 已即時讀取最新數據（發布時間 "+liveTime+" HKT，共 "+fresh.length+" 個監測站）。");
-    document.getElementById("snapNote").textContent="即時數據發布時間："+liveTime+" HKT；快照備份：2026-11-18 08:30 HKT。";
-  }catch(e){
-    live=false;
-    setStatus("⚠️ 即時讀取唔到（"+e.message+"），顯示 2026-11-18 08:30 HKT 已核實快照。");
-  }
+function useSnapshot(){
+  rows=WB_SNAPSHOT_2023.slice();
+  document.getElementById("status").textContent="⚠️ 即時 API 讀唔到，而家顯示 2026-11-19 07:00 HKT 核實嘅快照（2023 年數據）。";
   render();
 }
-["q","typeFilter","regionFilter","sortSel"].forEach(function(id){
-  document.getElementById(id).addEventListener("input",render);
-  document.getElementById(id).addEventListener("change",render);
-});
-document.getElementById("refreshBtn").addEventListener("click",loadLive);
-document.querySelectorAll("th[data-sort]").forEach(function(th){
-  th.addEventListener("click",function(){
-    document.getElementById("sortSel").value=th.getAttribute("data-sort");
+fetch("https://api.worldbank.org/v2/country/all/indicator/IT.NET.USER.ZS?format=json&date=2023&per_page=400")
+  .then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json();})
+  .then(function(d){
+    var rs=(d[1]||[]).filter(function(x){return x.value!=null;}).map(function(x){return [x.country.value,x.countryiso3code,Math.round(x.value*10)/10];});
+    if(!rs.length)throw new Error("empty");
+    rs.sort(function(a,b){return b[2]-a[2];});
+    rows=rs; live=true;
+    document.getElementById("status").textContent="✅ 即時讀取 World Bank API 成功 — "+rows.length+" 個國家／地區 2023 年數據（最新完整年份）。";
     render();
+  }).catch(function(){useSnapshot();});
+document.getElementById("q").addEventListener("input",render);
+document.getElementById("sort").addEventListener("change",render);
+document.querySelectorAll(".controls button").forEach(function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll(".controls button").forEach(function(x){x.classList.remove("on")});
+    b.classList.add("on"); render();
   });
 });
-var QUIZ={"quiz1":"東區","quiz2":"中","quiz3":"3 個"};
-Object.keys(QUIZ).forEach(function(id){
-  var box=document.getElementById(id);
-  box.querySelectorAll("button").forEach(function(btn){
-    btn.addEventListener("click",function(){
-      box.querySelectorAll("button").forEach(function(b){b.classList.remove("right","wrong");});
-      var ok=btn.getAttribute("data-a")===QUIZ[id];
-      btn.classList.add(ok?"right":"wrong");
-      box.querySelector(".ans").textContent=ok?"✅ 答啱咗！":"❌ 唔係呢個，正確答案係「"+QUIZ[id]+"」。";
+/* trend chart */
+var YEARS=[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023];
+var picksEl=document.getElementById("picks");
+var DEF=["HKG","CHN","WLD","IND"];
+Object.keys(TREND_LABEL).forEach(function(code){
+  var lab=document.createElement("label");
+  var cb=document.createElement("input");
+  cb.type="checkbox"; cb.value=code; cb.checked=DEF.indexOf(code)>=0;
+  cb.addEventListener("change",drawChart);
+  lab.appendChild(cb); lab.appendChild(document.createTextNode(" "+TREND_LABEL[code]));
+  picksEl.appendChild(lab);
+});
+function drawChart(){
+  var sel=Array.prototype.slice.call(picksEl.querySelectorAll("input:checked")).map(function(c){return c.value;});
+  var wrap=document.getElementById("chartwrap"), leg=document.getElementById("chartlegend");
+  if(!sel.length){wrap.innerHTML="<p>請至少剔一個國家。</p>";leg.innerHTML="";return;}
+  var W=860,H=340,PL=44,PR=12,PT=14,PB=30;
+  var x=function(i){return PL+i*(W-PL-PR)/(YEARS.length-1);};
+  var y=function(v){return PT+(100-v)*(H-PT-PB)/100;};
+  var s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="2014 至 2023 年互聯網使用率走勢圖">';
+  [0,25,50,75,100].forEach(function(v){
+    s+='<line x1="'+PL+'" y1="'+y(v)+'" x2="'+(W-PR)+'" y2="'+y(v)+'" stroke="#d7e3f0"/>';
+    s+='<text x="'+(PL-6)+'" y="'+(y(v)+4)+'" font-size="11" fill="#5b6b7c" text-anchor="end">'+v+'%</text>';
+  });
+  YEARS.forEach(function(yr,i){
+    s+='<text x="'+x(i)+'" y="'+(H-8)+'" font-size="11" fill="#5b6b7c" text-anchor="middle">'+yr+'</text>';
+  });
+  sel.forEach(function(code,i){
+    var d=WB_TREND[code]; if(!d)return;
+    var col=COLORS[i%COLORS.length];
+    var pts=YEARS.filter(function(yr){return d[yr]!=null;}).map(function(yr){return x(YEARS.indexOf(yr))+","+y(d[yr]);}).join(" ");
+    s+='<polyline points="'+pts+'" fill="none" stroke="'+col+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    YEARS.forEach(function(yr){
+      if(d[yr]==null)return;
+      s+='<circle cx="'+x(YEARS.indexOf(yr))+'" cy="'+y(d[yr])+'" r="3.5" fill="'+col+'"><title>'+TREND_LABEL[code]+' '+yr+': '+d[yr]+'%</title></circle>';
     });
   });
+  s+='</svg>';
+  wrap.innerHTML=s;
+  leg.innerHTML=sel.map(function(code,i){return '<span><i style="background:'+COLORS[i%COLORS.length]+'"></i>'+TREND_LABEL[code]+'（2023：'+(WB_TREND[code][2023]!=null?WB_TREND[code][2023].toFixed(1)+"%":"—")+'）</span>';}).join("");
+}
+drawChart();
+/* quiz */
+document.querySelectorAll(".quiz button[data-a]").forEach(function(b){
+  b.addEventListener("click",function(){
+    var ok=b.dataset.a==="1";
+    b.classList.add(ok?"right":"wrong");
+    document.getElementById("quiz1").textContent=ok?"🎉 啱！2023 年世界平均係 69.2%，差唔多每 10 個人就有 7 個上網。":"❌ 唔係呢個。答案係約 69%（2023 年世界平均 69.2%）。";
+  });
 });
-render();
-loadLive();
+document.querySelectorAll(".quiz button[data-a2]").forEach(function(b){
+  b.addEventListener("click",function(){
+    var ok=b.dataset.a2==="1";
+    b.classList.add(ok?"right":"wrong");
+    document.getElementById("quiz2").textContent=ok?"🎉 啱！布隆迪 2023 年得 7.2%，係全球最低。":"❌ 唔係呢個。答案係布隆迪，得 7.2%。";
+  });
+});
 </script>
 </body>
 </html>
