@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 007 期｜今個星期有幾多粒小行星飛過地球？— NASA 近地小行星</title>
+<style>
+  :root{--ink:#e8ecf5;--muted:#9aa7bd;--bg:#0b1026;--card:#171d3a;--accent:#ffc93c;--accent2:#7c5cff;--line:#2b3358;--teal:#2ec4b6}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  header{background:linear-gradient(135deg,#0b1026,#1b2450 55%,#3b2a7a);color:#fff;padding:34px 20px 28px;text-align:center}
+  header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.85}
+  header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
+  header p{margin:.2em auto;max-width:680px;opacity:.93}
+  main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  .card h2{margin-top:0}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .stat{background:#232a52;color:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+  .stat b{display:block;font-size:1.9em;line-height:1.15;color:var(--accent)}
+  .stat span{font-size:.85em;opacity:.9}
+  .stat.red{background:#5b1f2a}.stat.red b{color:#ff8fa3}
+  .stat.green{background:#123f31}.stat.green b{color:#5eead4}
+  .stat.purple{background:#33265e}.stat.purple b{color:#c4b5fd}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .controls button{border:1px solid #4a5480;background:#232a52;color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em}
+  .controls button.on{background:var(--accent);color:#1d2440;border-color:var(--accent);font-weight:700}
+  .controls input,.controls select{border:1px solid #4a5480;border-radius:8px;padding:8px 10px;font-size:.95em;background:#10142e;color:var(--ink)}
+  .controls input{flex:1;min-width:180px}
+  .controls input::placeholder{color:#7c88a8}
+  table{width:100%;border-collapse:collapse;font-size:.95em}
+  th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+  th{cursor:pointer;white-space:nowrap;color:#c7d0e8}
+  th:hover{color:var(--accent)}
+  .haz{color:#ff8fa3;font-weight:800}
+  .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .barwrap{background:#10142e;border-radius:999px;height:12px;overflow:hidden;min-width:90px}
+  .bar{height:12px;border-radius:999px;background:linear-gradient(90deg,#7c5cff,#2ec4b6);min-width:2px}
+  .rank{font-weight:800;color:var(--muted);white-space:nowrap}
+  #status{font-size:.9em;color:var(--muted)}
+  .today{border-color:#ffc93c}
+  .today li{margin:8px 0}
+  .daybars{display:flex;align-items:flex-end;gap:10px;height:180px;padding:10px 4px 0}
+  .daybar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .daybar .col{width:70%;max-width:56px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#7c5cff,#2ec4b6)}
+  .daybar.today .col{background:linear-gradient(180deg,#ffc93c,#ff7a3c)}
+  .daybar b{font-size:1.05em;margin-bottom:2px}
+  .daybar span{font-size:.8em;color:var(--muted);white-space:nowrap}
+  .facts li{margin:8px 0}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #4a5480;background:#232a52;color:var(--ink);border-radius:10px;cursor:pointer;font-size:1em}
+  .quiz button:hover{border-color:var(--accent)}
+  .quiz .right{background:#123f31;border-color:#2ec4b6}
+  .quiz .wrong{background:#5b1f2a;border-color:#ff8fa3}
+  .note{background:#2a2410;border:1px dashed #ffc93c;border-radius:10px;padding:12px 14px;font-size:.92em}
+  footer{font-size:.85em;color:var(--muted);text-align:center;padding:0 16px 30px}
+  footer a{color:#ffc93c}
+  a{color:#ffc93c}
+</style>
+</head>
+<body>
+<div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">🏠 <a href="../index.html" style="color:#ffc93c;font-weight:700">返去今日最新一期</a>　·　📚 <a href="index.html" style="color:#ffc93c;font-weight:700">過往期數總覽</a></div>
+<header>
+  <div class="kicker">第 007 期 · 2026-11-20 · NASA OPEN DATA · NEOWS</div>
+  <h1>☄️ 今個星期有幾多粒小行星飛過地球？</h1>
+  <p>NASA 近地天體資料庫 NeoWs：2026 年 11 月 16 至 22 日呢個星期，有 33 粒小行星喺地球附近掠過 — 邊粒最大？邊粒最快？邊粒離我哋最近？</p>
+</header>
+<main>
+  <div class="stats">
+    <div class="stat"><b>33 粒</b><span>☄️ 今個星期飛過地球</span></div>
+    <div class="stat red"><b>3 粒</b><span>⚠️ 潛在危險小行星</span></div>
+    <div class="stat green"><b>16.6 倍</b><span>🌙 最近嗰粒 = 16.6 個月球距離</span></div>
+    <div class="stat purple"><b>83,399</b><span>💨 最快時速（公里）</span></div>
+    <div class="stat"><b>1,033 米</b><span>🏔️ 最大嗰粒直徑上限</span></div>
+  </div>
+
+  <div class="card today">
+    <h2 style="margin-top:0">📅 今日（2026-11-20，星期五）有 4 粒飛過</h2>
+    <ul>
+      <li><b>00:03 — (2019 VF1)</b>：67–149 米大，以時速 71,400 公里掠過，距離 8,981,854 公里（23.4 個月球距離）— 係今日飛得最近嗰粒。</li>
+      <li><b>03:39 — (2016 JC6) ⚠️</b>：141–316 米大，<b>潛在危險小行星</b>，時速 53,296 公里，距離 61,175,992 公里（159.1 個月球距離）。</li>
+      <li><b>16:26 — (2013 AZ52)</b>：280–625 米大，今日最大嗰粒，時速 56,343 公里，距離 62,720,241 公里（163.1 個月球距離）。</li>
+      <li><b>22:59 — (2019 WG)</b>：38–86 米大，時速 54,913 公里，距離 21,806,106 公里（56.7 個月球距離）— 臨瞓前最後一粒。</li>
+    </ul>
+    <p style="color:var(--muted);font-size:.92em">「潛在危險」唔代表會撞地球 — 只係 NASA 嘅分類：夠大（直徑逾 140 米左右）而且軌道夠接近地球，先至列入監察名單。呢 4 粒全部都離地球好遠。</p>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">📊 逐日計數：邊日最熱鬧？</h2>
+    <p>星期二最多，有 8 粒；星期一同星期日最少，各得 2 粒。</p>
+    <div class="daybars" id="daybars"></div>
+    <p style="color:var(--muted);font-size:.9em">黃色係今日（星期五）。撳下面個表可以逐粒睇。</p>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">🔭 全部 33 粒小行星一覽</h2>
+    <p id="status">⏳ 載入緊 NASA NeoWs 最新數據…</p>
+    <div class="controls">
+      <input id="q" type="search" placeholder="🔍 搜尋編號或名稱，例如：2019 VF1、DR2">
+      <button data-f="all" class="on">全部 33 粒</button>
+      <button data-f="haz">⚠️ 潛在危險</button>
+      <button data-f="today">📅 今日（11-20）</button>
+      <select id="day">
+        <option value="all">所有日期</option>
+        <option value="2026-11-16">11-16（一）</option>
+        <option value="2026-11-17">11-17（二）</option>
+        <option value="2026-11-18">11-18（三）</option>
+        <option value="2026-11-19">11-19（四）</option>
+        <option value="2026-11-20">11-20（五）</option>
+        <option value="2026-11-21">11-21（六）</option>
+        <option value="2026-11-22">11-22（日）</option>
+      </select>
+      <select id="sort">
+        <option value="date">最接近日期 ↓</option>
+        <option value="close">最近地球先 ↓</option>
+        <option value="fast">速度最快先 ↓</option>
+        <option value="big">直徑最大先 ↓</option>
+      </select>
+    </div>
+    <p id="count" style="color:var(--muted);font-size:.92em"></p>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>飛過日期</th><th>小行星</th><th>直徑（米）</th><th>速度</th><th>最近距離</th><th>月球距離</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card facts">
+    <h2 style="margin-top:0">🤯 睇完會「嘩」一聲嘅冷知識</h2>
+    <ul>
+      <li><b>最大嗰粒有成座山咁大：</b>(2020 DR2) 直徑 462–1,033 米 — 上限 1,033 米，即係大約兩座台北 101（508 米）疊起咁高。佢喺 11 月 17 日飛過，距離 150.3 個月球距離，係 3 粒潛在危險小行星之一。</li>
+      <li><b>最快嗰粒快到離譜：</b>(2005 GR33) 時速 83,399 公里，即係每秒 23 公里 — 民航機（約時速 900 公里）嘅 90 幾倍。眨下眼就飛咗成 23 公里。</li>
+      <li><b>最近嗰粒都仲好遠：</b>(2018 NE1) 11 月 19 日凌晨飛過，距離 6,385,660 公里 — 聽落好近，但其實係 16.6 個月球距離，月球去地球距離嘅 16 倍幾，安全得很。</li>
+      <li><b>最細嗰粒得架小巴咁大：</b>(2019 NX5) 直徑得 4–9 米，差唔多係架小巴嘅長度。佢喺 11 月 18 日飛過，時速只係 12,726 公里 — 係今個星期最慢嗰粒。</li>
+      <li><b>啱啱好 100 倍：</b>(2019 XS) 11 月 19 日飛過嗰陣，距離地球 38,443,082 公里 — 啱啱好係 100.0 個月球距離，整數得嚟好難得。</li>
+      <li><b>今日嗰粒要留意：</b>(2016 JC6) 係今個星期 3 粒潛在危險小行星入面，唯一一粒喺今日（11 月 20 日）飛過嘅 — 141–316 米大，凌晨 03:39 掠過，距離 159.1 個月球距離。</li>
+    </ul>
+  </div>
+
+  <div class="card quiz">
+    <h2 style="margin-top:0">🧠 快問快答</h2>
+    <p><b>問題 1：</b>今個星期邊一日最多小行星飛過地球？</p>
+    <button data-a="0">11 月 16 日（星期一）</button>
+    <button data-a="1">11 月 17 日（星期二）— 8 粒</button>
+    <button data-a="0">11 月 20 日（星期五）</button>
+    <button data-a="0">11 月 22 日（星期日）</button>
+    <p id="quiz1"></p>
+    <p><b>問題 2：</b>今個星期最接近地球嗰粒小行星，有幾遠？</p>
+    <button data-a2="0">1.6 個月球距離 — 好近！</button>
+    <button data-a2="1">16.6 個月球距離 — 6,385,660 公里</button>
+    <button data-a2="0">166 個月球距離</button>
+    <button data-a2="0">1,660 個月球距離</button>
+    <p id="quiz2"></p>
+  </div>
+
+  <div class="card note">
+    <b>📌 數據說明：</b>直徑係 NASA 根據絕對星等估算嘅範圍（唔係實測）；「月球距離」（LD）以地月平均距離 384,400 公里計；速度係相對地球嘅速度。潛在危險小行星（PHA）指直徑逾約 140 米、軌道同地球軌道最近距離少於 0.05 天文單位嘅天體，列入監察唔代表有撞擊風險 — 今個星期全部 33 粒最近距離都超過 16 個月球距離。
+  </div>
+</main>
+<footer>
+  資料來源：<a href="https://api.nasa.gov/" target="_blank" rel="noopener">NASA Open Data — NeoWs（Near Earth Object Web Service）</a>，近地天體 feed（2026-11-16 至 2026-11-22），免金鑰 DEMO_KEY API（api.nasa.gov，支援 CORS）。<br>
+  查核／快照時間：2026-11-20 07:00 HKT · 頁面會即時讀取 API，讀唔到就用已核實快照。<br>
+  Daily Fun Web · 第 007 期 · <a href="https://github.com/abcdkk-debug/daily-fun-web">GitHub repo</a>
+</footer>
+<script>
+var SNAP=[["2026-11-16","(2005 WD)",109.3,244.4,65429,19492290,50.7,"14:20",1],["2026-11-16","(2019 HK4)",146.1,326.6,79447,21212582,55.2,"01:48",0],["2026-11-17","322756 (2001 CK32)",378.9,847.3,43177,66518862,173.0,"04:27",0],["2026-11-17","(2005 GR33)",99.2,221.8,83399,71243086,185.3,"10:42",0],["2026-11-17","(2010 VX139)",211.1,472.1,73078,67478263,175.5,"19:48",0],["2026-11-17","(2013 JL14)",33.5,74.8,60268,59511095,154.7,"10:31",0],["2026-11-17","(2016 WL48)",27.8,62.2,61254,64270993,167.1,"11:03",0],["2026-11-17","(2018 WH1)",5.1,11.3,32685,25835106,67.2,"02:52",0],["2026-11-17","(2019 XL)",12.7,28.4,37367,15309843,39.8,"19:30",0],["2026-11-17","(2020 DR2)",461.9,1032.9,59645,57802791,150.3,"18:53",1],["2026-11-18","(2008 WB)",150.9,337.3,82779,71959155,187.1,"04:34",0],["2026-11-18","(2009 WR25)",128.4,287.1,61842,33661031,87.5,"12:19",0],["2026-11-18","(2009 WD54)",5.3,11.9,33744,9415085,24.5,"12:16",0],["2026-11-18","(2016 TS55)",64.4,143.9,64767,71703516,186.5,"04:58",0],["2026-11-18","(2019 NX5)",4.0,9.0,12726,21996732,57.2,"12:19",0],["2026-11-18","(2019 UN14)",183.9,411.2,59761,50172005,130.5,"02:47",0],["2026-11-18","(2019 WT1)",11.6,25.9,35086,7541684,19.6,"22:02",0],["2026-11-19","(2004 XK14)",86.4,193.2,31401,13132347,34.1,"03:49",0],["2026-11-19","(2014 UO33)",97.0,216.8,46744,67011351,174.2,"20:02",0],["2026-11-19","(2015 YQ1)",6.7,14.9,33450,49038139,127.5,"21:27",0],["2026-11-19","(2018 NE1)",55.5,124.2,47824,6385660,16.6,"02:16",0],["2026-11-19","(2018 VS4)",16.5,36.8,38583,19716350,51.3,"14:21",0],["2026-11-19","(2019 WL3)",22.1,49.4,52750,42353916,110.1,"22:31",0],["2026-11-19","(2019 XS)",45.3,101.4,66220,38443082,100.0,"02:14",0],["2026-11-20","(2013 AZ52)",279.6,625.2,56343,62720241,163.1,"16:26",0],["2026-11-20","(2016 JC6)",141.4,316.3,53296,61175992,159.1,"03:39",1],["2026-11-20","(2019 VF1)",66.8,149.3,71400,8981854,23.4,"00:03",0],["2026-11-20","(2019 WG)",38.4,85.9,54913,21806106,56.7,"22:59",0],["2026-11-21","(2009 DC1)",42.1,94.2,31019,48533918,126.2,"09:22",0],["2026-11-21","(2017 WR28)",92.2,206.1,82878,20892346,54.3,"15:43",0],["2026-11-21","(2018 VZ5)",29.1,65.2,43616,32221107,83.8,"03:09",0],["2026-11-22","(2008 GS3)",93.4,208.9,82676,73976805,192.4,"06:57",0],["2026-11-22","(2010 HG20)",139.5,311.9,37711,16326166,42.5,"03:45",0]];
+var DAYS=[["2026-11-16","11-16","一"],["2026-11-17","11-17","二"],["2026-11-18","11-18","三"],["2026-11-19","11-19","四"],["2026-11-20","11-20","五"],["2026-11-21","11-21","六"],["2026-11-22","11-22","日"]];
+function fmt(n){return n.toLocaleString("en-US");}
+function rowsFromSnap(){return SNAP.map(function(r){return {date:r[0],name:r[1],dmin:r[2],dmax:r[3],vel:r[4],miss:r[5],ld:r[6],time:r[7],haz:r[8]===1};});}
+var rows=rowsFromSnap();
+function drawBars(){
+  var counts={}; rows.forEach(function(r){counts[r.date]=(counts[r.date]||0)+1;});
+  var max=0; DAYS.forEach(function(d){max=Math.max(max,counts[d[0]]||0);});
+  var html="";
+  DAYS.forEach(function(d){
+    var c=counts[d[0]]||0, h=max?Math.round(c/max*130):0;
+    html+='<div class="daybar'+(d[0]==="2026-11-20"?" today":"")+'"><b>'+c+' 粒</b><div class="col" style="height:'+h+'px"></div><span>'+d[1]+'（'+d[2]+'）</span></div>';
+  });
+  document.getElementById("daybars").innerHTML=html;
+}
+function render(){
+  var q=(document.getElementById("q").value||"").trim().toLowerCase();
+  var f=document.querySelector(".controls button.on").dataset.f;
+  var day=document.getElementById("day").value;
+  var s=document.getElementById("sort").value;
+  var list=rows.filter(function(r){
+    if(f==="haz"&&!r.haz)return false;
+    if(f==="today"&&r.date!=="2026-11-20")return false;
+    if(day!=="all"&&r.date!==day)return false;
+    if(q&&r.name.toLowerCase().indexOf(q)<0)return false;
+    return true;
+  });
+  if(s==="close")list.sort(function(a,b){return a.miss-b.miss;});
+  else if(s==="fast")list.sort(function(a,b){return b.vel-a.vel;});
+  else if(s==="big")list.sort(function(a,b){return b.dmax-a.dmax;});
+  else list.sort(function(a,b){return a.date.localeCompare(b.date)||a.time.localeCompare(b.time);});
+  document.getElementById("count").textContent="顯示 "+list.length+" 粒（今個星期共 "+rows.length+" 粒）";
+  var html="";
+  list.forEach(function(r,i){
+    html+="<tr><td class='num'>"+r.date.slice(5)+" "+r.time+"</td><td>"+(r.haz?"⚠️ ":"")+r.name+"</td><td class='num'>"+fmt(Math.round(r.dmin))+"–"+fmt(Math.round(r.dmax))+"</td><td class='num'>"+fmt(r.vel)+" km/h</td><td class='num'>"+fmt(r.miss)+" km</td><td class='num'>"+r.ld.toFixed(1)+" LD</td></tr>";
+  });
+  document.getElementById("tbody").innerHTML=html||"<tr><td colspan='6'>搵唔到符合條件嘅小行星，試下改吓關鍵字。</td></tr>";
+}
+function useSnapshot(){
+  rows=rowsFromSnap();
+  document.getElementById("status").textContent="⚠️ 即時 API 讀唔到，而家顯示 2026-11-20 07:00 HKT 核實嘅快照（2026-11-16 至 2026-11-22，33 粒）。";
+  drawBars(); render();
+}
+fetch("https://api.nasa.gov/neo/rest/v1/feed?start_date=2026-11-16&end_date=2026-11-22&api_key=DEMO_KEY")
+  .then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json();})
+  .then(function(d){
+    var rs=[];
+    Object.keys(d.near_earth_objects||{}).sort().forEach(function(dt){
+      d.near_earth_objects[dt].forEach(function(o){
+        var ca=o.close_approach_data[0];
+        rs.push({date:dt,name:o.name,dmin:Math.round(o.estimated_diameter.meters.estimated_diameter_min*10)/10,dmax:Math.round(o.estimated_diameter.meters.estimated_diameter_max*10)/10,vel:Math.round(parseFloat(ca.relative_velocity.kilometers_per_hour)),miss:Math.round(parseFloat(ca.miss_distance.kilometers)),ld:Math.round(parseFloat(ca.miss_distance.lunar)*10)/10,time:(ca.close_approach_date_full||"").split(" ")[1]||"",haz:!!o.is_potentially_hazardous_asteroid});
+      });
+    });
+    if(!rs.length)throw new Error("empty");
+    rows=rs;
+    document.getElementById("status").textContent="✅ 即時讀取 NASA NeoWs API 成功 — "+rows.length+" 粒小行星（2026-11-16 至 2026-11-22）。";
+    drawBars(); render();
+  }).catch(function(){useSnapshot();});
+document.getElementById("q").addEventListener("input",render);
+document.getElementById("day").addEventListener("change",render);
+document.getElementById("sort").addEventListener("change",render);
+document.querySelectorAll(".controls button").forEach(function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll(".controls button").forEach(function(x){x.classList.remove("on")});
+    b.classList.add("on"); render();
+  });
+});
+drawBars(); render();
+document.querySelectorAll(".quiz button[data-a]").forEach(function(b){
+  b.addEventListener("click",function(){
+    var ok=b.dataset.a==="1";
+    b.classList.add(ok?"right":"wrong");
+    document.getElementById("quiz1").textContent=ok?"🎉 啱！11 月 17 日（星期二）最多，有 8 粒小行星飛過。":"❌ 唔係呢日。答案係 11 月 17 日（星期二），有 8 粒。";
+  });
+});
+document.querySelectorAll(".quiz button[data-a2]").forEach(function(b){
+  b.addEventListener("click",function(){
+    var ok=b.dataset.a2==="1";
+    b.classList.add(ok?"right":"wrong");
+    document.getElementById("quiz2").textContent=ok?"🎉 啱！(2018 NE1) 最近，距離 6,385,660 公里，即係 16.6 個月球距離。":"❌ 唔係呢個。答案係 16.6 個月球距離（6,385,660 公里）。";
+  });
+});
+</script>
+</body>
+</html>

@@ -3,186 +3,226 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>第 006 期｜邊個國家最離唔開上網？— 世界銀行各國互聯網使用率</title>
+<title>第 007 期｜今個星期有幾多粒小行星飛過地球？— NASA 近地小行星</title>
 <style>
-  :root{--ink:#1d2733;--muted:#5b6b7c;--bg:#eef4fb;--card:#fffdf8;--accent:#1d4ed8;--accent2:#7c3aed;--line:#d7e3f0}
+  :root{--ink:#e8ecf5;--muted:#9aa7bd;--bg:#0b1026;--card:#171d3a;--accent:#ffc93c;--accent2:#7c5cff;--line:#2b3358;--teal:#2ec4b6}
   *{box-sizing:border-box}
   body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
-  header{background:linear-gradient(135deg,#1e3a8a,#2563eb 55%,#7c3aed);color:#fff;padding:34px 20px 28px;text-align:center}
+  header{background:linear-gradient(135deg,#0b1026,#1b2450 55%,#3b2a7a);color:#fff;padding:34px 20px 28px;text-align:center}
   header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.85}
   header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
-  header p{margin:.2em auto;max-width:660px;opacity:.93}
+  header p{margin:.2em auto;max-width:680px;opacity:.93}
   main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  .card h2{margin-top:0}
   .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-  .stat{background:#1e3a8a;color:#fff;border-radius:12px;padding:16px;text-align:center}
-  .stat b{display:block;font-size:2em;line-height:1.1}
-  .stat span{font-size:.85em;opacity:.88}
-  .stat.green{background:#15803d}
-  .stat.purple{background:#7c3aed}
-  .stat.orange{background:#c2410c}
+  .stat{background:#232a52;color:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+  .stat b{display:block;font-size:1.9em;line-height:1.15;color:var(--accent)}
+  .stat span{font-size:.85em;opacity:.9}
+  .stat.red{background:#5b1f2a}.stat.red b{color:#ff8fa3}
+  .stat.green{background:#123f31}.stat.green b{color:#5eead4}
+  .stat.purple{background:#33265e}.stat.purple b{color:#c4b5fd}
   .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
-  .controls button{border:1px solid #b8cde8;background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em}
-  .controls button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .controls input,.controls select{border:1px solid #b8cde8;border-radius:8px;padding:8px 10px;font-size:.95em}
+  .controls button{border:1px solid #4a5480;background:#232a52;color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em}
+  .controls button.on{background:var(--accent);color:#1d2440;border-color:var(--accent);font-weight:700}
+  .controls input,.controls select{border:1px solid #4a5480;border-radius:8px;padding:8px 10px;font-size:.95em;background:#10142e;color:var(--ink)}
   .controls input{flex:1;min-width:180px}
+  .controls input::placeholder{color:#7c88a8}
   table{width:100%;border-collapse:collapse;font-size:.95em}
   th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
-  th{cursor:pointer;white-space:nowrap}
+  th{cursor:pointer;white-space:nowrap;color:#c7d0e8}
   th:hover{color:var(--accent)}
-  .bar{height:12px;border-radius:999px;background:linear-gradient(90deg,#2563eb,#7c3aed);min-width:2px}
-  .barwrap{background:#e3ecf7;border-radius:999px;height:12px;overflow:hidden;min-width:90px}
-  .pct{font-weight:800;white-space:nowrap}
+  .haz{color:#ff8fa3;font-weight:800}
+  .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .barwrap{background:#10142e;border-radius:999px;height:12px;overflow:hidden;min-width:90px}
+  .bar{height:12px;border-radius:999px;background:linear-gradient(90deg,#7c5cff,#2ec4b6);min-width:2px}
   .rank{font-weight:800;color:var(--muted);white-space:nowrap}
-  .medal{font-size:1.1em}
   #status{font-size:.9em;color:var(--muted)}
-  .trend-picks{display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0}
-  .trend-picks label{font-size:.92em;cursor:pointer;white-space:nowrap}
-  .trend-picks input{accent-color:var(--accent)}
-  svg.chart{width:100%;height:auto;display:block}
-  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.88em;margin-top:8px}
-  .legend span{white-space:nowrap}
-  .legend i{display:inline-block;width:14px;height:4px;border-radius:2px;vertical-align:middle;margin-right:5px}
+  .today{border-color:#ffc93c}
+  .today li{margin:8px 0}
+  .daybars{display:flex;align-items:flex-end;gap:10px;height:180px;padding:10px 4px 0}
+  .daybar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .daybar .col{width:70%;max-width:56px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#7c5cff,#2ec4b6)}
+  .daybar.today .col{background:linear-gradient(180deg,#ffc93c,#ff7a3c)}
+  .daybar b{font-size:1.05em;margin-bottom:2px}
+  .daybar span{font-size:.8em;color:var(--muted);white-space:nowrap}
   .facts li{margin:8px 0}
-  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #b8cde8;background:#fff;border-radius:10px;cursor:pointer;font-size:1em}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #4a5480;background:#232a52;color:var(--ink);border-radius:10px;cursor:pointer;font-size:1em}
   .quiz button:hover{border-color:var(--accent)}
-  .quiz .right{background:#d5f5e3;border-color:#27ae60}
-  .quiz .wrong{background:#fadbd8;border-color:#c0392b}
-  .note{background:#fef9e7;border:1px dashed #d4ac0d;border-radius:10px;padding:12px 14px;font-size:.92em}
+  .quiz .right{background:#123f31;border-color:#2ec4b6}
+  .quiz .wrong{background:#5b1f2a;border-color:#ff8fa3}
+  .note{background:#2a2410;border:1px dashed #ffc93c;border-radius:10px;padding:12px 14px;font-size:.92em}
   footer{font-size:.85em;color:var(--muted);text-align:center;padding:0 16px 30px}
-  footer a{color:#1d4ed8}
+  footer a{color:#ffc93c}
+  a{color:#ffc93c}
 </style>
 </head>
 <body>
 <div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">📚 想睇返之前發佈過嘅嘢？ <a href="archive/index.html" style="color:#ffc93c;font-weight:700">去「過往期數」總覽 →</a></div>
 <header>
-  <div class="kicker">第 006 期 · 2026-11-19 · WORLD BANK OPEN DATA</div>
-  <h1>🌐 邊個國家最離唔開上網？</h1>
-  <p>世界銀行開放數據：全球 213 個國家／地區 2023 年互聯網使用率大比拼 — 邊個地方幾乎人人上網，邊個地方仲係得好少人上到網？</p>
+  <div class="kicker">第 007 期 · 2026-11-20 · NASA OPEN DATA · NEOWS</div>
+  <h1>☄️ 今個星期有幾多粒小行星飛過地球？</h1>
+  <p>NASA 近地天體資料庫 NeoWs：2026 年 11 月 16 至 22 日呢個星期，有 33 粒小行星喺地球附近掠過 — 邊粒最大？邊粒最快？邊粒離我哋最近？</p>
 </header>
 <main>
   <div class="stats">
-    <div class="stat"><b>69.2%</b><span>🌍 世界平均（2023）</span></div>
-    <div class="stat green"><b>100%</b><span>🥇 最高：巴林、沙特、阿聯酋</span></div>
-    <div class="stat orange"><b>7.2%</b><span>📉 最低：布隆迪</span></div>
-    <div class="stat purple"><b>96.0%</b><span>🇭🇰 香港（2023）</span></div>
+    <div class="stat"><b>33 粒</b><span>☄️ 今個星期飛過地球</span></div>
+    <div class="stat red"><b>3 粒</b><span>⚠️ 潛在危險小行星</span></div>
+    <div class="stat green"><b>16.6 倍</b><span>🌙 最近嗰粒 = 16.6 個月球距離</span></div>
+    <div class="stat purple"><b>83,399</b><span>💨 最快時速（公里）</span></div>
+    <div class="stat"><b>1,033 米</b><span>🏔️ 最大嗰粒直徑上限</span></div>
+  </div>
+
+  <div class="card today">
+    <h2 style="margin-top:0">📅 今日（2026-11-20，星期五）有 4 粒飛過</h2>
+    <ul>
+      <li><b>00:03 — (2019 VF1)</b>：67–149 米大，以時速 71,400 公里掠過，距離 8,981,854 公里（23.4 個月球距離）— 係今日飛得最近嗰粒。</li>
+      <li><b>03:39 — (2016 JC6) ⚠️</b>：141–316 米大，<b>潛在危險小行星</b>，時速 53,296 公里，距離 61,175,992 公里（159.1 個月球距離）。</li>
+      <li><b>16:26 — (2013 AZ52)</b>：280–625 米大，今日最大嗰粒，時速 56,343 公里，距離 62,720,241 公里（163.1 個月球距離）。</li>
+      <li><b>22:59 — (2019 WG)</b>：38–86 米大，時速 54,913 公里，距離 21,806,106 公里（56.7 個月球距離）— 臨瞓前最後一粒。</li>
+    </ul>
+    <p style="color:var(--muted);font-size:.92em">「潛在危險」唔代表會撞地球 — 只係 NASA 嘅分類：夠大（直徑逾 140 米左右）而且軌道夠接近地球，先至列入監察名單。呢 4 粒全部都離地球好遠。</p>
   </div>
 
   <div class="card">
-    <h2 style="margin-top:0">🏆 2023 年全球互聯網使用率排行榜</h2>
-    <p id="status">⏳ 載入緊 World Bank 最新數據…</p>
+    <h2 style="margin-top:0">📊 逐日計數：邊日最熱鬧？</h2>
+    <p>星期二最多，有 8 粒；星期一同星期日最少，各得 2 粒。</p>
+    <div class="daybars" id="daybars"></div>
+    <p style="color:var(--muted);font-size:.9em">黃色係今日（星期五）。撳下面個表可以逐粒睇。</p>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0">🔭 全部 33 粒小行星一覽</h2>
+    <p id="status">⏳ 載入緊 NASA NeoWs 最新數據…</p>
     <div class="controls">
-      <input id="q" type="search" placeholder="🔍 搜尋國家（中文或英文，例如：香港、Japan）">
-      <button data-f="all" class="on">全部 213 個</button>
-      <button data-f="high">≥ 90% 上網大國</button>
-      <button data-f="mid">50–89%</button>
-      <button data-f="low">&lt; 50%</button>
+      <input id="q" type="search" placeholder="🔍 搜尋編號或名稱，例如：2019 VF1、DR2">
+      <button data-f="all" class="on">全部 33 粒</button>
+      <button data-f="haz">⚠️ 潛在危險</button>
+      <button data-f="today">📅 今日（11-20）</button>
+      <select id="day">
+        <option value="all">所有日期</option>
+        <option value="2026-11-16">11-16（一）</option>
+        <option value="2026-11-17">11-17（二）</option>
+        <option value="2026-11-18">11-18（三）</option>
+        <option value="2026-11-19">11-19（四）</option>
+        <option value="2026-11-20">11-20（五）</option>
+        <option value="2026-11-21">11-21（六）</option>
+        <option value="2026-11-22">11-22（日）</option>
+      </select>
       <select id="sort">
-        <option value="desc">使用率由高到低 ↓</option>
-        <option value="asc">使用率由低到高 ↑</option>
-        <option value="name">國家名 A–Z</option>
+        <option value="date">最接近日期 ↓</option>
+        <option value="close">最近地球先 ↓</option>
+        <option value="fast">速度最快先 ↓</option>
+        <option value="big">直徑最大先 ↓</option>
       </select>
     </div>
     <p id="count" style="color:var(--muted);font-size:.92em"></p>
     <div style="overflow-x:auto">
     <table>
-      <thead><tr><th>#</th><th>國家／地區</th><th>使用率</th><th style="min-width:120px">比例</th></tr></thead>
+      <thead><tr><th>飛過日期</th><th>小行星</th><th>直徑（米）</th><th>速度</th><th>最近距離</th><th>月球距離</th></tr></thead>
       <tbody id="tbody"></tbody>
     </table>
     </div>
   </div>
 
-  <div class="card">
-    <h2 style="margin-top:0">📈 十年走勢：2014 → 2023</h2>
-    <p>剔走啲國家，睇下佢哋十年間上網率點變。預設揀咗香港、中國、世界平均同印度。</p>
-    <div class="trend-picks" id="picks"></div>
-    <div id="chartwrap"></div>
-    <div class="legend" id="chartlegend"></div>
-  </div>
-
   <div class="card facts">
     <h2 style="margin-top:0">🤯 睇完會「嘩」一聲嘅冷知識</h2>
     <ul>
-      <li><b>十年差唔多翻倍：</b>世界平均上網率由 2014 年 37.4% 升到 2023 年 69.2% — 十年前每 10 個人得唔夠 4 個上網，而家有成 7 個。</li>
-      <li><b>中國衝刺：</b>由 2014 年 47.9% 升到 2023 年 90.6%，十年升咗 42.7 個百分點；單係 2022 → 2023 年就由 75.6% 跳升到 90.6%。</li>
-      <li><b>印度追趕：</b>由 2014 年 13.5% 升到 2023 年 60.3%，十年升咗 4 倍幾，追過世界平均升幅。</li>
-      <li><b>滿分三國：</b>巴林、沙特阿拉伯、阿聯酋 2023 年全部錄得 100% — 理論上人人上網。</li>
-      <li><b>另一端：</b>布隆迪得 7.2%，即係大約每 14 個人先得 1 個上網，同 100% 嘅國家差成 13 倍幾。</li>
-      <li><b>過半數門檻：</b>213 個有數據嘅國家／地區入面，52 個使用率 ≥ 90%，163 個 ≥ 50% — 即係有 50 個地方仲未有一半人口上網。</li>
+      <li><b>最大嗰粒有成座山咁大：</b>(2020 DR2) 直徑 462–1,033 米 — 上限 1,033 米，即係大約兩座台北 101（508 米）疊起咁高。佢喺 11 月 17 日飛過，距離 150.3 個月球距離，係 3 粒潛在危險小行星之一。</li>
+      <li><b>最快嗰粒快到離譜：</b>(2005 GR33) 時速 83,399 公里，即係每秒 23 公里 — 民航機（約時速 900 公里）嘅 90 幾倍。眨下眼就飛咗成 23 公里。</li>
+      <li><b>最近嗰粒都仲好遠：</b>(2018 NE1) 11 月 19 日凌晨飛過，距離 6,385,660 公里 — 聽落好近，但其實係 16.6 個月球距離，月球去地球距離嘅 16 倍幾，安全得很。</li>
+      <li><b>最細嗰粒得架小巴咁大：</b>(2019 NX5) 直徑得 4–9 米，差唔多係架小巴嘅長度。佢喺 11 月 18 日飛過，時速只係 12,726 公里 — 係今個星期最慢嗰粒。</li>
+      <li><b>啱啱好 100 倍：</b>(2019 XS) 11 月 19 日飛過嗰陣，距離地球 38,443,082 公里 — 啱啱好係 100.0 個月球距離，整數得嚟好難得。</li>
+      <li><b>今日嗰粒要留意：</b>(2016 JC6) 係今個星期 3 粒潛在危險小行星入面，唯一一粒喺今日（11 月 20 日）飛過嘅 — 141–316 米大，凌晨 03:39 掠過，距離 159.1 個月球距離。</li>
     </ul>
   </div>
 
   <div class="card quiz">
     <h2 style="margin-top:0">🧠 快問快答</h2>
-    <p><b>問題 1：</b>估下 2023 年全球平均有幾多人上網？</p>
-    <button data-a="0">約 37% — 得三分之一多啲</button>
-    <button data-a="0">約 55% — 啱啱過半</button>
-    <button data-a="1">約 69% — 差唔多七成</button>
-    <button data-a="0">約 85% — 幾乎人人上網</button>
+    <p><b>問題 1：</b>今個星期邊一日最多小行星飛過地球？</p>
+    <button data-a="0">11 月 16 日（星期一）</button>
+    <button data-a="1">11 月 17 日（星期二）— 8 粒</button>
+    <button data-a="0">11 月 20 日（星期五）</button>
+    <button data-a="0">11 月 22 日（星期日）</button>
     <p id="quiz1"></p>
-    <p><b>問題 2：</b>邊個地方 2023 年上網率最低？</p>
-    <button data-a2="0">尼日利亞（40.1%）</button>
-    <button data-a2="0">印度（60.3%）</button>
-    <button data-a2="1">布隆迪（7.2%）</button>
-    <button data-a2="0">印尼（69.2%）</button>
+    <p><b>問題 2：</b>今個星期最接近地球嗰粒小行星，有幾遠？</p>
+    <button data-a2="0">1.6 個月球距離 — 好近！</button>
+    <button data-a2="1">16.6 個月球距離 — 6,385,660 公里</button>
+    <button data-a2="0">166 個月球距離</button>
+    <button data-a2="0">1,660 個月球距離</button>
     <p id="quiz2"></p>
   </div>
 
   <div class="card note">
-    <b>📌 數據說明：</b>「互聯網使用率」指過去三個月內用過互聯網嘅人口佔總人口百分比。各地統計方法有出入，數字只作趣味比較，唔係精確排名。中國 2023 年升幅較大，係 World Bank 數據本身嘅記錄。
+    <b>📌 數據說明：</b>直徑係 NASA 根據絕對星等估算嘅範圍（唔係實測）；「月球距離」（LD）以地月平均距離 384,400 公里計；速度係相對地球嘅速度。潛在危險小行星（PHA）指直徑逾約 140 米、軌道同地球軌道最近距離少於 0.05 天文單位嘅天體，列入監察唔代表有撞擊風險 — 今個星期全部 33 粒最近距離都超過 16 個月球距離。
   </div>
 </main>
 <footer>
-  資料來源：<a href="https://data.worldbank.org/indicator/IT.NET.USER.ZS" target="_blank" rel="noopener">World Bank Open Data</a> — 指標 IT.NET.USER.ZS「Individuals using the Internet (% of population)」，授權 CC BY 4.0，免金鑰 API（api.worldbank.org）。<br>
-  數據年份：2023（最新完整年份，213 個國家／地區有數據）· 查核／快照時間：2026-11-19 07:00 HKT · 頁面會即時讀取 API，讀唔到就用已核實快照。<br>
-  Daily Fun Web · 第 006 期 · <a href="https://github.com/abcdkk-debug/daily-fun-web">GitHub repo</a>
+  資料來源：<a href="https://api.nasa.gov/" target="_blank" rel="noopener">NASA Open Data — NeoWs（Near Earth Object Web Service）</a>，近地天體 feed（2026-11-16 至 2026-11-22），免金鑰 DEMO_KEY API（api.nasa.gov，支援 CORS）。<br>
+  查核／快照時間：2026-11-20 07:00 HKT · 頁面會即時讀取 API，讀唔到就用已核實快照。<br>
+  Daily Fun Web · 第 007 期 · <a href="https://github.com/abcdkk-debug/daily-fun-web">GitHub repo</a>
 </footer>
 <script>
-var WB_SNAPSHOT_2023=[["Bahrain", "BHR", 100], ["Saudi Arabia", "SAU", 100], ["United Arab Emirates", "ARE", 100], ["Kuwait", "KWT", 99.7], ["Luxembourg", "LUX", 99.3], ["Norway", "NOR", 99.0], ["Brunei Darussalam", "BRN", 99.0], ["Monaco", "MCO", 98.9], ["Denmark", "DNK", 98.8], ["Qatar", "QAT", 98.2], ["Liechtenstein", "LIE", 98.1], ["Iceland", "ISL", 97.9], ["Malaysia", "MYS", 97.7], ["Korea, Rep.", "KOR", 97.4], ["Switzerland", "CHE", 97.3], ["San Marino", "SMR", 97.3], ["Netherlands", "NLD", 97.0], ["Ireland", "IRL", 96.9], ["Australia", "AUS", 96.1], ["Hong Kong SAR, China", "HKG", 96.0], ["Sweden", "SWE", 95.7], ["United Kingdom", "GBR", 95.4], ["Spain", "ESP", 95.4], ["Austria", "AUT", 95.3], ["Oman", "OMN", 95.3], ["Belgium", "BEL", 94.6], ["Chile", "CHL", 94.5], ["Singapore", "SGP", 94.3], ["Andorra", "AND", 94.2], ["Canada", "CAN", 94.1], ["United States", "USA", 93.5], ["Finland", "FIN", 93.5], ["New Zealand", "NZL", 93.3], ["North America", "NAC", 93.3], ["Estonia", "EST", 93.2], ["Kazakhstan", "KAZ", 92.9], ["Jordan", "JOR", 92.5], ["Germany", "DEU", 92.5], ["Bahamas, The", "BHS", 92.4], ["Russian Federation", "RUS", 92.2], ["Latvia", "LVA", 92.2], ["Malta", "MLT", 92.1], ["High income", "", 91.9], ["Belarus", "BLR", 91.5], ["Hungary", "HUN", 91.5], ["Cyprus", "CYP", 91.2], ["Kyrgyz Republic", "KGZ", 91.0], ["Morocco", "MAR", 91], ["Uruguay", "URY", 90.9], ["China", "CHN", 90.6], ["Slovenia", "SVN", 90.4], ["Bhutan", "BTN", 90.0], ["Macao SAR, China", "MAC", 89.8], ["Europe & Central Asia", "ECS", 89.6], ["Thailand", "THA", 89.5], ["Jamaica", "JAM", 89.5], ["Argentina", "ARG", 89.2], ["Romania", "ROU", 89.2], ["Uzbekistan", "UZB", 89.0], ["Azerbaijan", "AZE", 89], ["Montenegro", "MNE", 88.6], ["Lithuania", "LTU", 88.5], ["North Macedonia", "MKD", 88.5], ["Kiribati", "KIR", 88], ["Suriname", "SUR", 87.4], ["Europe & Central Asia (IDA & IBRD countries)", "TEC", 87.3], ["Slovak Republic", "SVK", 87.2], ["Israel", "ISR", 87.0], ["Italy", "ITA", 87.0], ["France", "FRA", 86.8], ["West Bank and Gaza", "PSE", 86.6], ["Poland", "POL", 86.4], ["Dominican Republic", "DOM", 86.1], ["Seychelles", "SYC", 86.0], ["Czechia", "CZE", 86.0], ["Turkiye", "TUR", 86.0], ["Portugal", "PRT", 85.8], ["Costa Rica", "CRI", 85.4], ["Serbia", "SRB", 85.4], ["Upper middle income", "", 85.3], ["Greece", "GRC", 85.0], ["Japan", "JPN", 85.0], ["East Asia & Pacific (IDA & IBRD countries)", "TEA", 85], ["East Asia & Pacific", "EAS", 84.9], ["Europe & Central Asia (excluding high income)", "ECA", 84.6], ["Maldives", "MDV", 84.6], ["East Asia & Pacific (excluding high income)", "EAP", 84.2], ["Brazil", "BRA", 84.2], ["Mongolia", "MNG", 83.7], ["Iran, Islamic Rep.", "IRN", 83.7], ["Bosnia and Herzegovina", "BIH", 83.4], ["Croatia", "HRV", 83.2], ["Albania", "ALB", 83.1], ["Naoero", "NRU", 83.0], ["Palau", "PLW", 82.9], ["Libya", "LBY", 82.1], ["Trinidad and Tobago", "TTO", 82.0], ["Georgia", "GEO", 81.9], ["Iraq", "IRQ", 81.8], ["Lebanon", "LBN", 81.7], ["Ukraine", "UKR", 81.6], ["Dominica", "DMA", 81.3], ["Mexico", "MEX", 81.2], ["Bulgaria", "BGR", 80.4], ["Latin America & the Caribbean (IDA & IBRD countries)", "TLA", 80.2], ["Latin America & Caribbean", "LCN", 80], ["Armenia", "ARM", 80.0], ["Latin America & Caribbean (excluding high income)", "LAC", 79.7], ["Mauritius", "MUS", 79.5], ["Peru", "PER", 79.5], ["Guyana", "GUY", 79.4], ["South Africa", "ZAF", 78.3], ["Paraguay", "PRY", 78.1], ["Viet Nam", "VNM", 78.1], ["Philippines", "PHL", 77.9], ["Colombia", "COL", 77.3], ["Bolivia", "BOL", 77.3], ["IBRD only", "IBD", 77.3], ["St. Kitts and Nevis", "KNA", 76.6], ["Moldova", "MDA", 76.5], ["Venezuela, RB", "VEN", 76.3], ["Algeria", "DZA", 76.2], ["St. Vincent and the Grenadines", "VCT", 75.5], ["Cabo Verde", "CPV", 74.6], ["Fiji", "FJI", 74.1], ["Egypt, Arab Rep.", "EGY", 74.0], ["Ecuador", "ECU", 72.7], ["Antigua and Barbuda", "ATG", 72.1], ["Small states", "SST", 71.7], ["Ghana", "GHA", 70.7], ["Belize", "BLZ", 70.2], ["Barbados", "BRB", 69.7], ["Cuba", "CUB", 69.6], ["Grenada", "GRD", 69.4], ["Indonesia", "IDN", 69.2], ["World", "WLD", 69.2], ["Cambodia", "KHM", 68.9], ["Panama", "PAN", 68.5], ["Gabon", "GAB", 68.2], ["St. Lucia", "LCA", 67.4], ["IDA & IBRD total", "IBT", 65.5], ["Djibouti", "DJI", 64.8], ["Lao PDR", "LAO", 64.4], ["Tonga", "TON", 64.1], ["Marshall Islands", "MHL", 64.1], ["Namibia", "NAM", 63.7], ["Equatorial Guinea", "GNQ", 63.5], ["El Salvador", "SLV", 62.6], ["Eswatini", "SWZ", 61.3], ["Nicaragua", "NIC", 60.3], ["India", "IND", 60.3], ["Middle East, North Africa, Afghanistan & Pakistan", "MEA", 59.5], ["Senegal", "SEN", 59.2], ["Sao Tome and Principe", "STP", 58.7], ["South Asia", "SAS", 58.3], ["South Asia (IDA & IBRD)", "TSA", 58.3], ["Honduras", "HND", 58.1], ["Guatemala", "GTM", 56.7], ["Middle East, North Africa, Afghanistan & Pakistan (excluding high income)", "MNA", 55.9], ["Middle East, North Africa, Afghanistan & Pakistan (IDA & IBRD)", "TMN", 55.7], ["Lower middle income", "", 55.4], ["Tajikistan", "TJK", 54.4], ["Sri Lanka", "LKA", 51.2], ["Lesotho", "LSO", 49.0], ["Gambia, The", "GMB", 48.7], ["Haiti", "HTI", 48.0], ["Nepal", "NPL", 45.8], ["Mauritania", "MRT", 45.0], ["Bangladesh", "BGD", 44.5], ["Congo, Rep.", "COG", 43.2], ["Cameroon", "CMR", 42.2], ["Cote d'Ivoire", "CIV", 40.7], ["Nigeria", "NGA", 40.1], ["Micronesia, Fed. Sts.", "FSM", 39.4], ["Zimbabwe", "ZWE", 38.7], ["Africa Western and Central", "AFW", 38.5], ["IDA blend", "IDB", 38.3], ["Angola", "AGO", 37.9], ["Togo", "TGO", 37.6], ["Mali", "MLI", 36.0], ["IDA total", "IDA", 34.5], ["Sub-Saharan Africa (excluding high income)", "SSA", 33.5], ["IDA only", "IDX", 32.5], ["Benin", "BEN", 32.4], ["Guinea", "GIN", 32.3], ["Sub-Saharan Africa", "SSF", 32.3], ["Sub-Saharan Africa (IDA & IBRD countries)", "TSS", 32.1], ["Kenya", "KEN", 32.1], ["Comoros", "COM", 31.9], ["Liberia", "LBR", 31.2], ["Least developed countries: UN classification", "LDC", 29.9], ["Rwanda", "RWA", 28.8], ["Guinea-Bissau", "GNB", 28.7], ["Solomon Islands", "SLB", 28.7], ["Tanzania", "TZA", 28.4], ["Africa Eastern and Southern", "AFE", 27.8], ["Somalia, Fed. Rep.", "SOM", 26.1], ["Burkina Faso", "BFA", 25.4], ["Sierra Leone", "SLE", 23.7], ["Low income", "", 22], ["Ethiopia", "ETH", 20.3], ["Mozambique", "MOZ", 19.9], ["Congo, Dem. Rep.", "COD", 19.0], ["Papua New Guinea", "PNG", 18.6], ["Madagascar", "MDG", 18.2], ["Malawi", "MWI", 18.0], ["Zambia", "ZMB", 16.5], ["Afghanistan", "AFG", 15.9], ["Central African Republic", "CAF", 13.8], ["Niger", "NER", 13.0], ["Chad", "TCD", 12.0], ["Uganda", "UGA", 9.3], ["Burundi", "BDI", 7.2]];
-var WB_TREND={"HKG": {"2023": 96.0, "2022": 95.6, "2021": 93.1, "2020": 92.4, "2019": 91.7, "2018": 90.5, "2017": 89.4, "2016": 87.5, "2015": 84.9, "2014": 79.9}, "CHN": {"2023": 90.6, "2022": 75.6, "2021": 73.1, "2020": 70.1, "2019": 64.1, "2018": 65.4, "2017": 54.3, "2016": 53.2, "2015": 50.3, "2014": 47.9}, "WLD": {"2023": 69.2, "2022": 67, "2021": 63.8, "2020": 60.1, "2019": 53.9, "2018": 49.4, "2017": 46.3, "2016": 43.6, "2015": 39.9, "2014": 37.4}, "USA": {"2023": 93.5, "2022": 92.7, "2021": 91.3, "2020": 90.3, "2019": 89.4, "2018": 88.5, "2017": 87.3, "2016": 85.5, "2015": 74.6, "2014": 73}, "GBR": {"2023": 95.4, "2022": 95.5, "2021": 96.2, "2020": 94.8, "2019": 92.5, "2018": 90.7, "2017": 90.4, "2016": 94.8, "2015": 92.0, "2014": 91.6}, "JPN": {"2023": 85.0, "2022": 84.9, "2021": 82.9, "2020": 90.2, "2019": 92.7, "2018": 88.7, "2017": 91.7, "2016": 93.2, "2015": 91.1, "2014": 89.1}, "KOR": {"2023": 97.4, "2022": 97.2, "2021": 97.6, "2020": 96.5, "2019": 96.2, "2018": 96.0, "2017": 95.1, "2016": 92.8, "2015": 89.9, "2014": 87.6}, "SGP": {"2023": 94.3, "2022": 96.0, "2021": 96.9, "2020": 92.0, "2019": 88.9, "2018": 88.2, "2017": 84.5, "2016": 84.5, "2015": 79.0, "2014": 79.0}, "BHR": {"2023": 100, "2022": 100, "2021": 100, "2020": 99.7, "2019": 99.7, "2018": 98.6, "2017": 95.9, "2016": 98.0, "2015": 93.5, "2014": 90.5}, "SAU": {"2023": 100, "2022": 100, "2021": 100, "2020": 97.9, "2019": 95.7, "2018": 93.3, "2017": 94.2, "2016": 74.9, "2015": 69.6, "2014": 64.7}, "ARE": {"2023": 100, "2022": 100, "2021": 100, "2020": 100, "2019": 99.1, "2018": 98.5, "2017": 94.8, "2016": 90.6, "2015": 90.5, "2014": 90.4}, "NOR": {"2023": 99.0, "2022": 99.0, "2021": 99.0, "2020": 94.6, "2019": 98.0, "2018": 96.5, "2017": 96.4, "2016": 97.3, "2015": 96.8, "2014": 96.3}, "DNK": {"2023": 98.8, "2022": 97.9, "2021": 98.9, "2020": 96.5, "2019": 98.0, "2018": 97.3, "2017": 97.1, "2016": 97.0, "2015": 96.3, "2014": 96.0}, "CHE": {"2023": 97.3, "2022": 96.5, "2021": 95.6, "2020": 94.3, "2019": 93.1, "2018": 91.8, "2017": 89.7, "2016": 89.1, "2015": 87.5, "2014": 83.6}, "IND": {"2023": 60.3, "2022": 55.9, "2021": 49.3, "2020": 43.4, "2019": 29.5, "2018": 20.1, "2017": 18.2, "2016": 16.5, "2015": 14.9, "2014": 13.5}, "IDN": {"2023": 69.2, "2022": 66.5, "2021": 62.1, "2020": 53.7, "2019": 47.7, "2018": 39.9, "2017": 32.3, "2016": 25.4, "2015": 22.1, "2014": 17.1}, "VNM": {"2023": 78.1, "2022": 78.6, "2021": 74.2, "2020": 70.3, "2019": 68.7, "2018": 69.8, "2017": 58.1, "2016": 53, "2015": 45, "2014": 41}, "BRA": {"2023": 84.2, "2022": 80.5, "2021": 80.7, "2020": 81.3, "2019": 73.9, "2018": 70.4, "2017": 67.5, "2016": 60.9, "2015": 58.3, "2014": 54.6}, "ZAF": {"2023": 78.3, "2022": 78.3, "2021": 75.0, "2020": 72.1, "2019": 69.7, "2018": 62.4, "2017": 56.2, "2016": 54, "2015": 51.9, "2014": 49}, "NGA": {"2023": 40.1, "2022": 39.1, "2021": 35.5, "2020": 31.9, "2019": 29.7, "2018": 27.7, "2017": 25.9, "2016": 24.1, "2015": 22.5, "2014": 21}, "BDI": {"2023": 7.2, "2022": 7.1, "2021": 6.8, "2020": 6.4, "2019": 6.1, "2018": 4.0, "2017": 2.7, "2016": 2.2, "2015": 2, "2014": 1.0}};
-var ZH={"BHR":"巴林","SAU":"沙特阿拉伯","ARE":"阿聯酋","KWT":"科威特","LUX":"盧森堡","NOR":"挪威","BRN":"汶萊","MCO":"摩納哥","DNK":"丹麥","QAT":"卡塔爾","LIE":"列支敦士登","ISL":"冰島","MYS":"馬來西亞","KOR":"韓國","CHE":"瑞士","HKG":"香港","CHN":"中國","WLD":"世界平均","USA":"美國","GBR":"英國","JPN":"日本","SGP":"新加坡","DEU":"德國","FRA":"法國","AUS":"澳洲","IND":"印度","IDN":"印尼","VNM":"越南","THA":"泰國","BRA":"巴西","ZAF":"南非","NGA":"尼日利亞","BDI":"布隆迪","NLD":"荷蘭","SWE":"瑞典","FIN":"芬蘭","IRL":"愛爾蘭","CAN":"加拿大","NZL":"新西蘭","AUT":"奧地利","BEL":"比利時","ESP":"西班牙","ITA":"意大利","PRT":"葡萄牙","GRC":"希臘","POL":"波蘭","TUR":"土耳其","RUS":"俄羅斯","UKR":"烏克蘭","EGY":"埃及","ISR":"以色列","PHL":"菲律賓","PAK":"巴基斯坦","BGD":"孟加拉","LKA":"斯里蘭卡","MMR":"緬甸","KHM":"柬埔寨","LAO":"老撾","MNG":"蒙古","KAZ":"哈薩克","UZB":"烏茲別克","KEN":"肯雅","ETH":"埃塞俄比亞","GHA":"加納","AGO":"安哥拉","MOZ":"莫桑比克","ZMB":"贊比亞","ZWE":"津巴布韋","COD":"剛果（金）","SDN":"蘇丹","TZA":"坦桑尼亞","UGA":"烏干達","MDG":"馬達加斯加","MWI":"馬拉維","NER":"尼日爾","TCD":"乍得","CAF":"中非共和國","AFG":"阿富汗","PNG":"巴布亞新幾內亞"};
-var TREND_LABEL={"HKG":"香港","CHN":"中國","WLD":"世界平均","USA":"美國","GBR":"英國","JPN":"日本","KOR":"韓國","SGP":"新加坡","BHR":"巴林","SAU":"沙特阿拉伯","ARE":"阿聯酋","NOR":"挪威","DNK":"丹麥","CHE":"瑞士","IND":"印度","IDN":"印尼","VNM":"越南","BRA":"巴西","ZAF":"南非","NGA":"尼日利亞","BDI":"布隆迪"};
-var COLORS=["#2563eb","#dc2626","#059669","#d97706","#7c3aed","#db2777","#0891b2","#65a30d","#ea580c","#4f46e5","#be185d","#0d9488","#b45309","#9333ea","#16a34a","#ca8a04","#0369a1","#b91c1c","#15803d","#a16207","#6d28d9"];
-var rows=[], live=false;
-function nameOf(r){return (ZH[r[1]]?ZH[r[1]]+" · ":"")+r[0];}
+var SNAP=[["2026-11-16","(2005 WD)",109.3,244.4,65429,19492290,50.7,"14:20",1],["2026-11-16","(2019 HK4)",146.1,326.6,79447,21212582,55.2,"01:48",0],["2026-11-17","322756 (2001 CK32)",378.9,847.3,43177,66518862,173.0,"04:27",0],["2026-11-17","(2005 GR33)",99.2,221.8,83399,71243086,185.3,"10:42",0],["2026-11-17","(2010 VX139)",211.1,472.1,73078,67478263,175.5,"19:48",0],["2026-11-17","(2013 JL14)",33.5,74.8,60268,59511095,154.7,"10:31",0],["2026-11-17","(2016 WL48)",27.8,62.2,61254,64270993,167.1,"11:03",0],["2026-11-17","(2018 WH1)",5.1,11.3,32685,25835106,67.2,"02:52",0],["2026-11-17","(2019 XL)",12.7,28.4,37367,15309843,39.8,"19:30",0],["2026-11-17","(2020 DR2)",461.9,1032.9,59645,57802791,150.3,"18:53",1],["2026-11-18","(2008 WB)",150.9,337.3,82779,71959155,187.1,"04:34",0],["2026-11-18","(2009 WR25)",128.4,287.1,61842,33661031,87.5,"12:19",0],["2026-11-18","(2009 WD54)",5.3,11.9,33744,9415085,24.5,"12:16",0],["2026-11-18","(2016 TS55)",64.4,143.9,64767,71703516,186.5,"04:58",0],["2026-11-18","(2019 NX5)",4.0,9.0,12726,21996732,57.2,"12:19",0],["2026-11-18","(2019 UN14)",183.9,411.2,59761,50172005,130.5,"02:47",0],["2026-11-18","(2019 WT1)",11.6,25.9,35086,7541684,19.6,"22:02",0],["2026-11-19","(2004 XK14)",86.4,193.2,31401,13132347,34.1,"03:49",0],["2026-11-19","(2014 UO33)",97.0,216.8,46744,67011351,174.2,"20:02",0],["2026-11-19","(2015 YQ1)",6.7,14.9,33450,49038139,127.5,"21:27",0],["2026-11-19","(2018 NE1)",55.5,124.2,47824,6385660,16.6,"02:16",0],["2026-11-19","(2018 VS4)",16.5,36.8,38583,19716350,51.3,"14:21",0],["2026-11-19","(2019 WL3)",22.1,49.4,52750,42353916,110.1,"22:31",0],["2026-11-19","(2019 XS)",45.3,101.4,66220,38443082,100.0,"02:14",0],["2026-11-20","(2013 AZ52)",279.6,625.2,56343,62720241,163.1,"16:26",0],["2026-11-20","(2016 JC6)",141.4,316.3,53296,61175992,159.1,"03:39",1],["2026-11-20","(2019 VF1)",66.8,149.3,71400,8981854,23.4,"00:03",0],["2026-11-20","(2019 WG)",38.4,85.9,54913,21806106,56.7,"22:59",0],["2026-11-21","(2009 DC1)",42.1,94.2,31019,48533918,126.2,"09:22",0],["2026-11-21","(2017 WR28)",92.2,206.1,82878,20892346,54.3,"15:43",0],["2026-11-21","(2018 VZ5)",29.1,65.2,43616,32221107,83.8,"03:09",0],["2026-11-22","(2008 GS3)",93.4,208.9,82676,73976805,192.4,"06:57",0],["2026-11-22","(2010 HG20)",139.5,311.9,37711,16326166,42.5,"03:45",0]];
+var DAYS=[["2026-11-16","11-16","一"],["2026-11-17","11-17","二"],["2026-11-18","11-18","三"],["2026-11-19","11-19","四"],["2026-11-20","11-20","五"],["2026-11-21","11-21","六"],["2026-11-22","11-22","日"]];
+function fmt(n){return n.toLocaleString("en-US");}
+function rowsFromSnap(){return SNAP.map(function(r){return {date:r[0],name:r[1],dmin:r[2],dmax:r[3],vel:r[4],miss:r[5],ld:r[6],time:r[7],haz:r[8]===1};});}
+var rows=rowsFromSnap();
+function drawBars(){
+  var counts={}; rows.forEach(function(r){counts[r.date]=(counts[r.date]||0)+1;});
+  var max=0; DAYS.forEach(function(d){max=Math.max(max,counts[d[0]]||0);});
+  var html="";
+  DAYS.forEach(function(d){
+    var c=counts[d[0]]||0, h=max?Math.round(c/max*130):0;
+    html+='<div class="daybar'+(d[0]==="2026-11-20"?" today":"")+'"><b>'+c+' 粒</b><div class="col" style="height:'+h+'px"></div><span>'+d[1]+'（'+d[2]+'）</span></div>';
+  });
+  document.getElementById("daybars").innerHTML=html;
+}
 function render(){
   var q=(document.getElementById("q").value||"").trim().toLowerCase();
   var f=document.querySelector(".controls button.on").dataset.f;
+  var day=document.getElementById("day").value;
   var s=document.getElementById("sort").value;
   var list=rows.filter(function(r){
-    if(f==="high"&&r[2]<90)return false;
-    if(f==="mid"&&(r[2]<50||r[2]>=90))return false;
-    if(f==="low"&&r[2]>=50)return false;
-    if(q&&nameOf(r).toLowerCase().indexOf(q)<0&&r[0].toLowerCase().indexOf(q)<0)return false;
+    if(f==="haz"&&!r.haz)return false;
+    if(f==="today"&&r.date!=="2026-11-20")return false;
+    if(day!=="all"&&r.date!==day)return false;
+    if(q&&r.name.toLowerCase().indexOf(q)<0)return false;
     return true;
   });
-  if(s==="asc")list.sort(function(a,b){return a[2]-b[2]});
-  else if(s==="name")list.sort(function(a,b){return a[0].localeCompare(b[0])});
-  else list.sort(function(a,b){return b[2]-a[2]});
-  document.getElementById("count").textContent="顯示 "+list.length+" 個國家／地區（共 "+rows.length+" 個有 2023 年數據）";
+  if(s==="close")list.sort(function(a,b){return a.miss-b.miss;});
+  else if(s==="fast")list.sort(function(a,b){return b.vel-a.vel;});
+  else if(s==="big")list.sort(function(a,b){return b.dmax-a.dmax;});
+  else list.sort(function(a,b){return a.date.localeCompare(b.date)||a.time.localeCompare(b.time);});
+  document.getElementById("count").textContent="顯示 "+list.length+" 粒（今個星期共 "+rows.length+" 粒）";
   var html="";
   list.forEach(function(r,i){
-    var medal=i<3&&s==="desc"?["🥇","🥈","🥉"][i]:"";
-    html+="<tr><td class='rank'>"+medal+(i+1)+"</td><td>"+nameOf(r)+"</td><td class='pct'>"+r[2].toFixed(1)+"%</td><td><div class='barwrap'><div class='bar' style='width:"+r[2]+"%'></div></div></td></tr>";
+    html+="<tr><td class='num'>"+r.date.slice(5)+" "+r.time+"</td><td>"+(r.haz?"⚠️ ":"")+r.name+"</td><td class='num'>"+fmt(Math.round(r.dmin))+"–"+fmt(Math.round(r.dmax))+"</td><td class='num'>"+fmt(r.vel)+" km/h</td><td class='num'>"+fmt(r.miss)+" km</td><td class='num'>"+r.ld.toFixed(1)+" LD</td></tr>";
   });
-  document.getElementById("tbody").innerHTML=html||"<tr><td colspan='4'>搵唔到符合條件嘅國家，試下改吓關鍵字。</td></tr>";
+  document.getElementById("tbody").innerHTML=html||"<tr><td colspan='6'>搵唔到符合條件嘅小行星，試下改吓關鍵字。</td></tr>";
 }
 function useSnapshot(){
-  rows=WB_SNAPSHOT_2023.slice();
-  document.getElementById("status").textContent="⚠️ 即時 API 讀唔到，而家顯示 2026-11-19 07:00 HKT 核實嘅快照（2023 年數據）。";
-  render();
+  rows=rowsFromSnap();
+  document.getElementById("status").textContent="⚠️ 即時 API 讀唔到，而家顯示 2026-11-20 07:00 HKT 核實嘅快照（2026-11-16 至 2026-11-22，33 粒）。";
+  drawBars(); render();
 }
-fetch("https://api.worldbank.org/v2/country/all/indicator/IT.NET.USER.ZS?format=json&date=2023&per_page=400")
+fetch("https://api.nasa.gov/neo/rest/v1/feed?start_date=2026-11-16&end_date=2026-11-22&api_key=DEMO_KEY")
   .then(function(r){if(!r.ok)throw new Error("http "+r.status);return r.json();})
   .then(function(d){
-    var rs=(d[1]||[]).filter(function(x){return x.value!=null;}).map(function(x){return [x.country.value,x.countryiso3code,Math.round(x.value*10)/10];});
+    var rs=[];
+    Object.keys(d.near_earth_objects||{}).sort().forEach(function(dt){
+      d.near_earth_objects[dt].forEach(function(o){
+        var ca=o.close_approach_data[0];
+        rs.push({date:dt,name:o.name,dmin:Math.round(o.estimated_diameter.meters.estimated_diameter_min*10)/10,dmax:Math.round(o.estimated_diameter.meters.estimated_diameter_max*10)/10,vel:Math.round(parseFloat(ca.relative_velocity.kilometers_per_hour)),miss:Math.round(parseFloat(ca.miss_distance.kilometers)),ld:Math.round(parseFloat(ca.miss_distance.lunar)*10)/10,time:(ca.close_approach_date_full||"").split(" ")[1]||"",haz:!!o.is_potentially_hazardous_asteroid});
+      });
+    });
     if(!rs.length)throw new Error("empty");
-    rs.sort(function(a,b){return b[2]-a[2];});
-    rows=rs; live=true;
-    document.getElementById("status").textContent="✅ 即時讀取 World Bank API 成功 — "+rows.length+" 個國家／地區 2023 年數據（最新完整年份）。";
-    render();
+    rows=rs;
+    document.getElementById("status").textContent="✅ 即時讀取 NASA NeoWs API 成功 — "+rows.length+" 粒小行星（2026-11-16 至 2026-11-22）。";
+    drawBars(); render();
   }).catch(function(){useSnapshot();});
 document.getElementById("q").addEventListener("input",render);
+document.getElementById("day").addEventListener("change",render);
 document.getElementById("sort").addEventListener("change",render);
 document.querySelectorAll(".controls button").forEach(function(b){
   b.addEventListener("click",function(){
@@ -190,61 +230,19 @@ document.querySelectorAll(".controls button").forEach(function(b){
     b.classList.add("on"); render();
   });
 });
-/* trend chart */
-var YEARS=[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023];
-var picksEl=document.getElementById("picks");
-var DEF=["HKG","CHN","WLD","IND"];
-Object.keys(TREND_LABEL).forEach(function(code){
-  var lab=document.createElement("label");
-  var cb=document.createElement("input");
-  cb.type="checkbox"; cb.value=code; cb.checked=DEF.indexOf(code)>=0;
-  cb.addEventListener("change",drawChart);
-  lab.appendChild(cb); lab.appendChild(document.createTextNode(" "+TREND_LABEL[code]));
-  picksEl.appendChild(lab);
-});
-function drawChart(){
-  var sel=Array.prototype.slice.call(picksEl.querySelectorAll("input:checked")).map(function(c){return c.value;});
-  var wrap=document.getElementById("chartwrap"), leg=document.getElementById("chartlegend");
-  if(!sel.length){wrap.innerHTML="<p>請至少剔一個國家。</p>";leg.innerHTML="";return;}
-  var W=860,H=340,PL=44,PR=12,PT=14,PB=30;
-  var x=function(i){return PL+i*(W-PL-PR)/(YEARS.length-1);};
-  var y=function(v){return PT+(100-v)*(H-PT-PB)/100;};
-  var s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="2014 至 2023 年互聯網使用率走勢圖">';
-  [0,25,50,75,100].forEach(function(v){
-    s+='<line x1="'+PL+'" y1="'+y(v)+'" x2="'+(W-PR)+'" y2="'+y(v)+'" stroke="#d7e3f0"/>';
-    s+='<text x="'+(PL-6)+'" y="'+(y(v)+4)+'" font-size="11" fill="#5b6b7c" text-anchor="end">'+v+'%</text>';
-  });
-  YEARS.forEach(function(yr,i){
-    s+='<text x="'+x(i)+'" y="'+(H-8)+'" font-size="11" fill="#5b6b7c" text-anchor="middle">'+yr+'</text>';
-  });
-  sel.forEach(function(code,i){
-    var d=WB_TREND[code]; if(!d)return;
-    var col=COLORS[i%COLORS.length];
-    var pts=YEARS.filter(function(yr){return d[yr]!=null;}).map(function(yr){return x(YEARS.indexOf(yr))+","+y(d[yr]);}).join(" ");
-    s+='<polyline points="'+pts+'" fill="none" stroke="'+col+'" stroke-width="2.5" stroke-linejoin="round"/>';
-    YEARS.forEach(function(yr){
-      if(d[yr]==null)return;
-      s+='<circle cx="'+x(YEARS.indexOf(yr))+'" cy="'+y(d[yr])+'" r="3.5" fill="'+col+'"><title>'+TREND_LABEL[code]+' '+yr+': '+d[yr]+'%</title></circle>';
-    });
-  });
-  s+='</svg>';
-  wrap.innerHTML=s;
-  leg.innerHTML=sel.map(function(code,i){return '<span><i style="background:'+COLORS[i%COLORS.length]+'"></i>'+TREND_LABEL[code]+'（2023：'+(WB_TREND[code][2023]!=null?WB_TREND[code][2023].toFixed(1)+"%":"—")+'）</span>';}).join("");
-}
-drawChart();
-/* quiz */
+drawBars(); render();
 document.querySelectorAll(".quiz button[data-a]").forEach(function(b){
   b.addEventListener("click",function(){
     var ok=b.dataset.a==="1";
     b.classList.add(ok?"right":"wrong");
-    document.getElementById("quiz1").textContent=ok?"🎉 啱！2023 年世界平均係 69.2%，差唔多每 10 個人就有 7 個上網。":"❌ 唔係呢個。答案係約 69%（2023 年世界平均 69.2%）。";
+    document.getElementById("quiz1").textContent=ok?"🎉 啱！11 月 17 日（星期二）最多，有 8 粒小行星飛過。":"❌ 唔係呢日。答案係 11 月 17 日（星期二），有 8 粒。";
   });
 });
 document.querySelectorAll(".quiz button[data-a2]").forEach(function(b){
   b.addEventListener("click",function(){
     var ok=b.dataset.a2==="1";
     b.classList.add(ok?"right":"wrong");
-    document.getElementById("quiz2").textContent=ok?"🎉 啱！布隆迪 2023 年得 7.2%，係全球最低。":"❌ 唔係呢個。答案係布隆迪，得 7.2%。";
+    document.getElementById("quiz2").textContent=ok?"🎉 啱！(2018 NE1) 最近，距離 6,385,660 公里，即係 16.6 個月球距離。":"❌ 唔係呢個。答案係 16.6 個月球距離（6,385,660 公里）。";
   });
 });
 </script>
