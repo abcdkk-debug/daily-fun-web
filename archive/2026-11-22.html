@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 009 期｜歐洲邊度最易搵工？— Eurostat 失業率</title>
+<style>
+  :root{--ink:#12303e;--muted:#4a6b7a;--bg:#eef3f6;--card:#ffffff;--accent:#0b5fa5;--teal:#009688;--sand:#ffc93c;--line:#c8d8de}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  header{background:linear-gradient(135deg,#0b3d91,#0b5fa5 55%,#009688);color:#fff;padding:34px 20px 28px;text-align:center}
+  header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.9}
+  header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
+  header p{margin:.2em auto;max-width:680px;opacity:.95}
+  main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(11,61,145,.10)}
+  .card h2{margin-top:0}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .stat{background:#0b5fa5;color:#fff;border:1px solid #0b5fa5;border-radius:12px;padding:16px;text-align:center}
+  .stat b{display:block;font-size:1.9em;line-height:1.15;color:#fff}
+  .stat span{font-size:.85em;opacity:.95}
+  .stat.green{background:#1b8a4b;border-color:#1b8a4b}
+  .stat.amber{background:#b8860b;border-color:#b8860b}
+  .stat.red{background:#c62828;border-color:#c62828}
+  .stat.teal{background:#00796b;border-color:#00796b}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .controls button{border:1.5px solid var(--accent);background:#fff;color:var(--accent);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em;font-weight:700}
+  .controls button.on{background:var(--accent);color:#fff}
+  .controls input,.controls select{border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.95em;background:#fff;color:var(--ink)}
+  .controls input{flex:1;min-width:180px}
+  table{width:100%;border-collapse:collapse;font-size:.95em}
+  th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+  th{cursor:pointer;white-space:nowrap;color:var(--accent)}
+  th:hover{color:#0b3d91}
+  .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .barwrap{background:#eef3f6;border-radius:999px;height:12px;overflow:hidden;min-width:90px}
+  .bar{height:12px;border-radius:999px;background:linear-gradient(90deg,#0b5fa5,#009688);min-width:2px}
+  .up{color:#c62828;font-weight:700}
+  .down{color:#1b8a4b;font-weight:700}
+  .flat{color:var(--muted)}
+  #status{font-size:.9em;color:var(--muted)}
+  .facts li{margin:8px 0}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1.5px solid var(--line);background:#f4fafb;color:var(--ink);border-radius:10px;cursor:pointer;font-size:1em}
+  .quiz button:hover{border-color:var(--accent)}
+  .quiz .right{background:#d9f2e3;border-color:#1b8a4b}
+  .quiz .wrong{background:#ffd2d2;border-color:#c62828}
+  .note{background:#fff8e1;border:1px dashed #b8860b;border-radius:10px;padding:12px 14px;font-size:.92em}
+  footer{font-size:.85em;color:var(--muted);text-align:center;padding:0 16px 30px}
+  footer a{color:var(--accent)}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">📚 想睇返之前發佈過嘅嘢？ <a href="index.html" style="color:#ffc93c;font-weight:700">去「過往期數」總覽 →</a></div>
+<header>
+  <div class="kicker">第 009 期 · 2026-11-22 · EUROSTAT 失業率 · DATA.EUROPA.EU</div>
+  <h1>🇪🇺 歐洲邊度最易搵工？</h1>
+  <p>歐盟最新失業率出爐（2026 年 9 月）：歐盟整體 6.2%，歐元區 6.5%。但國家之間差天共地 — 捷克得 2.8%，芬蘭高達 11.0%，差成 8.2 個百分點。去邊度搵工最易？一睇呢個表就知。</p>
+</header>
+<main>
+  <div class="stats">
+    <div class="stat"><b>6.2%</b><span>🇪🇺 歐盟 27 國失業率<br>2026 年 9 月（一年前 6.0%）</span></div>
+    <div class="stat teal"><b>6.5%</b><span>💶 歐元區 21 國失業率<br>2026 年 9 月（一年前 6.3%）</span></div>
+    <div class="stat green"><b>2.8%</b><span>🥇 最易搵工：捷克<br>青年失業率都係最低之一 8.9%</span></div>
+    <div class="stat red"><b>11.0%</b><span>🥵 最難搵工：芬蘭<br>青年失業率 25.2%，即每 4 個年輕人有 1 個冇工做</span></div>
+    <div class="stat amber"><b>15.5%</b><span>🧑‍🎓 歐盟青年（25 歲以下）失業率<br>係整體失業率嘅 2.5 倍</span></div>
+  </div>
+
+  <div class="card">
+    <h2>📈 歐盟失業率走勢：2024 年 1 月 → 2026 年 9 月</h2>
+    <p>過去接近三年，歐盟失業率一直喺 5.8% 至 6.2% 之間窄幅上落，2026 年 6 月起企穩 6.2%，係呢段時間嘅高位；歐元區同期就由 6.3% 升到 6.5%。</p>
+    <svg viewBox="0 0 860 240" style="width:100%;height:auto" role="img" aria-label="歐盟失業率走勢圖">
+<line x1="34" y1="176.7" x2="846" y2="176.7" stroke="#dfe7ea" stroke-width="1"/><text x="28" y="180.7" font-size="11" fill="#7a8a94" text-anchor="end">5.8%</text><line x1="34" y1="141.5" x2="846" y2="141.5" stroke="#dfe7ea" stroke-width="1"/><text x="28" y="145.5" font-size="11" fill="#7a8a94" text-anchor="end">6.0%</text><line x1="34" y1="106.2" x2="846" y2="106.2" stroke="#dfe7ea" stroke-width="1"/><text x="28" y="110.2" font-size="11" fill="#7a8a94" text-anchor="end">6.2%</text><line x1="34" y1="70.9" x2="846" y2="70.9" stroke="#dfe7ea" stroke-width="1"/><text x="28" y="74.9" font-size="11" fill="#7a8a94" text-anchor="end">6.4%</text><line x1="34" y1="35.6" x2="846" y2="35.6" stroke="#dfe7ea" stroke-width="1"/><text x="28" y="39.6" font-size="11" fill="#7a8a94" text-anchor="end">6.6%</text>
+<polyline points="34.0,123.8 59.4,123.8 84.8,141.5 110.1,141.5 135.5,141.5 160.9,141.5 186.2,141.5 211.6,159.1 237.0,159.1 262.4,176.7 287.8,159.1 313.1,159.1 338.5,141.5 363.9,141.5 389.2,141.5 414.6,141.5 440.0,141.5 465.4,141.5 490.8,141.5 516.1,141.5 541.5,141.5 566.9,141.5 592.2,141.5 617.6,141.5 643.0,141.5 668.4,123.8 693.8,123.8 719.1,123.8 744.5,123.8 769.9,106.2 795.2,106.2 820.6,106.2 846.0,106.2" fill="none" stroke="#0b5fa5" stroke-width="2.5"/>
+<polyline points="643.0,88.5 668.4,70.9 693.8,70.9 719.1,70.9 744.5,70.9 769.9,70.9 795.2,53.3 820.6,53.3 846.0,53.3" fill="none" stroke="#e07b00" stroke-width="2.5" stroke-dasharray="6 4"/>
+<circle cx="846.0" cy="106.2" r="4.5" fill="#0b5fa5"/><text x="838.0" y="96.2" font-size="12" font-weight="800" fill="#0b5fa5" text-anchor="end">歐盟 6.2%</text>
+<circle cx="846.0" cy="53.3" r="4.5" fill="#e07b00"/><text x="838.0" y="43.3" font-size="12" font-weight="800" fill="#e07b00" text-anchor="end">歐元區 6.5%</text>
+<text x="34.0" y="232" font-size="11" fill="#7a8a94" text-anchor="middle">2024-01</text><text x="237.0" y="232" font-size="11" fill="#7a8a94" text-anchor="middle">2024-09</text><text x="440.0" y="232" font-size="11" fill="#7a8a94" text-anchor="middle">2025-05</text><text x="643.0" y="232" font-size="11" fill="#7a8a94" text-anchor="middle">2026-01</text><text x="846.0" y="232" font-size="11" fill="#7a8a94" text-anchor="middle">2026-09</text></svg>
+<div style="font-size:.9em;color:#4a6b7a;margin-top:6px"><span style="color:#0b5fa5">━━</span> 歐盟 27 國　<span style="color:#e07b00">┅┅</span> 歐元區 21 國（2026 年起計）</div>
+    <p id="status">📡 開頁時會即時去 Eurostat 攞最新數字；如果攞唔到，就顯示下面呢個已核實快照（快照時間：2026-11-22 07:00 HKT，Eurostat 資料集最後更新 2026-11-20）。</p>
+  </div>
+
+  <div class="card">
+    <h2>🗂️ 各國失業率排行榜（2026 年 9 月，季節調整）</h2>
+    <div class="controls">
+      <input id="q" type="search" placeholder="🔍 搜尋國家名，例如：法國、西班牙…" oninput="render()">
+      <button data-f="all" class="on" onclick="setFilter('all',this)">全部 33 個</button>
+      <button data-f="eu" onclick="setFilter('eu',this)">歐盟 27 國</button>
+      <button data-f="ea" onclick="setFilter('ea',this)">歐元區 21 國</button>
+      <button data-f="other" onclick="setFilter('other',this)">其他比較國家</button>
+      <select id="sort" onchange="render()">
+        <option value="rate-asc">失業率：低 → 高（最易搵工先）</option>
+        <option value="rate-desc">失業率：高 → 低</option>
+        <option value="youth-desc">青年失業率：高 → 低</option>
+        <option value="yoy-desc">按年升幅：大 → 細</option>
+        <option value="name">國家名 A → Z</option>
+      </select>
+    </div>
+    <table>
+      <thead><tr><th onclick="setSort('name')">國家 ↕</th><th onclick="setSort('rate-asc')">失業率 ↕</th><th></th><th onclick="setSort('youth-desc')">青年失業率（&lt;25 歲）↕</th><th onclick="setSort('yoy-desc')">比一年前 ↕</th></tr></thead>
+      <tbody id="tbody">
+<tr data-grp="eu" data-ea="ea" data-name="芬蘭" data-rate="11.0" data-youth="25.2" data-yoy="1.3"><td><b>芬蘭</b> <span style="color:#7a8a94;font-size:.85em">FI</span></td><td class="num"><b>11.0%</b></td><td><div class="barwrap"><div class="bar" style="width:100%"></div></div></td><td class="num">25.2%</td><td class="num up">▲ +1.3 個百分點</td></tr>
+<tr data-grp="other" data-ea="" data-name="北馬其頓" data-rate="10.7" data-youth="29.2" data-yoy="-1.1"><td><b>北馬其頓</b> <span style="color:#7a8a94;font-size:.85em">MK</span></td><td class="num"><b>10.7%</b></td><td><div class="barwrap"><div class="bar" style="width:97%"></div></div></td><td class="num">29.2%</td><td class="num down">▼ 1.1 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="西班牙" data-rate="10.3" data-youth="22.8" data-yoy="-0.1"><td><b>西班牙</b> <span style="color:#7a8a94;font-size:.85em">ES</span></td><td class="num"><b>10.3%</b></td><td><div class="barwrap"><div class="bar" style="width:94%"></div></div></td><td class="num">22.8%</td><td class="num down">▼ 0.1 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="法國" data-rate="8.5" data-youth="21.9" data-yoy="0.6"><td><b>法國</b> <span style="color:#7a8a94;font-size:.85em">FR</span></td><td class="num"><b>8.5%</b></td><td><div class="barwrap"><div class="bar" style="width:77%"></div></div></td><td class="num">21.9%</td><td class="num up">▲ +0.6 個百分點</td></tr>
+<tr data-grp="eu" data-ea="" data-name="瑞典" data-rate="8.5" data-youth="21.7" data-yoy="-0.3"><td><b>瑞典</b> <span style="color:#7a8a94;font-size:.85em">SE</span></td><td class="num"><b>8.5%</b></td><td><div class="barwrap"><div class="bar" style="width:77%"></div></div></td><td class="num">21.7%</td><td class="num down">▼ 0.3 個百分點</td></tr>
+<tr data-grp="other" data-ea="" data-name="土耳其" data-rate="8.4" data-youth="14.8" data-yoy="-0.1"><td><b>土耳其</b> <span style="color:#7a8a94;font-size:.85em">TR</span></td><td class="num"><b>8.4%</b></td><td><div class="barwrap"><div class="bar" style="width:76%"></div></div></td><td class="num">14.8%</td><td class="num down">▼ 0.1 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="愛沙尼亞" data-rate="8.0" data-youth="23.9" data-yoy="0.9"><td><b>愛沙尼亞</b> <span style="color:#7a8a94;font-size:.85em">EE</span></td><td class="num"><b>8.0%</b></td><td><div class="barwrap"><div class="bar" style="width:73%"></div></div></td><td class="num">23.9%</td><td class="num up">▲ +0.9 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="希臘" data-rate="7.6" data-youth="17.3" data-yoy="-1.2"><td><b>希臘</b> <span style="color:#7a8a94;font-size:.85em">EL</span></td><td class="num"><b>7.6%</b></td><td><div class="barwrap"><div class="bar" style="width:69%"></div></div></td><td class="num">17.3%</td><td class="num down">▼ 1.2 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="拉脫維亞" data-rate="7.3" data-youth="16.5" data-yoy="0.3"><td><b>拉脫維亞</b> <span style="color:#7a8a94;font-size:.85em">LV</span></td><td class="num"><b>7.3%</b></td><td><div class="barwrap"><div class="bar" style="width:66%"></div></div></td><td class="num">16.5%</td><td class="num up">▲ +0.3 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="盧森堡" data-rate="7.3" data-youth="22.0" data-yoy="0.6"><td><b>盧森堡</b> <span style="color:#7a8a94;font-size:.85em">LU</span></td><td class="num"><b>7.3%</b></td><td><div class="barwrap"><div class="bar" style="width:66%"></div></div></td><td class="num">22.0%</td><td class="num up">▲ +0.6 個百分點</td></tr>
+<tr data-grp="eu" data-ea="" data-name="丹麥" data-rate="6.8" data-youth="16.2" data-yoy="0.5"><td><b>丹麥</b> <span style="color:#7a8a94;font-size:.85em">DK</span></td><td class="num"><b>6.8%</b></td><td><div class="barwrap"><div class="bar" style="width:62%"></div></div></td><td class="num">16.2%</td><td class="num up">▲ +0.5 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="奧地利" data-rate="6.3" data-youth="12.8" data-yoy="0.8"><td><b>奧地利</b> <span style="color:#7a8a94;font-size:.85em">AT</span></td><td class="num"><b>6.3%</b></td><td><div class="barwrap"><div class="bar" style="width:57%"></div></div></td><td class="num">12.8%</td><td class="num up">▲ +0.8 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="意大利" data-rate="6.3" data-youth="19.9" data-yoy="0.4"><td><b>意大利</b> <span style="color:#7a8a94;font-size:.85em">IT</span></td><td class="num"><b>6.3%</b></td><td><div class="barwrap"><div class="bar" style="width:57%"></div></div></td><td class="num">19.9%</td><td class="num up">▲ +0.4 個百分點</td></tr>
+<tr data-grp="eu" data-ea="" data-name="羅馬尼亞" data-rate="6.3" data-youth="-1" data-yoy="0.3"><td><b>羅馬尼亞</b> <span style="color:#7a8a94;font-size:.85em">RO</span></td><td class="num"><b>6.3%</b></td><td><div class="barwrap"><div class="bar" style="width:57%"></div></div></td><td class="num">—</td><td class="num up">▲ +0.3 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="立陶宛" data-rate="6.2" data-youth="14.0" data-yoy="-0.4"><td><b>立陶宛</b> <span style="color:#7a8a94;font-size:.85em">LT</span></td><td class="num"><b>6.2%</b></td><td><div class="barwrap"><div class="bar" style="width:56%"></div></div></td><td class="num">14.0%</td><td class="num down">▼ 0.4 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="比利時" data-rate="6.0" data-youth="18.0" data-yoy="-0.3"><td><b>比利時</b> <span style="color:#7a8a94;font-size:.85em">BE</span></td><td class="num"><b>6.0%</b></td><td><div class="barwrap"><div class="bar" style="width:55%"></div></div></td><td class="num">18.0%</td><td class="num down">▼ 0.3 個百分點</td></tr>
+<tr data-grp="other" data-ea="" data-name="冰島" data-rate="5.9" data-youth="12.6" data-yoy="1.1"><td><b>冰島</b> <span style="color:#7a8a94;font-size:.85em">IS</span></td><td class="num"><b>5.9%</b></td><td><div class="barwrap"><div class="bar" style="width:54%"></div></div></td><td class="num">12.6%</td><td class="num up">▲ +1.1 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="斯洛伐克" data-rate="5.7" data-youth="17.7" data-yoy="0.2"><td><b>斯洛伐克</b> <span style="color:#7a8a94;font-size:.85em">SK</span></td><td class="num"><b>5.7%</b></td><td><div class="barwrap"><div class="bar" style="width:52%"></div></div></td><td class="num">17.7%</td><td class="num up">▲ +0.2 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="葡萄牙" data-rate="5.6" data-youth="19.1" data-yoy="-0.3"><td><b>葡萄牙</b> <span style="color:#7a8a94;font-size:.85em">PT</span></td><td class="num"><b>5.6%</b></td><td><div class="barwrap"><div class="bar" style="width:51%"></div></div></td><td class="num">19.1%</td><td class="num down">▼ 0.3 個百分點</td></tr>
+<tr data-grp="other" data-ea="" data-name="挪威" data-rate="5.0" data-youth="16.7" data-yoy="0.3"><td><b>挪威</b> <span style="color:#7a8a94;font-size:.85em">NO</span></td><td class="num"><b>5.0%</b></td><td><div class="barwrap"><div class="bar" style="width:45%"></div></div></td><td class="num">16.7%</td><td class="num up">▲ +0.3 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="愛爾蘭" data-rate="4.7" data-youth="11.4" data-yoy="-0.2"><td><b>愛爾蘭</b> <span style="color:#7a8a94;font-size:.85em">IE</span></td><td class="num"><b>4.7%</b></td><td><div class="barwrap"><div class="bar" style="width:43%"></div></div></td><td class="num">11.4%</td><td class="num down">▼ 0.2 個百分點</td></tr>
+<tr data-grp="eu" data-ea="" data-name="匈牙利" data-rate="4.6" data-youth="14.6" data-yoy="0.1"><td><b>匈牙利</b> <span style="color:#7a8a94;font-size:.85em">HU</span></td><td class="num"><b>4.6%</b></td><td><div class="barwrap"><div class="bar" style="width:42%"></div></div></td><td class="num">14.6%</td><td class="num up">▲ +0.1 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="克羅地亞" data-rate="4.3" data-youth="16.1" data-yoy="-0.7"><td><b>克羅地亞</b> <span style="color:#7a8a94;font-size:.85em">HR</span></td><td class="num"><b>4.3%</b></td><td><div class="barwrap"><div class="bar" style="width:39%"></div></div></td><td class="num">16.1%</td><td class="num down">▼ 0.7 個百分點</td></tr>
+<tr data-grp="other" data-ea="" data-name="美國" data-rate="4.2" data-youth="9.9" data-yoy="-0.2"><td><b>美國</b> <span style="color:#7a8a94;font-size:.85em">US</span></td><td class="num"><b>4.2%</b></td><td><div class="barwrap"><div class="bar" style="width:38%"></div></div></td><td class="num">9.9%</td><td class="num down">▼ 0.2 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="德國" data-rate="4.1" data-youth="7.5" data-yoy="0.3"><td><b>德國</b> <span style="color:#7a8a94;font-size:.85em">DE</span></td><td class="num"><b>4.1%</b></td><td><div class="barwrap"><div class="bar" style="width:37%"></div></div></td><td class="num">7.5%</td><td class="num up">▲ +0.3 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="塞浦路斯" data-rate="4.0" data-youth="11.3" data-yoy="-0.2"><td><b>塞浦路斯</b> <span style="color:#7a8a94;font-size:.85em">CY</span></td><td class="num"><b>4.0%</b></td><td><div class="barwrap"><div class="bar" style="width:36%"></div></div></td><td class="num">11.3%</td><td class="num down">▼ 0.2 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="荷蘭" data-rate="4.0" data-youth="8.8" data-yoy="0.0"><td><b>荷蘭</b> <span style="color:#7a8a94;font-size:.85em">NL</span></td><td class="num"><b>4.0%</b></td><td><div class="barwrap"><div class="bar" style="width:36%"></div></div></td><td class="num">8.8%</td><td class="num flat">→ 0.0</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="斯洛文尼亞" data-rate="3.6" data-youth="14.6" data-yoy="-0.6"><td><b>斯洛文尼亞</b> <span style="color:#7a8a94;font-size:.85em">SI</span></td><td class="num"><b>3.6%</b></td><td><div class="barwrap"><div class="bar" style="width:33%"></div></div></td><td class="num">14.6%</td><td class="num down">▼ 0.6 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="保加利亞" data-rate="3.4" data-youth="13.0" data-yoy="-0.2"><td><b>保加利亞</b> <span style="color:#7a8a94;font-size:.85em">BG</span></td><td class="num"><b>3.4%</b></td><td><div class="barwrap"><div class="bar" style="width:31%"></div></div></td><td class="num">13.0%</td><td class="num down">▼ 0.2 個百分點</td></tr>
+<tr data-grp="eu" data-ea="ea" data-name="馬耳他" data-rate="3.4" data-youth="9.6" data-yoy="0.7"><td><b>馬耳他</b> <span style="color:#7a8a94;font-size:.85em">MT</span></td><td class="num"><b>3.4%</b></td><td><div class="barwrap"><div class="bar" style="width:31%"></div></div></td><td class="num">9.6%</td><td class="num up">▲ +0.7 個百分點</td></tr>
+<tr data-grp="eu" data-ea="" data-name="波蘭" data-rate="3.4" data-youth="11.3" data-yoy="0.1"><td><b>波蘭</b> <span style="color:#7a8a94;font-size:.85em">PL</span></td><td class="num"><b>3.4%</b></td><td><div class="barwrap"><div class="bar" style="width:31%"></div></div></td><td class="num">11.3%</td><td class="num up">▲ +0.1 個百分點</td></tr>
+<tr data-grp="eu" data-ea="" data-name="捷克" data-rate="2.8" data-youth="8.9" data-yoy="-0.3"><td><b>捷克</b> <span style="color:#7a8a94;font-size:.85em">CZ</span></td><td class="num"><b>2.8%</b></td><td><div class="barwrap"><div class="bar" style="width:25%"></div></div></td><td class="num">8.9%</td><td class="num down">▼ 0.3 個百分點</td></tr>
+<tr data-grp="other" data-ea="" data-name="日本" data-rate="2.4" data-youth="3.5" data-yoy="-0.2"><td><b>日本</b> <span style="color:#7a8a94;font-size:.85em">JP</span></td><td class="num"><b>2.4%</b></td><td><div class="barwrap"><div class="bar" style="width:22%"></div></div></td><td class="num">3.5%</td><td class="num down">▼ 0.2 個百分點</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:.9em;color:var(--muted)">撳表頭可以排序。青年失業率係 25 歲以下勞動人口嘅失業比率；羅馬尼亞 2026 年 9 月青年數字未公佈。日本（2.4%）同美國（4.2%）列入做場外比較，唔計入歐盟排名。</p>
+  </div>
+
+  <div class="card">
+    <h2>🤔 冷知識</h2>
+    <ul class="facts">
+      <li>🇨🇿 <b>捷克 2.8%</b> 係歐盟最低，仲低過日本以外所有比較國家；布拉格長期缺人，失業率低到接近「人人有工做」。</li>
+      <li>🇫🇮 <b>芬蘭 11.0%</b> 係歐盟最高，比一年前嘅 9.7% 升咗 1.3 個百分點，升幅亦係全歐盟最大 — 科技業裁員同經濟放緩拖累。</li>
+      <li>🇪🇸 <b>西班牙 10.3%</b> 雖然仲係歐盟第二高，但已經係多年低位；十年前西班牙失業率曾經超過 20%。</li>
+      <li>🧑‍🎓 歐盟青年失業率 <b>15.5%</b>，即係每 6 個 25 歲以下想搵工嘅年輕人，就有接近 1 個搵唔到工；芬蘭青年更高達 <b>25.2%</b>。</li>
+      <li>🇩🇪 德國 4.1%、法國 8.5%：歐洲兩大經濟體失業率差成一倍有多，法國青年失業率 21.9% 亦遠高於德國嘅 7.5%。</li>
+      <li>🇬🇷 希臘 7.6%：曾經係歐洲失業重災區（2013 年高峰近 28%），而家已經回落到歐盟平均附近。</li>
+    </ul>
+  </div>
+
+  <div class="card quiz">
+    <h2>🧠 快問快答</h2>
+    <p><b>以下邊個講法啱？</b></p>
+    <button onclick="quiz(this,true)">A. 2026 年 9 月歐盟失業率最低嘅國家係捷克（2.8%），最高係芬蘭（11.0%）</button>
+    <button onclick="quiz(this,false)">B. 歐元區失業率（6.5%）低過歐盟整體（6.2%）</button>
+    <button onclick="quiz(this,false)">C. 歐盟青年失業率（15.5%）低過整體失業率（6.2%）</button>
+    <button onclick="quiz(this,false)">D. 西班牙係 2026 年 9 月歐盟失業率最高嘅國家</button>
+    <p id="quiz-msg"></p>
+  </div>
+
+  <div class="card note">
+    <b>📊 數據來源</b><br>
+    平台：<a href="https://data.europa.eu/" target="_blank" rel="noopener">data.europa.eu</a>（歐盟開放數據門戶）· 數據集：Eurostat <b>une_rt_m</b>「Unemployment by sex and age — monthly data」，季節調整（SA）、15–74 歲、整體失業率（% of active population）及 25 歲以下青年失業率。<br>
+    快照查核：2026-11-22 約 07:00 HKT 直接讀 Eurostat API 攞到；數據集最後更新 2026-11-20 23:00 CET。10 月數據要等 2026-12-02 先公佈。頁面載入時會再即時 fetch 同一 API，攞到新數就會自動更新。Eurostat 數據免費使用，須註明來源 © European Union, 2026。
+  </div>
+</main>
+<footer>
+  第 009 期 · Daily Fun Web · 數據：Eurostat（經 data.europa.eu）· <a href="index.html">📚 過往期數總覽</a>
+</footer>
+<script>
+const SNAPSHOT = {"updated": "2026-11-20T23:00:00+0100", "month": "2026-09", "eu": 6.2, "ea": 6.5, "euYouth": 15.5, "eaYouth": 15.4, "rows": [{"code": "FI", "name": "芬蘭", "rate": 11.0, "youth": 25.2, "prev": 9.7, "yoy": 1.3, "grp": "eu", "ea": "ea"}, {"code": "MK", "name": "北馬其頓", "rate": 10.7, "youth": 29.2, "prev": 11.8, "yoy": -1.1, "grp": "other", "ea": ""}, {"code": "ES", "name": "西班牙", "rate": 10.3, "youth": 22.8, "prev": 10.4, "yoy": -0.1, "grp": "eu", "ea": "ea"}, {"code": "FR", "name": "法國", "rate": 8.5, "youth": 21.9, "prev": 7.9, "yoy": 0.6, "grp": "eu", "ea": "ea"}, {"code": "SE", "name": "瑞典", "rate": 8.5, "youth": 21.7, "prev": 8.8, "yoy": -0.3, "grp": "eu", "ea": ""}, {"code": "TR", "name": "土耳其", "rate": 8.4, "youth": 14.8, "prev": 8.5, "yoy": -0.1, "grp": "other", "ea": ""}, {"code": "EE", "name": "愛沙尼亞", "rate": 8.0, "youth": 23.9, "prev": 7.1, "yoy": 0.9, "grp": "eu", "ea": "ea"}, {"code": "EL", "name": "希臘", "rate": 7.6, "youth": 17.3, "prev": 8.8, "yoy": -1.2, "grp": "eu", "ea": "ea"}, {"code": "LV", "name": "拉脫維亞", "rate": 7.3, "youth": 16.5, "prev": 7.0, "yoy": 0.3, "grp": "eu", "ea": "ea"}, {"code": "LU", "name": "盧森堡", "rate": 7.3, "youth": 22.0, "prev": 6.7, "yoy": 0.6, "grp": "eu", "ea": "ea"}, {"code": "DK", "name": "丹麥", "rate": 6.8, "youth": 16.2, "prev": 6.3, "yoy": 0.5, "grp": "eu", "ea": ""}, {"code": "AT", "name": "奧地利", "rate": 6.3, "youth": 12.8, "prev": 5.5, "yoy": 0.8, "grp": "eu", "ea": "ea"}, {"code": "IT", "name": "意大利", "rate": 6.3, "youth": 19.9, "prev": 5.9, "yoy": 0.4, "grp": "eu", "ea": "ea"}, {"code": "RO", "name": "羅馬尼亞", "rate": 6.3, "youth": null, "prev": 6.0, "yoy": 0.3, "grp": "eu", "ea": ""}, {"code": "LT", "name": "立陶宛", "rate": 6.2, "youth": 14.0, "prev": 6.6, "yoy": -0.4, "grp": "eu", "ea": "ea"}, {"code": "BE", "name": "比利時", "rate": 6.0, "youth": 18.0, "prev": 6.3, "yoy": -0.3, "grp": "eu", "ea": "ea"}, {"code": "IS", "name": "冰島", "rate": 5.9, "youth": 12.6, "prev": 4.8, "yoy": 1.1, "grp": "other", "ea": ""}, {"code": "SK", "name": "斯洛伐克", "rate": 5.7, "youth": 17.7, "prev": 5.5, "yoy": 0.2, "grp": "eu", "ea": "ea"}, {"code": "PT", "name": "葡萄牙", "rate": 5.6, "youth": 19.1, "prev": 5.9, "yoy": -0.3, "grp": "eu", "ea": "ea"}, {"code": "NO", "name": "挪威", "rate": 5.0, "youth": 16.7, "prev": 4.7, "yoy": 0.3, "grp": "other", "ea": ""}, {"code": "IE", "name": "愛爾蘭", "rate": 4.7, "youth": 11.4, "prev": 4.9, "yoy": -0.2, "grp": "eu", "ea": "ea"}, {"code": "HU", "name": "匈牙利", "rate": 4.6, "youth": 14.6, "prev": 4.5, "yoy": 0.1, "grp": "eu", "ea": ""}, {"code": "HR", "name": "克羅地亞", "rate": 4.3, "youth": 16.1, "prev": 5.0, "yoy": -0.7, "grp": "eu", "ea": "ea"}, {"code": "US", "name": "美國", "rate": 4.2, "youth": 9.9, "prev": 4.4, "yoy": -0.2, "grp": "other", "ea": ""}, {"code": "DE", "name": "德國", "rate": 4.1, "youth": 7.5, "prev": 3.8, "yoy": 0.3, "grp": "eu", "ea": "ea"}, {"code": "CY", "name": "塞浦路斯", "rate": 4.0, "youth": 11.3, "prev": 4.2, "yoy": -0.2, "grp": "eu", "ea": "ea"}, {"code": "NL", "name": "荷蘭", "rate": 4.0, "youth": 8.8, "prev": 4.0, "yoy": 0.0, "grp": "eu", "ea": "ea"}, {"code": "SI", "name": "斯洛文尼亞", "rate": 3.6, "youth": 14.6, "prev": 4.2, "yoy": -0.6, "grp": "eu", "ea": "ea"}, {"code": "BG", "name": "保加利亞", "rate": 3.4, "youth": 13.0, "prev": 3.6, "yoy": -0.2, "grp": "eu", "ea": "ea"}, {"code": "MT", "name": "馬耳他", "rate": 3.4, "youth": 9.6, "prev": 2.7, "yoy": 0.7, "grp": "eu", "ea": "ea"}, {"code": "PL", "name": "波蘭", "rate": 3.4, "youth": 11.3, "prev": 3.3, "yoy": 0.1, "grp": "eu", "ea": ""}, {"code": "CZ", "name": "捷克", "rate": 2.8, "youth": 8.9, "prev": 3.1, "yoy": -0.3, "grp": "eu", "ea": ""}, {"code": "JP", "name": "日本", "rate": 2.4, "youth": 3.5, "prev": 2.6, "yoy": -0.2, "grp": "other", "ea": ""}], "trendEU": [["2024-01", 6.1], ["2024-02", 6.1], ["2024-03", 6.0], ["2024-04", 6.0], ["2024-05", 6.0], ["2024-06", 6.0], ["2024-07", 6.0], ["2024-08", 5.9], ["2024-09", 5.9], ["2024-10", 5.8], ["2024-11", 5.9], ["2024-12", 5.9], ["2025-01", 6.0], ["2025-02", 6.0], ["2025-03", 6.0], ["2025-04", 6.0], ["2025-05", 6.0], ["2025-06", 6.0], ["2025-07", 6.0], ["2025-08", 6.0], ["2025-09", 6.0], ["2025-10", 6.0], ["2025-11", 6.0], ["2025-12", 6.0], ["2026-01", 6.0], ["2026-02", 6.1], ["2026-03", 6.1], ["2026-04", 6.1], ["2026-05", 6.1], ["2026-06", 6.2], ["2026-07", 6.2], ["2026-08", 6.2], ["2026-09", 6.2]], "trendEA": [["2026-01", 6.3], ["2026-02", 6.4], ["2026-03", 6.4], ["2026-04", 6.4], ["2026-05", 6.4], ["2026-06", 6.4], ["2026-07", 6.5], ["2026-08", 6.5], ["2026-09", 6.5]]};
+let FILTER = 'all';
+function setFilter(f, btn) {
+  FILTER = f;
+  document.querySelectorAll('.controls button[data-f]').forEach(b => b.classList.toggle('on', b === btn));
+  render();
+}
+function setSort(v) { document.getElementById('sort').value = v; render(); }
+function rowHTML(r) {
+  const yoy = (r.yoy === null || r.yoy === undefined) ? null : r.yoy;
+  const yoyTxt = yoy === null ? '—' : (yoy > 0 ? '▲ +' + yoy.toFixed(1) : yoy < 0 ? '▼ ' + yoy.toFixed(1) : '→ 0.0') + ' 個百分點';
+  const yoyCls = yoy === null ? '' : (yoy > 0 ? 'up' : yoy < 0 ? 'down' : 'flat');
+  const youthTxt = (r.youth === null || r.youth === undefined) ? '—' : r.youth.toFixed(1) + '%';
+  const barW = (r.rate / 11 * 100).toFixed(0);
+  return '<tr data-grp="' + r.grp + '" data-ea="' + r.ea + '" data-name="' + r.name + '" data-rate="' + r.rate + '" data-youth="' + (r.youth ?? -1) + '" data-yoy="' + (yoy ?? -99) + '">'
+    + '<td><b>' + r.name + '</b> <span style="color:#7a8a94;font-size:.85em">' + r.code + '</span></td>'
+    + '<td class="num"><b>' + r.rate.toFixed(1) + '%</b></td>'
+    + '<td><div class="barwrap"><div class="bar" style="width:' + barW + '%"></div></div></td>'
+    + '<td class="num">' + youthTxt + '</td>'
+    + '<td class="num ' + yoyCls + '">' + yoyTxt + '</td></tr>';
+}
+function render() {
+  const q = (document.getElementById('q').value || '').trim();
+  const sort = document.getElementById('sort').value;
+  let list = SNAPSHOT.rows.filter(r =>
+    (FILTER === 'all' || (FILTER === 'eu' ? r.grp === 'eu' : FILTER === 'ea' ? r.ea === 'ea' : r.grp === 'other'))
+    && (!q || r.name.includes(q) || r.code.toLowerCase().includes(q.toLowerCase())));
+  const key = {
+    'rate-asc': (a, b) => a.rate - b.rate,
+    'rate-desc': (a, b) => b.rate - a.rate,
+    'youth-desc': (a, b) => (b.youth ?? -1) - (a.youth ?? -1),
+    'yoy-desc': (a, b) => (b.yoy ?? -99) - (a.yoy ?? -99),
+    'name': (a, b) => a.name.localeCompare(b.name, 'zh-Hant')
+  }[sort];
+  list.sort(key);
+  document.getElementById('tbody').innerHTML = list.map(rowHTML).join('') || '<tr><td colspan="5">搵唔到符合條件嘅國家，試下改搜尋字。</td></tr>';
+}
+function quiz(btn, ok) {
+  document.querySelectorAll('.quiz button').forEach(b => { b.classList.remove('right', 'wrong'); });
+  btn.classList.add(ok ? 'right' : 'wrong');
+  document.getElementById('quiz-msg').textContent = ok
+    ? '✅ 啱晒！捷克 2.8% 最低、芬蘭 11.0% 最高，差 8.2 個百分點。'
+    : '❌ 唔係呢個。正確答案係 A：捷克最低 2.8%、芬蘭最高 11.0%。';
+}
+async function liveFetch() {
+  const st = document.getElementById('status');
+  try {
+    const base = 'https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/une_rt_m?format=JSON&lang=EN&s_adj=SA&unit=PC_ACT&sex=T';
+    const [t, y] = await Promise.all([
+      fetch(base + '&age=TOTAL&time=2026-09').then(r => r.json()),
+      fetch(base + '&age=Y_LT25&time=2026-09').then(r => r.json())
+    ]);
+    const pick = (d) => {
+      const sizes = d.size, geoIdx = d.dimension.geo.category.index, timeIdx = d.dimension.time.category.index;
+      const strides = []; let s = 1;
+      for (let i = sizes.length - 1; i >= 0; i--) { strides.unshift(s); s *= sizes[i]; }
+      const out = {};
+      for (const [flat, v] of Object.entries(d.value)) {
+        let idx = +flat; const pos = sizes.map((sz, i) => { const p = Math.floor(idx / strides[i]) % sz; idx %= strides[i]; return p; });
+        out[Object.keys(geoIdx)[pos[5]]] = v;
+      }
+      return out;
+    };
+    const tv = pick(t), yv = pick(y);
+    let n = 0;
+    SNAPSHOT.rows.forEach(r => { if (tv[r.code] !== undefined) { r.rate = tv[r.code]; n++; } if (yv[r.code] !== undefined) r.youth = yv[r.code]; });
+    if (n > 0) {
+      SNAPSHOT.eu = tv['EU27_2020']; SNAPSHOT.ea = tv['EA21'];
+      render();
+      st.textContent = '✅ 已即時更新到 Eurostat 最新數字（' + new Date().toLocaleString('zh-HK', { timeZone: 'Asia/Hong_Kong' }) + ' HKT 讀取）。';
+    } else {
+      st.textContent = '⚠️ 即時讀取未有新數，顯示已核實快照（2026-11-22 07:00 HKT）。';
+    }
+  } catch (e) {
+    st.textContent = '⚠️ 即時讀取失敗（網絡或 Eurostat API 問題），顯示已核實快照（2026-11-22 07:00 HKT）。';
+  }
+}
+liveFetch();
+</script>
+</body>
+</html>
