@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>夢境宇宙 DREAMVERSE — 天馬行空實驗室</title>
+<meta name="description" content="一個沒有限制的宇宙沙盒：自己造星球、開黑洞、擲出平行宇宙同荒誕發明。">
+<style>
+*{box-sizing:border-box} html,body{margin:0;background:#050816;color:#eef1ff;font-family:system-ui,-apple-system,"Noto Sans TC","PingFang HK",sans-serif}
+a{color:#8be9ff}
+header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(5,8,22,.78);border-bottom:1px solid rgba(255,255,255,.12);padding:10px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.logo{width:38px;height:38px;border-radius:50%;background:conic-gradient(from 0deg,#ff5da2,#ffb347,#7cffcb,#5da9ff,#b45dff,#ff5da2);display:grid;place-items:center;font-size:20px;animation:spin 9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+h1{font-size:20px;margin:0;letter-spacing:.06em} h1 small{display:block;font-size:11px;color:#aab4ff;letter-spacing:.28em;font-weight:600}
+.badge{margin-left:auto;font-size:12px;border:1px solid rgba(255,255,255,.25);padding:6px 10px;border-radius:999px;color:#ffe66d}
+.hero{padding:28px 18px 10px;max-width:1180px;margin:auto}
+.hero h2{font-size:clamp(32px,6vw,64px);line-height:.95;margin:0;background:linear-gradient(90deg,#fff,#8be9ff,#ff8ad8,#ffe66d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:#c6cdf5;max-width:720px;line-height:1.7;font-size:16px}
+.layout{max-width:1180px;margin:auto;padding:12px 18px 28px;display:grid;grid-template-columns:1.65fr .9fr;gap:16px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.14);border-radius:20px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.card h3{margin:0 0 8px;font-size:18px}.card .pad{padding:16px}
+canvas{width:100%;height:520px;display:block;background:radial-gradient(ellipse at 30% 20%,#1b2350 0,#050816 55%);cursor:crosshair;touch-action:none}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;padding:12px;background:rgba(0,0,0,.25)}
+button{border:0;border-radius:999px;padding:10px 14px;font-weight:800;cursor:pointer;background:#eef1ff;color:#11142b}
+button.primary{background:linear-gradient(90deg,#ff5da2,#ffb347);color:#1a0b1e}
+button.blue{background:#5da9ff;color:#06182e} button.purple{background:#b45dff;color:white} button.dark{background:rgba(255,255,255,.13);color:white;border:1px solid rgba(255,255,255,.2)}
+button:active{transform:scale(.97)}
+.sliders{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:0 12px 14px;background:rgba(0,0,0,.25);font-size:12px;color:#aab4ff}
+@media(max-width:600px){.sliders{grid-template-columns:1fr} canvas{height:420px}}
+input[type=range]{width:100%}
+.stats{display:flex;gap:8px;flex-wrap:wrap}.stat{background:rgba(255,255,255,.08);border-radius:12px;padding:10px 12px;min-width:86px}.stat b{display:block;font-size:20px;color:#fff}.stat span{font-size:11px;color:#aab4ff}
+.big{font-size:22px;line-height:1.35;font-weight:900}
+.muted{color:#aab4ff;line-height:1.7;font-size:14px}
+.kv{display:grid;grid-template-columns:86px 1fr;gap:6px 10px;font-size:14px;line-height:1.6;margin-top:12px}.kv dt{color:#8be9ff;font-weight:700}.kv dd{margin:0}
+.meter{height:10px;background:rgba(255,255,255,.12);border-radius:99px;overflow:hidden}.meter i{display:block;height:100%;background:linear-gradient(90deg,#7cffcb,#ffe66d,#ff5da2)}
+.slot{font-size:28px;text-align:center;padding:14px;background:rgba(0,0,0,.3);border-radius:14px;letter-spacing:.04em}
+footer{max-width:1180px;margin:auto;padding:0 18px 36px;color:#8b95c9;font-size:13px;line-height:1.7}
+.hint{font-size:12px;color:#ffe66d;background:rgba(255,230,109,.1);border:1px solid rgba(255,230,109,.25);padding:9px 11px;border-radius:12px}
+</style>
+</head>
+<body>
+<header><div class="logo">🪐</div><h1>夢境宇宙 DREAMVERSE<small>天馬行空實驗室 · NO RULES</small></h1><div class="badge">✦ 無限制模式 ON</div></header>
+
+<section class="hero">
+<h2>物理定律？<br>今日由你改寫。</h2>
+<p>呢度冇任務、冇分數、冇 Game Over。你可以一撳造一場大爆炸、拖出一個黑洞吞晒啲星、將重力調到反轉，再擲出一個「貓係貨幣、落雨會落魚」嘅平行宇宙。純粹為咗好玩 — 天馬行空，本來就唔需要理由。</p>
+<div class="stats">
+<div class="stat"><b id="statParticles">0</b><span>星塵粒子</span></div>
+<div class="stat"><b id="statHoles">0</b><span>黑洞</span></div>
+<div class="stat"><b id="statBang">0</b><span>大爆炸次數</span></div>
+<div class="stat"><b id="statUniverse">—</b><span>現任宇宙</span></div>
+</div>
+</section>
+
+<main class="layout">
+<div class="card">
+<canvas id="universe" width="900" height="520"></canvas>
+<div class="toolbar">
+<button class="primary" id="btnBang">💥 大爆炸</button>
+<button id="btnHole">🕳️ 開黑洞</button>
+<button class="blue" id="btnRain">☄️ 流星雨</button>
+<button class="purple" id="btnAnti">🙃 反重力</button>
+<button class="dark" id="btnWorm">🌀 蟲洞跳躍</button>
+<button class="dark" id="btnClear">🧹 清空宇宙</button>
+</div>
+<div class="sliders">
+<label>重力 <span id="gVal">1.0</span><input id="gravity" type="range" min="-2" max="3" step="0.1" value="1"></label>
+<label>時間流速 <span id="tVal">1.0×</span><input id="timespeed" type="range" min="0.2" max="3" step="0.1" value="1"></label>
+<label>星塵數量 <span id="nVal">220</span><input id="amount" type="range" min="50" max="600" step="10" value="220"></label>
+</div>
+<div class="pad"><div class="hint">點玩：喺宇宙入面 <b>撳一下</b> = 爆出一團星塵 · <b>拖曳放手</b> = 彈射一粒行星 · <b>雙擊</b> = 嗰個位開黑洞 · 㩒 <b>空白鍵</b> = 大爆炸</div></div>
+</div>
+
+<div style="display:grid;gap:16px;align-content:start">
+<div class="card"><div class="pad">
+<h3>🎲 平行宇宙產生器</h3>
+<div class="big" id="uniName">未命名宇宙 #0</div>
+<dl class="kv">
+<dt>物理定律</dt><dd id="uniLaw">撳下面粒掣，擲出一個新宇宙。</dd>
+<dt>居民</dt><dd id="uniPeople">—</dd>
+<dt>貨幣</dt><dd id="uniMoney">—</dd>
+<dt>天氣</dt><dd id="uniWeather">—</dd>
+<dt>危險度</dt><dd><div class="meter"><i id="uniDanger" style="width:20%"></i></div></dd>
+</dl>
+<p class="muted" id="uniFact"></p>
+<button class="primary" id="btnUniverse" style="width:100%">擲出一個新宇宙 →</button>
+</div></div>
+
+<div class="card"><div class="pad">
+<h3>🔧 荒誕發明機</h3>
+<div class="slot" id="slot">? + ? + ?</div>
+<p class="big" id="invName" style="margin-top:12px">等你㩒掣先發明到</p>
+<p class="muted" id="invDesc">將三樣完全唔關事嘅嘢夾埋，睇下會變出咩改變世界（或者毀滅世界）嘅發明。</p>
+<button class="blue" id="btnInvent" style="width:100%">🎰 轉出新發明</button>
+</div></div>
+
+<div class="card"><div class="pad">
+<h3>💭 如果……？</h3>
+<p class="big" id="whatif">如果月亮係芝士味，你會唔會每晚咬一啖？</p>
+<button class="dark" id="btnWhatif" style="width:100%">換一個如果 →</button>
+</div></div>
+</div>
+</main>
+
+<footer>
+DREAMVERSE 係一個純前端小宇宙：所有物理都喺你部機嘅瀏覽器即時計，唔使登入、唔收集資料。<br>
+玩法係無限嘅 — 試下將重力拉到負數、時間拉到最快，再連開三個黑洞，睇下宇宙會變成點。
+</footer>
+
+<script>
+const cv=document.getElementById('universe'),ctx=cv.getContext('2d');
+let W,H;function resize(){const r=cv.getBoundingClientRect();W=cv.width=r.width*devicePixelRatio;H=cv.height=520*devicePixelRatio}resize();addEventListener('resize',resize);
+const COLORS=['#8be9ff','#ff8ad8','#ffe66d','#7cffcb','#bda6ff','#ffffff','#ffb347'];
+let particles=[],holes=[],gravity=1,timeSpeed=1,anti=false,bangs=0,drag=null;
+function rand(a,b){return a+Math.random()*(b-a)} function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function spawn(x,y,n,spread=5){for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=rand(.3,spread);particles.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:rand(1,3.2),c:pick(COLORS),life:rand(300,900)})}updateStats()}
+function bigBang(x=W/2,y=H/2){bangs++;spawn(x,y,180,9);holes=holes.slice(-2);updateStats()}
+function addHole(x,y){holes.push({x,y,r:rand(16,30),pull:rand(900,1500)});if(holes.length>5)holes.shift();updateStats()}
+function updateStats(){document.getElementById('statParticles').textContent=particles.length;document.getElementById('statHoles').textContent=holes.length;document.getElementById('statBang').textContent=bangs}
+function seed(){particles=[];const n=+document.getElementById('amount').value;for(let i=0;i<n;i++)spawn(rand(0,W),rand(0,H),1,1.2)}
+function tick(){
+ ctx.fillStyle='rgba(5,8,22,0.22)';ctx.fillRect(0,0,W,H);
+ // holes
+ holes.forEach(h=>{const g=ctx.createRadialGradient(h.x,h.y,0,h.x,h.y,h.r*4);g.addColorStop(0,'rgba(0,0,0,1)');g.addColorStop(.35,'rgba(120,60,255,.55)');g.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(h.x,h.y,h.r*4,0,7);ctx.fill();ctx.strokeStyle='#e9d5ff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(h.x,h.y,h.r,0,7);ctx.stroke()});
+ const cx=W/2,cy=H/2;
+ particles=particles.filter(p=>p.life-->0);
+ for(const p of particles){
+   // central gravity + holes
+   let ax=(cx-p.x)*0.00008*gravity*(anti?-1:1), ay=(cy-p.y)*0.00008*gravity*(anti?-1:1);
+   for(const h of holes){const dx=h.x-p.x,dy=h.y-p.y,d2=dx*dx+dy*dy+400,d=Math.sqrt(d2);ax+=dx/d*h.pull/d2;ay+=dy/d*h.pull/d2;if(d<h.r){p.life=0}}
+   p.vx+=ax*16*timeSpeed;p.vy+=ay*16*timeSpeed;p.vx*=.995;p.vy*=.995;p.x+=p.vx*timeSpeed;p.y+=p.vy*timeSpeed;
+   if(p.x<0)p.x+=W;if(p.x>W)p.x-=W;if(p.y<0)p.y+=H;if(p.y>H)p.y-=H;
+   ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill();
+ }
+ if(drag){ctx.strokeStyle='#ffe66d';ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(drag.x,drag.y);ctx.lineTo(drag.cx,drag.cy);ctx.stroke();ctx.setLineDash([])}
+ document.getElementById('statParticles').textContent=particles.length;
+ requestAnimationFrame(tick)
+}
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*devicePixelRatio,y:(e.clientY-r.top)*devicePixelRatio}}
+cv.addEventListener('pointerdown',e=>{const p=pos(e);drag={...p,cx:p.x,cy:p.y}});
+cv.addEventListener('pointermove',e=>{if(drag){const p=pos(e);drag.cx=p.x;drag.cy=p.y}});
+cv.addEventListener('pointerup',e=>{if(!drag)return;const dx=drag.x-drag.cx,dy=drag.y-drag.cy;if(Math.hypot(dx,dy)<12){spawn(drag.x,drag.y,45,6)}else{particles.push({x:drag.x,y:drag.y,vx:dx*.06,vy:dy*.06,r:5,c:'#ffffff',life:1200});spawn(drag.x,drag.y,18,3)}drag=null});
+cv.addEventListener('dblclick',e=>{const p=pos(e);addHole(p.x,p.y)});
+document.getElementById('btnBang').onclick=()=>bigBang(rand(W*.25,W*.75),rand(H*.25,H*.75));
+document.getElementById('btnHole').onclick=()=>addHole(rand(W*.2,W*.8),rand(H*.2,H*.8));
+document.getElementById('btnRain').onclick=()=>{for(let i=0;i<70;i++)particles.push({x:rand(0,W),y:-10,vx:rand(-1,1),vy:rand(4,9),r:rand(1,3),c:pick(COLORS),life:400})};
+document.getElementById('btnAnti').onclick=e=>{anti=!anti;e.target.textContent=anti?'🙃 重力正常返':'🙃 反重力'};
+document.getElementById('btnWorm').onclick=()=>{particles.forEach(p=>{p.x=rand(0,W);p.y=rand(0,H)});spawn(W/2,H/2,60,7)};
+document.getElementById('btnClear').onclick=()=>{particles=[];holes=[];updateStats()};
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();bigBang()}});
+document.getElementById('gravity').oninput=e=>{gravity=+e.target.value;document.getElementById('gVal').textContent=gravity.toFixed(1)};
+document.getElementById('timespeed').oninput=e=>{timeSpeed=+e.target.value;document.getElementById('tVal').textContent=timeSpeed.toFixed(1)+'×'};
+document.getElementById('amount').oninput=e=>{document.getElementById('nVal').textContent=e.target.value;seed()};
+seed();tick();
+
+// Parallel universe generator
+const laws=['重力每逢星期二會休息一日，嘢會自己浮起','光速得返行路咁快，講嘢快過見到對方開口','時間係圓形嘅，星期一之後又係星期一，但你可以揀記唔記得','影子有自己嘅人生，夜晚會返工','大細係相對嘅 — 你瞓醒可能得手指公咁大','夢境係合法貨幣，瞓得好真係會發達','顏色有味道，藍色係鹹嘅，粉紅色係士多啤梨味','靜電係超能力，人人識飛但成日俾門柄電親'];
+const peoples=['會講廣東話嘅企鵝，分南北兩派爭論邊面凍啲','退休嘅星星，每晚出嚟散步傾偈','半透明嘅人類，講大話就會變實色','貓主子同佢哋養嘅人類','識用 Excel 嘅恐龍，冇滅絕，轉咗行做會計'];
+const moneys=['回憶（開心嘅最值錢）','貓毛（一両貓毛換一餐飯）','打乞嚏嘅次數','未用嘅假期','夢入面執到嘅金幣'];
+const weathers=['落棉花糖雨，要帶遮，唔係會痴住頭髮','每朝有 10 分鐘重力雨，嘢會向上跌','彩虹係實體，可以爬上去滑落嚟','打雷之前會先播預告片'];
+const facts=['呢個宇宙嘅居民唔知咩叫排隊，因為所有嘢都同時到。','當地最大節日係「乜都唔做日」，已經連續舉辦咗 400 年，非常成功。','科學家證實咗：嗰邊嘅星期五真係長啲。','嗰邊冇鬧鐘，因為時間會親自敲門叫你起身。'];
+let uniCount=0;
+document.getElementById('btnUniverse').onclick=()=>{uniCount++;const name='宇宙 #'+Math.floor(rand(100,9999))+'「'+pick(['奶茶','雲朵','反斗','瞓覺','霓虹','泡泡','貓毛','星塵'])+pick(['漫遊','失重','大冒險','放假','無限Loop','慢慢嚟'])+'」';document.getElementById('uniName').textContent=name;document.getElementById('statUniverse').textContent='#'+uniCount;document.getElementById('uniLaw').textContent=pick(laws);document.getElementById('uniPeople').textContent=pick(peoples);document.getElementById('uniMoney').textContent=pick(moneys);document.getElementById('uniWeather').textContent=pick(weathers);document.getElementById('uniDanger').style.width=rand(8,98)+'%';document.getElementById('uniFact').textContent='✦ '+pick(facts)};
+// Invention machine
+const A=['會自己行路嘅','識講嘢嘅','識發夢嘅','驚黑嘅','鍾意食辣嘅','會唱 K 嘅'],B=['雪櫃','雨遮','拖鞋','鬧鐘','背囊','水壺','枕頭','電飯煲'],C=['Wi-Fi','時光機','翻譯機','防遲到力場','自動摺衫功能','月光充電'];
+document.getElementById('btnInvent').onclick=()=>{const a=pick(A),b=pick(B),c=pick(C);document.getElementById('slot').textContent=a+' × '+b+' × '+c;document.getElementById('invName').textContent=a+b+'（內置'+c+'）';document.getElementById('invDesc').textContent='用途：暫時冇人知，但測試者一致表示「唔知點解好好用」。實用度 '+Math.floor(rand(1,11))+'/10，荒誕度 '+Math.floor(rand(7,11))+'/10，預計 '+Math.floor(rand(2,40))+' 年後成為每家必備。'};
+// What if
+const WIF=['如果 gravity 係訂閱制，免費版每日得 8 個鐘重力，你會點安排你一日？','如果夢境可以錄低重播，你最想重睇邊一個夢？','如果全世界嘅門都通去唔同年代，你返工會揀邊個世紀落車？','如果貓識講人話，第一句你估佢會講咩？','如果落雨會落唔同嘢 — 今日預報係落薯條，你會帶遮定帶兜？','如果你嘅影子放假一日，你會唔會唔慣？','如果瞓覺可以儲落嚟用，你會儲幾多個鐘留返去旅行先瞓？'];
+document.getElementById('btnWhatif').onclick=()=>{document.getElementById('whatif').textContent=pick(WIF)};
+</script>
+</body>
+</html>
