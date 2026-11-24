@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 011 期｜今日邊隻貨幣最值錢？— 歐洲央行歐元參考匯率</title>
+<style>
+  :root{--ink:#10222e;--muted:#4a6b7a;--bg:#eaf2f7;--card:#ffffff;--accent:#0b5fa5;--teal:#009688;--sand:#ffc93c;--line:#c8d8de}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  header{background:linear-gradient(135deg,#0b2a4a,#0b5fa5 55%,#009688);color:#fff;padding:34px 20px 28px;text-align:center}
+  header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.9}
+  header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
+  header p{margin:.2em auto;max-width:720px;opacity:.95}
+  main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(11,61,145,.10)}
+  .card h2{margin-top:0}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .stat{background:#0b5fa5;color:#fff;border:1px solid #0b5fa5;border-radius:12px;padding:16px;text-align:center}
+  .stat b{display:block;font-size:1.9em;line-height:1.15;color:#fff}
+  .stat span{font-size:.85em;opacity:.95}
+  .stat.teal{background:#00796b;border-color:#00796b}
+  .stat.dark{background:#0b2a4a;border-color:#0b2a4a}
+  .stat.amber{background:#b8860b;border-color:#b8860b}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .controls button{border:1.5px solid var(--accent);background:#fff;color:var(--accent);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em;font-weight:700}
+  .controls button.on{background:var(--accent);color:#fff}
+  .controls input,.controls select{border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.95em;background:#fff;color:var(--ink)}
+  .controls input{flex:1;min-width:180px}
+  table{width:100%;border-collapse:collapse;font-size:.95em}
+  th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+  th{cursor:pointer;white-space:nowrap;color:var(--accent)}
+  th:hover{color:#0b2a4a}
+  .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .barwrap{background:#eef3f6;border-radius:999px;height:12px;overflow:hidden;min-width:90px}
+  .bar{height:12px;border-radius:999px;background:linear-gradient(90deg,#0b5fa5,#009688);min-width:2px}
+  #status{font-size:.9em;color:var(--muted)}
+  .up{color:#2e7d32;font-weight:700}.dn{color:#c62828;font-weight:700}
+  .conv{font-size:1.25em;font-weight:700;margin:12px 0}
+  .conv b{color:var(--accent)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+  .chips button{border:1.5px solid var(--line);background:#f4fafb;color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer;font-size:.92em}
+  .chips button:hover{border-color:var(--accent)}
+  .facts li{margin:8px 0}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1.5px solid var(--line);background:#f4fafb;color:var(--ink);border-radius:10px;cursor:pointer;font-size:1em}
+  .quiz button:hover{border-color:var(--accent)}
+  .quiz .ans{font-weight:700;margin-top:10px}
+  footer{max-width:920px;margin:0 auto;padding:0 16px 34px;color:var(--muted);font-size:.88em;line-height:1.8}
+  footer a{color:var(--accent)}
+  .note{background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:12px 14px;font-size:.92em}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:640px){.twocol{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">📚 想睇返之前發佈過嘅嘢？ <a href="archive/index.html" style="color:#ffc93c;font-weight:700">去「過往期數」總覽 →</a></div>
+<header>
+  <div class="kicker">DAILY FUN WEB · 第 011 期 · 2026-11-24</div>
+  <h1>💱 今日邊隻貨幣最值錢？</h1>
+  <p>歐洲央行每個工作日公布歐元參考匯率 — €1 兌到幾多外幣、邊隻貨幣一個單位最值錢、邊隻兌歐元升得最多，仲有 HK$1,000 可以兌到幾多，全喺呢度。</p>
+</header>
+<main>
+  <div class="card">
+    <p id="status">⏳ 嘗試讀取歐洲央行即時匯率…</p>
+    <div class="stats">
+      <div class="stat"><b id="stEurHkd">HK$8.58</b><span>€1 兌幾多港元</span></div>
+      <div class="stat teal"><b id="stTopUnit">£1 = HK$10.25</b><span>一個單位最值錢：英鎊</span></div>
+      <div class="stat dark"><b id="stCount">29</b><span>種貨幣參考匯率</span></div>
+      <div class="stat amber"><b id="stGain">印尼盾 +0.69%</b><span>兌歐元升值最多（自上週五）</span></div>
+    </div>
+    <p style="color:var(--muted);font-size:.92em">快照匯率日期：2026-11-23（星期一），對上交易日 2026-11-20（星期五）；快照核實時間：2026-11-24 07:03 HKT。頁面載入時會嘗試即時讀歐洲央行官方 XML；因歐央行伺服器冇送出 CORS 許可，瀏覽器一般會擋住跨域讀取，屆時顯示呢個已核實快照，並會注明。</p>
+  </div>
+
+  <div class="card">
+    <h2>🧮 港元兌換計數機</h2>
+    <p>用快照匯率計：你手上有幾多港元，可以兌到幾多外幣？</p>
+    <div class="controls">
+      <label>港元 HK$ <input id="hkdAmt" type="number" value="1000" min="0" step="any" style="max-width:160px" oninput="calc()"></label>
+      <select id="curSel" onchange="calc()">
+        <option value="USD">美元 USD</option><option value="JPY">日圓 JPY</option>
+        <option value="EUR">歐元 EUR</option><option value="GBP">英鎊 GBP</option>
+        <option value="CNY">人民幣 CNY</option><option value="SGD">新加坡元 SGD</option>
+        <option value="AUD">澳洲元 AUD</option><option value="KRW">韓圜 KRW</option>
+        <option value="THB">泰銖 THB</option><option value="TWD2" disabled>（新台幣唔喺歐央行名單）</option>
+      </select>
+      <button onclick="calc()">計一計</button>
+    </div>
+    <p class="conv" id="convOut"></p>
+    <div class="chips" id="chips"></div>
+    <p style="color:var(--muted);font-size:.9em">參考價唔係找換店即市價，實際兌換會有差價同手續費。留意：歐央行名單冇新台幣同俄羅斯盧布（盧布自 2022 年起暫停公布）。</p>
+  </div>
+
+  <div class="card">
+    <h2>🏆 一個單位值幾多港元？</h2>
+    <p>唔好畀「€1 兌 19,933 印尼盾」呢啲大數字呃到 — 數字大唔代表值錢。呢度按「1 個單位外幣值幾多港元」排，英鎊先係最值錢。</p>
+    <table>
+      <thead><tr><th>貨幣</th><th>1 單位兌港元</th><th>佔比</th></tr></thead>
+      <tbody id="unitBody">
+<tr><td><b>英鎊</b> <span style="color:var(--muted)">GBP</span></td><td class="num">HK$10.25</td><td><div class="barwrap"><div class="bar" style="width:100%"></div></div></td></tr>
+<tr><td><b>瑞士法郎</b> <span style="color:var(--muted)">CHF</span></td><td class="num">HK$9.34</td><td><div class="barwrap"><div class="bar" style="width:91%"></div></div></td></tr>
+<tr><td><b>美元</b> <span style="color:var(--muted)">USD</span></td><td class="num">HK$7.84</td><td><div class="barwrap"><div class="bar" style="width:76%"></div></div></td></tr>
+<tr><td><b>新加坡元</b> <span style="color:var(--muted)">SGD</span></td><td class="num">HK$6.07</td><td><div class="barwrap"><div class="bar" style="width:59%"></div></div></td></tr>
+<tr><td><b>加拿大元</b> <span style="color:var(--muted)">CAD</span></td><td class="num">HK$5.46</td><td><div class="barwrap"><div class="bar" style="width:53%"></div></div></td></tr>
+<tr><td><b>澳洲元</b> <span style="color:var(--muted)">AUD</span></td><td class="num">HK$5.19</td><td><div class="barwrap"><div class="bar" style="width:51%"></div></div></td></tr>
+<tr><td><b>新西蘭元</b> <span style="color:var(--muted)">NZD</span></td><td class="num">HK$4.27</td><td><div class="barwrap"><div class="bar" style="width:42%"></div></div></td></tr>
+<tr><td><b>以色列錫克爾</b> <span style="color:var(--muted)">ILS</span></td><td class="num">HK$2.34</td><td><div class="barwrap"><div class="bar" style="width:23%"></div></div></td></tr>
+<tr><td><b>波蘭茲羅提</b> <span style="color:var(--muted)">PLN</span></td><td class="num">HK$1.92</td><td><div class="barwrap"><div class="bar" style="width:19%"></div></div></td></tr>
+<tr><td><b>馬來西亞令吉</b> <span style="color:var(--muted)">MYR</span></td><td class="num">HK$1.90</td><td><div class="barwrap"><div class="bar" style="width:19%"></div></div></td></tr>
+
+      </tbody>
+    </table>
+    <p style="color:var(--muted);font-size:.9em">€1 本身值 HK$8.58，排第二位，僅次於英鎊。最低係印尼盾，1 盾只值 HK$0.0004 左右。</p>
+  </div>
+
+  <div class="card">
+    <h2>📋 29 種貨幣完整匯率表</h2>
+    <p>歐洲央行報價方式係「€1 兌幾多外幣」；升跌一欄係嗰隻貨幣兌歐元嘅價值變化（+ 即係兌歐元升值），對比上個交易日 2026-11-20。撳表頭可以排序。</p>
+    <div class="controls">
+      <input id="q" type="text" placeholder="搜尋貨幣名／代碼，例如：日圓、USD…" oninput="renderTable()">
+      <button class="on" data-r="全部" onclick="setRegion(this)">全部地區</button>
+      <button data-r="歐洲" onclick="setRegion(this)">歐洲</button>
+      <button data-r="亞洲" onclick="setRegion(this)">亞洲</button>
+      <button data-r="北美洲" onclick="setRegion(this)">北美洲</button>
+      <button data-r="大洋洲" onclick="setRegion(this)">大洋洲</button>
+      <button data-r="南美洲" onclick="setRegion(this)">南美洲</button>
+      <button data-r="非洲" onclick="setRegion(this)">非洲</button>
+    </div>
+    <table>
+      <thead><tr><th onclick="sortBy('zh')">貨幣 ↕</th><th onclick="sortBy('rate')">€1 兌幾多 ↕</th><th onclick="sortBy('per_hkd')">1 單位兌港元 ↕</th><th onclick="sortBy('chg')">兌歐元升跌 ↕</th><th>地區</th></tr></thead>
+      <tbody id="fxBody">
+<tr data-region="歐洲" data-name="英鎊 GBP £"><td><b>英鎊</b> <span style="color:var(--muted)">GBP</span></td><td class="num">0.8367</td><td class="num">HK$10.25</td><td class="num"><span class="up">+0.07%</span></td><td>歐洲</td></tr>
+<tr data-region="歐洲" data-name="瑞士法郎 CHF CHF "><td><b>瑞士法郎</b> <span style="color:var(--muted)">CHF</span></td><td class="num">0.9186</td><td class="num">HK$9.34</td><td class="num"><span class="up">+0.40%</span></td><td>歐洲</td></tr>
+<tr data-region="北美洲" data-name="美元 USD $"><td><b>美元</b> <span style="color:var(--muted)">USD</span></td><td class="num">1.0939</td><td class="num">HK$7.84</td><td class="num"><span class="up">+0.47%</span></td><td>北美洲</td></tr>
+<tr data-region="亞洲" data-name="新加坡元 SGD S$"><td><b>新加坡元</b> <span style="color:var(--muted)">SGD</span></td><td class="num">1.4124</td><td class="num">HK$6.07</td><td class="num"><span class="up">+0.25%</span></td><td>亞洲</td></tr>
+<tr data-region="北美洲" data-name="加拿大元 CAD C$"><td><b>加拿大元</b> <span style="color:var(--muted)">CAD</span></td><td class="num">1.5711</td><td class="num">HK$5.46</td><td class="num"><span class="up">+0.08%</span></td><td>北美洲</td></tr>
+<tr data-region="大洋洲" data-name="澳洲元 AUD A$"><td><b>澳洲元</b> <span style="color:var(--muted)">AUD</span></td><td class="num">1.6532</td><td class="num">HK$5.19</td><td class="num"><span class="dn">-0.27%</span></td><td>大洋洲</td></tr>
+<tr data-region="大洋洲" data-name="新西蘭元 NZD NZ$"><td><b>新西蘭元</b> <span style="color:var(--muted)">NZD</span></td><td class="num">2.0079</td><td class="num">HK$4.27</td><td class="num"><span class="dn">-0.55%</span></td><td>大洋洲</td></tr>
+<tr data-region="亞洲" data-name="以色列錫克爾 ILS ₪"><td><b>以色列錫克爾</b> <span style="color:var(--muted)">ILS</span></td><td class="num">3.6643</td><td class="num">HK$2.34</td><td class="num"><span class="up">+0.26%</span></td><td>亞洲</td></tr>
+<tr data-region="歐洲" data-name="波蘭茲羅提 PLN zł"><td><b>波蘭茲羅提</b> <span style="color:var(--muted)">PLN</span></td><td class="num">4.4588</td><td class="num">HK$1.92</td><td class="num"><span class="dn">-0.01%</span></td><td>歐洲</td></tr>
+<tr data-region="亞洲" data-name="馬來西亞令吉 MYR RM"><td><b>馬來西亞令吉</b> <span style="color:var(--muted)">MYR</span></td><td class="num">4.5101</td><td class="num">HK$1.90</td><td class="num"><span class="up">+0.21%</span></td><td>亞洲</td></tr>
+<tr data-region="歐洲" data-name="羅馬尼亞列伊 RON lei"><td><b>羅馬尼亞列伊</b> <span style="color:var(--muted)">RON</span></td><td class="num">5.3483</td><td class="num">HK$1.60</td><td class="num"><span class="up">+0.02%</span></td><td>歐洲</td></tr>
+<tr data-region="南美洲" data-name="巴西雷亞爾 BRL R$"><td><b>巴西雷亞爾</b> <span style="color:var(--muted)">BRL</span></td><td class="num">6.5611</td><td class="num">HK$1.31</td><td class="num"><span class="dn">-0.54%</span></td><td>南美洲</td></tr>
+<tr data-region="亞洲" data-name="人民幣 CNY ¥"><td><b>人民幣</b> <span style="color:var(--muted)">CNY</span></td><td class="num">7.2905</td><td class="num">HK$1.18</td><td class="num"><span class="up">+0.66%</span></td><td>亞洲</td></tr>
+<tr data-region="歐洲" data-name="丹麥克朗 DKK kr"><td><b>丹麥克朗</b> <span style="color:var(--muted)">DKK</span></td><td class="num">7.4746</td><td class="num">HK$1.15</td><td class="num"><span class="up">+0.00%</span></td><td>歐洲</td></tr>
+<tr data-region="亞洲" data-name="港元 HKD HK$"><td><b>港元</b> <span style="color:var(--muted)">HKD</span></td><td class="num">8.5772</td><td class="num">HK$1.00</td><td class="num"><span class="up">+0.44%</span></td><td>亞洲</td></tr>
+<tr data-region="歐洲" data-name="挪威克朗 NOK kr"><td><b>挪威克朗</b> <span style="color:var(--muted)">NOK</span></td><td class="num">10.7285</td><td class="num">HK$0.7995</td><td class="num"><span class="dn">-0.10%</span></td><td>歐洲</td></tr>
+<tr data-region="歐洲" data-name="瑞典克朗 SEK kr"><td><b>瑞典克朗</b> <span style="color:var(--muted)">SEK</span></td><td class="num">11.2375</td><td class="num">HK$0.7633</td><td class="num"><span class="dn">-0.22%</span></td><td>歐洲</td></tr>
+<tr data-region="非洲" data-name="南非蘭特 ZAR R"><td><b>南非蘭特</b> <span style="color:var(--muted)">ZAR</span></td><td class="num">19.1513</td><td class="num">HK$0.4479</td><td class="num"><span class="up">+0.25%</span></td><td>非洲</td></tr>
+<tr data-region="北美洲" data-name="墨西哥比索 MXN Mex$"><td><b>墨西哥比索</b> <span style="color:var(--muted)">MXN</span></td><td class="num">21.0528</td><td class="num">HK$0.4074</td><td class="num"><span class="dn">-0.47%</span></td><td>北美洲</td></tr>
+<tr data-region="歐洲" data-name="捷克克朗 CZK Kč"><td><b>捷克克朗</b> <span style="color:var(--muted)">CZK</span></td><td class="num">24.4550</td><td class="num">HK$0.3507</td><td class="num"><span class="up">+0.06%</span></td><td>歐洲</td></tr>
+<tr data-region="亞洲" data-name="泰銖 THB ฿"><td><b>泰銖</b> <span style="color:var(--muted)">THB</span></td><td class="num">37.2420</td><td class="num">HK$0.2303</td><td class="num"><span class="up">+0.05%</span></td><td>亞洲</td></tr>
+<tr data-region="亞洲" data-name="土耳其里拉 TRY ₺"><td><b>土耳其里拉</b> <span style="color:var(--muted)">TRY</span></td><td class="num">55.3405</td><td class="num">HK$0.1550</td><td class="num"><span class="up">+0.43%</span></td><td>亞洲</td></tr>
+<tr data-region="亞洲" data-name="菲律賓比索 PHP ₱"><td><b>菲律賓比索</b> <span style="color:var(--muted)">PHP</span></td><td class="num">69.8510</td><td class="num">HK$0.1228</td><td class="num"><span class="up">+0.34%</span></td><td>亞洲</td></tr>
+<tr data-region="亞洲" data-name="印度盧比 INR ₹"><td><b>印度盧比</b> <span style="color:var(--muted)">INR</span></td><td class="num">101.64</td><td class="num">HK$0.0844</td><td class="num"><span class="up">+0.21%</span></td><td>亞洲</td></tr>
+<tr data-region="歐洲" data-name="冰島克朗 ISK kr"><td><b>冰島克朗</b> <span style="color:var(--muted)">ISK</span></td><td class="num">137.20</td><td class="num">HK$0.0625</td><td class="num"><span class="up">+0.00%</span></td><td>歐洲</td></tr>
+<tr data-region="亞洲" data-name="日圓 JPY ¥"><td><b>日圓</b> <span style="color:var(--muted)">JPY</span></td><td class="num">174.01</td><td class="num">HK$0.0493</td><td class="num"><span class="up">+0.20%</span></td><td>亞洲</td></tr>
+<tr data-region="歐洲" data-name="匈牙利福林 HUF Ft"><td><b>匈牙利福林</b> <span style="color:var(--muted)">HUF</span></td><td class="num">372.28</td><td class="num">HK$0.0230</td><td class="num"><span class="up">+0.34%</span></td><td>歐洲</td></tr>
+<tr data-region="亞洲" data-name="韓圜 KRW ₩"><td><b>韓圜</b> <span style="color:var(--muted)">KRW</span></td><td class="num">1,475.51</td><td class="num">HK$0.005813</td><td class="num"><span class="dn">-0.24%</span></td><td>亞洲</td></tr>
+<tr data-region="亞洲" data-name="印尼盾 IDR Rp"><td><b>印尼盾</b> <span style="color:var(--muted)">IDR</span></td><td class="num">19,932.94</td><td class="num">HK$0.00043</td><td class="num"><span class="up">+0.69%</span></td><td>亞洲</td></tr>
+
+      </tbody>
+    </table>
+    <p id="countLine" style="color:var(--muted);font-size:.9em"></p>
+  </div>
+
+  <div class="card">
+    <h2>📈 上個交易日邊隻升、邊隻跌？</h2>
+    <p>對比 2026-11-20（星期五）收市參考價，呢個星期一邊隻貨幣兌歐元升值最多、邊隻跌得最多。</p>
+    <div class="twocol">
+      <div>
+        <h3 style="margin:0 0 6px;color:#2e7d32">⬆️ 兌歐元升值最多</h3>
+        <table><thead><tr><th>貨幣</th><th>升幅</th></tr></thead><tbody>
+<tr><td><b>印尼盾</b> IDR</td><td class="num"><span class="up">+0.69%</span></td></tr>
+<tr><td><b>人民幣</b> CNY</td><td class="num"><span class="up">+0.66%</span></td></tr>
+<tr><td><b>美元</b> USD</td><td class="num"><span class="up">+0.47%</span></td></tr>
+<tr><td><b>港元</b> HKD</td><td class="num"><span class="up">+0.44%</span></td></tr>
+<tr><td><b>土耳其里拉</b> TRY</td><td class="num"><span class="up">+0.43%</span></td></tr>
+
+        </tbody></table>
+      </div>
+      <div>
+        <h3 style="margin:0 0 6px;color:#c62828">⬇️ 兌歐元跌得最多</h3>
+        <table><thead><tr><th>貨幣</th><th>跌幅</th></tr></thead><tbody>
+<tr><td><b>新西蘭元</b> NZD</td><td class="num"><span class="dn">-0.55%</span></td></tr>
+<tr><td><b>巴西雷亞爾</b> BRL</td><td class="num"><span class="dn">-0.54%</span></td></tr>
+<tr><td><b>墨西哥比索</b> MXN</td><td class="num"><span class="dn">-0.47%</span></td></tr>
+<tr><td><b>澳洲元</b> AUD</td><td class="num"><span class="dn">-0.27%</span></td></tr>
+<tr><td><b>韓圜</b> KRW</td><td class="num"><span class="dn">-0.24%</span></td></tr>
+
+        </tbody></table>
+      </div>
+    </div>
+    <p>港元兌歐元升咗 +0.44%，美元升 +0.47% — 港元同美元掛鈎，升跌通常一齊行。留意歐央行星期六、日唔公布匯率，所以對上一個交易日係星期五。</p>
+  </div>
+
+  <div class="card">
+    <h2>🧠 冷知識</h2>
+    <ul class="facts">
+      <li>歐洲央行每個工作日大約歐洲中部時間 16:00 公布參考匯率，根據當日 14:10 左右嘅市場報價釐定；呢個係參考價，唔係銀行或者找換店嘅即市買賣價。</li>
+      <li>報價方向好易撈亂：歐央行寫「€1 = 1.0939 美元」，數字跌唔代表美元跌 — 數字跌即係用少啲美元就兌到 €1，即係美元升值。呢版將升跌轉做「外幣兌歐元嘅價值變化」，等大家唔使反轉諗。</li>
+      <li>數字最大嘅係印尼盾（€1 = 19,932.94 盾），但 1 盾只值 HK$0.0004；數字最細唔係最唔值錢 — 真正「一個單位最值錢」係英鎊，£1 = HK$10.25。</li>
+      <li>港元兌美元掛鈎喺 7.75–7.85 區間，所以港元兌歐元嘅走勢好多時跟住美元行；今次美元兌歐元升 0.47%，港元亦升 0.44%。</li>
+      <li>歐央行參考匯率名單只有 29 種貨幣左右，冇新台幣、冇俄羅斯盧布（自 2022 年 3 月起暫停公布盧布參考價），亦冇港元以外嘅其他聯繫匯率貨幣。</li>
+    </ul>
+  </div>
+
+  <div class="card quiz">
+    <h2>🎯 考下你</h2>
+    <p><b>1.</b> HK$1,000 用快照匯率可以兌到幾多日圓？</p>
+    <button onclick="quiz(this,false)">A. 約 2,029 日圓</button>
+    <button onclick="quiz(this,true)">B. 約 20,288 日圓</button>
+    <button onclick="quiz(this,false)">C. 約 202,880 日圓</button>
+    <p class="ans" id="a1"></p>
+    <p><b>2.</b> €1 兌幾多港元？</p>
+    <button onclick="quiz(this,false)">A. HK$7.84（嗰個係 1 美元）</button>
+    <button onclick="quiz(this,true)">B. HK$8.58</button>
+    <button onclick="quiz(this,false)">C. HK$10.25（嗰個係 1 英鎊）</button>
+    <p class="ans" id="a2"></p>
+    <p><b>3.</b> 上個交易日，邊隻貨幣兌歐元升值最多？</p>
+    <button onclick="quiz(this,false)">A. 日圓</button>
+    <button onclick="quiz(this,true)">B. 印尼盾（+0.69%）</button>
+    <button onclick="quiz(this,false)">C. 新西蘭元（佢跌得最多，-0.55%）</button>
+    <p class="ans" id="a3"></p>
+  </div>
+
+  <div class="card">
+    <h2>🔁 想睇最新匯率？</h2>
+    <p>歐洲央行每個工作日約 16:00（歐洲中部時間）更新，香港時間即係大約夜晚 23:00。撳下面掣再試一次即時讀取，或者直接去 ECB 官網睇原始數據。</p>
+    <div class="controls">
+      <button onclick="fetchLive(true)">再試即時讀取</button>
+      <a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" target="_blank" rel="noopener">去 ECB 官網睇參考匯率 →</a>
+    </div>
+  </div>
+</main>
+<footer>
+  <p><b>數據來源：</b>European Central Bank（歐洲央行）— Euro foreign exchange reference rates，每日參考匯率 XML（eurofxref-daily.xml）及 90 日歷史（eurofxref-hist.xml）。<br>
+  匯率日期：<b>2026-11-23（星期一）</b>，對上交易日 2026-11-20（星期五）；快照由 K仔喺 <b>2026-11-24 07:03 HKT</b> 直接讀取 ECB 官方 XML 核實。頁面載入時會嘗試即時讀取同一官方 XML；由於 ECB 伺服器冇送出跨域（CORS）許可，瀏覽器一般會阻擋，屆時顯示已核實快照並會注明。匯率只作參考，唔係即市買賣價。<br>
+  第 011 期 · Daily Fun Web · 數據來自開放數據平台，頁面本身用咗呢份數據做晒成版內容（排行榜、兌換計數機、升跌比較）。</p>
+  <p><a href="https://github.com/abcdkk-debug/daily-fun-web">GitHub repo</a> · <a href="https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml">ECB 原始 XML（每日）</a></p>
+</footer>
+<script>
+var SNAP = {"date": "2026-11-23", "prev": "2026-11-20", "rows": [{"code": "USD", "zh": "美元", "region": "北美洲", "rate": 1.0939, "per_hkd": 7.840936, "chg": 0.466222}, {"code": "JPY", "zh": "日圓", "region": "亞洲", "rate": 174.01, "per_hkd": 0.049291, "chg": 0.195391}, {"code": "CZK", "zh": "捷克克朗", "region": "歐洲", "rate": 24.455, "per_hkd": 0.350734, "chg": 0.057248}, {"code": "DKK", "zh": "丹麥克朗", "region": "歐洲", "rate": 7.4746, "per_hkd": 1.147513, "chg": 0.0}, {"code": "GBP", "zh": "英鎊", "region": "歐洲", "rate": 0.83673, "per_hkd": 10.250858, "chg": 0.074098}, {"code": "HUF", "zh": "匈牙利福林", "region": "歐洲", "rate": 372.28, "per_hkd": 0.02304, "chg": 0.341141}, {"code": "PLN", "zh": "波蘭茲羅提", "region": "歐洲", "rate": 4.4588, "per_hkd": 1.923657, "chg": -0.011214}, {"code": "RON", "zh": "羅馬尼亞列伊", "region": "歐洲", "rate": 5.3483, "per_hkd": 1.603725, "chg": 0.018698}, {"code": "SEK", "zh": "瑞典克朗", "region": "歐洲", "rate": 11.2375, "per_hkd": 0.763266, "chg": -0.222469}, {"code": "CHF", "zh": "瑞士法郎", "region": "歐洲", "rate": 0.9186, "per_hkd": 9.337252, "chg": 0.402787}, {"code": "ISK", "zh": "冰島克朗", "region": "歐洲", "rate": 137.2, "per_hkd": 0.062516, "chg": 0.0}, {"code": "NOK", "zh": "挪威克朗", "region": "歐洲", "rate": 10.7285, "per_hkd": 0.799478, "chg": -0.09787}, {"code": "TRY", "zh": "土耳其里拉", "region": "亞洲", "rate": 55.3405, "per_hkd": 0.15499, "chg": 0.430607}, {"code": "AUD", "zh": "澳洲元", "region": "大洋洲", "rate": 1.6532, "per_hkd": 5.188241, "chg": -0.272199}, {"code": "BRL", "zh": "巴西雷亞爾", "region": "南美洲", "rate": 6.5611, "per_hkd": 1.307281, "chg": -0.536495}, {"code": "CAD", "zh": "加拿大元", "region": "北美洲", "rate": 1.5711, "per_hkd": 5.45936, "chg": 0.07638}, {"code": "CNY", "zh": "人民幣", "region": "亞洲", "rate": 7.2905, "per_hkd": 1.17649, "chg": 0.662506}, {"code": "HKD", "zh": "港元", "region": "亞洲", "rate": 8.5772, "per_hkd": 1.0, "chg": 0.440703}, {"code": "IDR", "zh": "印尼盾", "region": "亞洲", "rate": 19932.94, "per_hkd": 0.00043, "chg": 0.694479}, {"code": "ILS", "zh": "以色列錫克爾", "region": "亞洲", "rate": 3.6643, "per_hkd": 2.340747, "chg": 0.256529}, {"code": "INR", "zh": "印度盧比", "region": "亞洲", "rate": 101.6395, "per_hkd": 0.084388, "chg": 0.207105}, {"code": "KRW", "zh": "韓圜", "region": "亞洲", "rate": 1475.51, "per_hkd": 0.005813, "chg": -0.235173}, {"code": "MXN", "zh": "墨西哥比索", "region": "北美洲", "rate": 21.0528, "per_hkd": 0.407414, "chg": -0.465971}, {"code": "MYR", "zh": "馬來西亞令吉", "region": "亞洲", "rate": 4.5101, "per_hkd": 1.901776, "chg": 0.210638}, {"code": "NZD", "zh": "新西蘭元", "region": "大洋洲", "rate": 2.0079, "per_hkd": 4.271727, "chg": -0.552816}, {"code": "PHP", "zh": "菲律賓比索", "region": "亞洲", "rate": 69.851, "per_hkd": 0.122793, "chg": 0.343588}, {"code": "SGD", "zh": "新加坡元", "region": "亞洲", "rate": 1.4124, "per_hkd": 6.072784, "chg": 0.254885}, {"code": "THB", "zh": "泰銖", "region": "亞洲", "rate": 37.242, "per_hkd": 0.23031, "chg": 0.053703}, {"code": "ZAR", "zh": "南非蘭特", "region": "非洲", "rate": 19.1513, "per_hkd": 0.447865, "chg": 0.247503}], "hkd": 8.5772};
+var META = [{"code": "USD", "zh": "美元", "region": "北美洲"}, {"code": "JPY", "zh": "日圓", "region": "亞洲"}, {"code": "CZK", "zh": "捷克克朗", "region": "歐洲"}, {"code": "DKK", "zh": "丹麥克朗", "region": "歐洲"}, {"code": "GBP", "zh": "英鎊", "region": "歐洲"}, {"code": "HUF", "zh": "匈牙利福林", "region": "歐洲"}, {"code": "PLN", "zh": "波蘭茲羅提", "region": "歐洲"}, {"code": "RON", "zh": "羅馬尼亞列伊", "region": "歐洲"}, {"code": "SEK", "zh": "瑞典克朗", "region": "歐洲"}, {"code": "CHF", "zh": "瑞士法郎", "region": "歐洲"}, {"code": "ISK", "zh": "冰島克朗", "region": "歐洲"}, {"code": "NOK", "zh": "挪威克朗", "region": "歐洲"}, {"code": "TRY", "zh": "土耳其里拉", "region": "亞洲"}, {"code": "AUD", "zh": "澳洲元", "region": "大洋洲"}, {"code": "BRL", "zh": "巴西雷亞爾", "region": "南美洲"}, {"code": "CAD", "zh": "加拿大元", "region": "北美洲"}, {"code": "CNY", "zh": "人民幣", "region": "亞洲"}, {"code": "HKD", "zh": "港元", "region": "亞洲"}, {"code": "IDR", "zh": "印尼盾", "region": "亞洲"}, {"code": "ILS", "zh": "以色列錫克爾", "region": "亞洲"}, {"code": "INR", "zh": "印度盧比", "region": "亞洲"}, {"code": "KRW", "zh": "韓圜", "region": "亞洲"}, {"code": "MXN", "zh": "墨西哥比索", "region": "北美洲"}, {"code": "MYR", "zh": "馬來西亞令吉", "region": "亞洲"}, {"code": "NZD", "zh": "新西蘭元", "region": "大洋洲"}, {"code": "PHP", "zh": "菲律賓比索", "region": "亞洲"}, {"code": "SGD", "zh": "新加坡元", "region": "亞洲"}, {"code": "THB", "zh": "泰銖", "region": "亞洲"}, {"code": "ZAR", "zh": "南非蘭特", "region": "非洲"}];
+var cur = {rows: SNAP.rows, date: SNAP.date, prev: SNAP.prev, live: false};
+var sortKey = 'per_hkd', sortDir = -1, region = '全部';
+function fmtHKD(v){ if(v>=1) return v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); if(v>=0.01) return v.toLocaleString('en-US',{minimumFractionDigits:4,maximumFractionDigits:4}); return v.toFixed(6).replace(/0+$/,'').replace(/\.$/,''); }
+function fmtRate(v){ return v.toLocaleString('en-US',{minimumFractionDigits: v<100?4:2, maximumFractionDigits: v<100?4:2}); }
+function chgHtml(c){ var s = c>=0?'+':''; return '<span class="'+(c>=0?'up':'dn')+'">'+s+c.toFixed(2)+'%</span>'; }
+function rowHtml(x){
+  return '<tr><td><b>'+x.zh+'</b> <span style="color:var(--muted)">'+x.code+'</span></td>'
+    +'<td class="num">'+fmtRate(x.rate)+'</td>'
+    +'<td class="num">HK$'+fmtHKD(x.per_hkd)+'</td>'
+    +'<td class="num">'+chgHtml(x.chg)+'</td><td>'+x.region+'</td></tr>';
+}
+function renderTable(){
+  var q = (document.getElementById('q').value||'').toLowerCase();
+  var list = cur.rows.filter(function(x){ return (region==='全部'||x.region===region) && (!q || (x.zh+x.code).toLowerCase().indexOf(q)>=0); });
+  list.sort(function(a,b){ var k=sortKey; var d=(a[k]<b[k]?-1:a[k]>b[k]?1:0); return d*sortDir; });
+  document.getElementById('fxBody').innerHTML = list.map(rowHtml).join('') || '<tr><td colspan="5">搵唔到符合條件嘅貨幣。</td></tr>';
+  document.getElementById('countLine').textContent = '顯示 ' + list.length + ' / ' + cur.rows.length + ' 種貨幣（' + cur.date + ' 匯率）。';
+}
+function sortBy(k){ if(sortKey===k){ sortDir*=-1; } else { sortKey=k; sortDir = (k==='zh')?1:-1; } renderTable(); }
+function setRegion(btn){ region = btn.getAttribute('data-r');
+  document.querySelectorAll('.controls button[data-r]').forEach(function(b){ b.classList.toggle('on', b===btn); });
+  renderTable(); }
+function calc(){
+  var amt = parseFloat(document.getElementById('hkdAmt').value);
+  if(isNaN(amt)||amt<0){ document.getElementById('convOut').textContent='請輸入有效嘅港元金額。'; return; }
+  var code = document.getElementById('curSel').value;
+  var rate = code==='EUR' ? 1 : null;
+  var got = amt / SNAP.hkd;
+  var out;
+  if(code==='EUR'){ out = 'HK$' + amt.toLocaleString('en-US') + ' ＝ <b>€' + got.toLocaleString('en-US',{maximumFractionDigits:2}) + '</b>'; }
+  else { var r = null; cur.rows.forEach(function(x){ if(x.code===code) r=x.rate; });
+    out = 'HK$' + amt.toLocaleString('en-US') + ' ＝ <b>' + (got*r).toLocaleString('en-US',{maximumFractionDigits:2}) + ' ' + code + '</b>（€1 = ' + fmtRate(r) + ' ' + code + '）'; }
+  document.getElementById('convOut').innerHTML = out;
+}
+function buildChips(){
+  var codes = ['USD','JPY','GBP','CNY','EUR','SGD','AUD','KRW','THB'];
+  document.getElementById('chips').innerHTML = codes.map(function(c){
+    var label = c==='EUR' ? '€1 = HK$' + SNAP.hkd.toFixed(4) : 'HK$1,000 → ' + (1000/SNAP.hkd*(c==='EUR'?1:(cur.rows.find(function(x){return x.code===c;})||{}).rate||0)).toLocaleString('en-US',{maximumFractionDigits: c==='JPY'||c==='KRW'?0:2}) + ' ' + c;
+    return '<button data-cur="'+c+'" onclick="pickCur(this)">'+label+'</button>';
+  }).join('');
+}
+function pickCur(btn){ document.getElementById('curSel').value = btn.getAttribute('data-cur'); calc(); }
+function quiz(btn, ok){
+  var el = btn.nextElementSibling;
+  while(el && !el.classList.contains('ans')) el = el.nextElementSibling;
+  if(!el) return;
+  el.textContent = ok ? '✅ 啱晒！' : '❌ 唔係呢個，再諗下。';
+  el.style.color = ok ? '#2e7d32' : '#c62828';
+}
+function setStatus(t){ document.getElementById('status').textContent = t; }
+function useSnapshot(reason){
+  cur = {rows: SNAP.rows, date: SNAP.date, prev: SNAP.prev, live:false};
+  renderTable(); calc(); buildChips();
+  setStatus('ℹ️ 顯示已核實快照（匯率日期 ' + SNAP.date + '）：即時讀取唔到 — ' + reason + '。歐央行伺服器冇送出 CORS 許可，瀏覽器會擋住跨域讀取。');
+}
+function fetchLive(manual){
+  var ctrl = new AbortController();
+  var to = setTimeout(function(){ ctrl.abort(); }, 20000);
+  fetch('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml', {signal: ctrl.signal})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+    .then(function(txt){
+      clearTimeout(to);
+      var doc = new DOMParser().parseFromString(txt, 'text/xml');
+      var cubes = doc.querySelectorAll('Cube[time]');
+      if(!cubes.length) throw new Error('解析唔到 XML');
+      var date = cubes[0].getAttribute('time');
+      var items = cubes[0].querySelectorAll('Cube[currency]');
+      var byCode = {};
+      items.forEach(function(c){ byCode[c.getAttribute('currency')] = parseFloat(c.getAttribute('rate')); });
+      var hkd = byCode['HKD']; if(!hkd) throw new Error('冇港元匯率');
+      var rows = META.map(function(m){
+        var r = byCode[m.code]; if(r==null) return null;
+        var old = SNAP.rows.find(function(x){ return x.code===m.code; });
+        var p = old ? old.rate : r;
+        return {code:m.code, zh:m.zh, region:m.region, rate:r, per_hkd: hkd/r, chg: (p/r-1)*100};
+      }).filter(Boolean);
+      cur = {rows: rows, date: date, prev: SNAP.date, live:true};
+      renderTable(); calc(); buildChips();
+      setStatus('✅ 即時數據已更新：歐央行 ' + date + ' 參考匯率（' + rows.length + ' 種貨幣）。€1 = HK$' + hkd.toFixed(4) + '。');
+    })
+    .catch(function(e){ clearTimeout(to); useSnapshot(manual ? ('再試失敗：' + (e.name==='AbortError' ? '逾時 20 秒' : (e.message||'網絡錯誤'))) : (e.name==='AbortError' ? '逾時 20 秒' : (e.message||'網絡／CORS 錯誤'))); });
+}
+renderTable(); calc(); buildChips(); fetchLive(false);
+</script>
+</body>
+</html>
