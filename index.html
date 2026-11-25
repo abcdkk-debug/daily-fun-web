@@ -3,25 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>第 011 期｜今日邊隻貨幣最值錢？— 歐洲央行歐元參考匯率</title>
+<title>第 012 期｜國際太空站而家喺邊？— ISS 即時位置</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-  :root{--ink:#10222e;--muted:#4a6b7a;--bg:#eaf2f7;--card:#ffffff;--accent:#0b5fa5;--teal:#009688;--sand:#ffc93c;--line:#c8d8de}
+  :root{--ink:#101736;--muted:#4a5578;--bg:#e9edf7;--card:#ffffff;--accent:#3d5afe;--violet:#7b2fbe;--teal:#009688;--sand:#ffc93c;--line:#c9d2e8}
   *{box-sizing:border-box}
   body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
-  header{background:linear-gradient(135deg,#0b2a4a,#0b5fa5 55%,#009688);color:#fff;padding:34px 20px 28px;text-align:center}
+  header{background:linear-gradient(135deg,#050914,#1b2a6b 55%,#7b2fbe);color:#fff;padding:34px 20px 28px;text-align:center}
   header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.9}
   header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
   header p{margin:.2em auto;max-width:720px;opacity:.95}
   main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(11,61,145,.10)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(16,23,54,.10)}
   .card h2{margin-top:0}
   .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-  .stat{background:#0b5fa5;color:#fff;border:1px solid #0b5fa5;border-radius:12px;padding:16px;text-align:center}
-  .stat b{display:block;font-size:1.9em;line-height:1.15;color:#fff}
+  .stat{background:#1b2a6b;color:#fff;border:1px solid #1b2a6b;border-radius:12px;padding:16px;text-align:center}
+  .stat b{display:block;font-size:1.7em;line-height:1.15;color:#fff}
   .stat span{font-size:.85em;opacity:.95}
+  .stat.violet{background:#5e35b1;border-color:#5e35b1}
   .stat.teal{background:#00796b;border-color:#00796b}
-  .stat.dark{background:#0b2a4a;border-color:#0b2a4a}
   .stat.amber{background:#b8860b;border-color:#b8860b}
+  .stat small{display:block;font-size:.72em;opacity:.85;margin-top:2px}
   .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
   .controls button{border:1.5px solid var(--accent);background:#fff;color:var(--accent);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em;font-weight:700}
   .controls button.on{background:var(--accent);color:#fff}
@@ -30,24 +32,18 @@
   table{width:100%;border-collapse:collapse;font-size:.95em}
   th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
   th{cursor:pointer;white-space:nowrap;color:var(--accent)}
-  th:hover{color:#0b2a4a}
+  th:hover{color:#1b2a6b}
   .num{font-variant-numeric:tabular-nums;white-space:nowrap}
-  .barwrap{background:#eef3f6;border-radius:999px;height:12px;overflow:hidden;min-width:90px}
-  .bar{height:12px;border-radius:999px;background:linear-gradient(90deg,#0b5fa5,#009688);min-width:2px}
+  #map{height:420px;border-radius:12px;border:1px solid var(--line);z-index:0}
+  .iss-icon{font-size:30px;line-height:1;text-align:center;text-shadow:0 0 6px #fff}
   #status{font-size:.9em;color:var(--muted)}
-  .up{color:#2e7d32;font-weight:700}.dn{color:#c62828;font-weight:700}
-  .conv{font-size:1.25em;font-weight:700;margin:12px 0}
-  .conv b{color:var(--accent)}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-  .chips button{border:1.5px solid var(--line);background:#f4fafb;color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer;font-size:.92em}
-  .chips button:hover{border-color:var(--accent)}
+  .note{background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:12px 14px;font-size:.92em}
   .facts li{margin:8px 0}
-  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1.5px solid var(--line);background:#f4fafb;color:var(--ink);border-radius:10px;cursor:pointer;font-size:1em}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1.5px solid var(--line);background:#f4f6fd;color:var(--ink);border-radius:10px;cursor:pointer;font-size:1em}
   .quiz button:hover{border-color:var(--accent)}
   .quiz .ans{font-weight:700;margin-top:10px}
   footer{max-width:920px;margin:0 auto;padding:0 16px 34px;color:var(--muted);font-size:.88em;line-height:1.8}
   footer a{color:var(--accent)}
-  .note{background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:12px 14px;font-size:.92em}
   .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   @media(max-width:640px){.twocol{grid-template-columns:1fr}}
 </style>
@@ -55,275 +51,229 @@
 <body>
 <div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">📚 想睇返之前發佈過嘅嘢？ <a href="archive/index.html" style="color:#ffc93c;font-weight:700">去「過往期數」總覽 →</a></div>
 <header>
-  <div class="kicker">DAILY FUN WEB · 第 011 期 · 2026-11-24</div>
-  <h1>💱 今日邊隻貨幣最值錢？</h1>
-  <p>歐洲央行每個工作日公布歐元參考匯率 — €1 兌到幾多外幣、邊隻貨幣一個單位最值錢、邊隻兌歐元升得最多，仲有 HK$1,000 可以兌到幾多，全喺呢度。</p>
+  <div class="kicker">DAILY FUN WEB · 第 012 期 · 2026-11-25</div>
+  <h1>🛰️ 國際太空站而家喺邊？</h1>
+  <p>國際太空站（ISS）每秒飛成 7 公里幾，90 分鐘左右就繞地球一圈。呢頁每 5 秒即時讀一次佢嘅位置，等你親眼睇住佢喺地圖上面飛，仲可以睇下佢離香港幾遠、同埋而家上面有邊 7 個人。</p>
 </header>
 <main>
   <div class="card">
-    <p id="status">⏳ 嘗試讀取歐洲央行即時匯率…</p>
+    <p id="status">⏳ 嘗試讀取國際太空站即時位置…</p>
     <div class="stats">
-      <div class="stat"><b id="stEurHkd">HK$8.58</b><span>€1 兌幾多港元</span></div>
-      <div class="stat teal"><b id="stTopUnit">£1 = HK$10.25</b><span>一個單位最值錢：英鎊</span></div>
-      <div class="stat dark"><b id="stCount">29</b><span>種貨幣參考匯率</span></div>
-      <div class="stat amber"><b id="stGain">印尼盾 +0.69%</b><span>兌歐元升值最多（自上週五）</span></div>
+      <div class="stat"><b id="stLatLon">47.67°N, 124.29°W</b><span>即時位置（緯度，經度）</span><small id="stWhen">快照 06:58:34 HKT</small></div>
+      <div class="stat violet"><b id="stAlt">418 公里</b><span>離地面高度</span><small>大約係香港去台北直線距離嘅一半多少少</small></div>
+      <div class="stat teal"><b id="stVel">27,609 公里/小時</b><span>飛行速度</span><small id="stPerSec">每秒約 7.67 公里</small></div>
+      <div class="stat amber"><b id="stOrbit">約 92.7 分鐘</b><span>繞地球一圈</span><small id="stSun">即係一日睇到約 16 次日出</small></div>
     </div>
-    <p style="color:var(--muted);font-size:.92em">快照匯率日期：2026-11-23（星期一），對上交易日 2026-11-20（星期五）；快照核實時間：2026-11-24 07:03 HKT。頁面載入時會嘗試即時讀歐洲央行官方 XML；因歐央行伺服器冇送出 CORS 許可，瀏覽器一般會擋住跨域讀取，屆時顯示呢個已核實快照，並會注明。</p>
-  </div>
-
-  <div class="card">
-    <h2>🧮 港元兌換計數機</h2>
-    <p>用快照匯率計：你手上有幾多港元，可以兌到幾多外幣？</p>
-    <div class="controls">
-      <label>港元 HK$ <input id="hkdAmt" type="number" value="1000" min="0" step="any" style="max-width:160px" oninput="calc()"></label>
-      <select id="curSel" onchange="calc()">
-        <option value="USD">美元 USD</option><option value="JPY">日圓 JPY</option>
-        <option value="EUR">歐元 EUR</option><option value="GBP">英鎊 GBP</option>
-        <option value="CNY">人民幣 CNY</option><option value="SGD">新加坡元 SGD</option>
-        <option value="AUD">澳洲元 AUD</option><option value="KRW">韓圜 KRW</option>
-        <option value="THB">泰銖 THB</option><option value="TWD2" disabled>（新台幣唔喺歐央行名單）</option>
-      </select>
-      <button onclick="calc()">計一計</button>
+    <div class="stats" style="margin-top:12px">
+      <div class="stat"><b id="stHk">10,295 公里</b><span>離香港幾遠（地面距離）</span><small>沿地球表面計</small></div>
+      <div class="stat violet"><b id="stCity">西雅圖 · 147 公里</b><span>最近嘅大城市</span><small>美國華盛頓州</small></div>
+      <div class="stat teal"><b id="stVis">☀️ 日光下</b><span>太空站見唔見到太陽</span><small id="stFoot">地面覆蓋直徑約 4,498 公里</small></div>
+      <div class="stat amber"><b id="stCrew">7 人</b><span>而家喺太空站上面</span><small>遠征 75 號（Expedition 75）</small></div>
     </div>
-    <p class="conv" id="convOut"></p>
-    <div class="chips" id="chips"></div>
-    <p style="color:var(--muted);font-size:.9em">參考價唔係找換店即市價，實際兌換會有差價同手續費。留意：歐央行名單冇新台幣同俄羅斯盧布（盧布自 2022 年起暫停公布）。</p>
+    <p style="color:var(--muted);font-size:.92em">位置快照核實時間：2026-11-25 06:58:34 HKT（緯度 47.665351，經度 -124.289903，高度 418.10 公里，速度 27,608.73 公里/小時，日光下）；06:59:36 第二個樣本：緯度 49.114389，經度 -118.927955，高度 418.49 公里。頁面載入後每 5 秒即時讀 Where The ISS At? 官方 API（免金鑰、有 CORS 許可）；讀唔到就顯示呢個已核實快照，並會注明。</p>
   </div>
 
   <div class="card">
-    <h2>🏆 一個單位值幾多港元？</h2>
-    <p>唔好畀「€1 兌 19,933 印尼盾」呢啲大數字呃到 — 數字大唔代表值錢。呢度按「1 個單位外幣值幾多港元」排，英鎊先係最值錢。</p>
-    <table>
-      <thead><tr><th>貨幣</th><th>1 單位兌港元</th><th>佔比</th></tr></thead>
-      <tbody id="unitBody">
-<tr><td><b>英鎊</b> <span style="color:var(--muted)">GBP</span></td><td class="num">HK$10.25</td><td><div class="barwrap"><div class="bar" style="width:100%"></div></div></td></tr>
-<tr><td><b>瑞士法郎</b> <span style="color:var(--muted)">CHF</span></td><td class="num">HK$9.34</td><td><div class="barwrap"><div class="bar" style="width:91%"></div></div></td></tr>
-<tr><td><b>美元</b> <span style="color:var(--muted)">USD</span></td><td class="num">HK$7.84</td><td><div class="barwrap"><div class="bar" style="width:76%"></div></div></td></tr>
-<tr><td><b>新加坡元</b> <span style="color:var(--muted)">SGD</span></td><td class="num">HK$6.07</td><td><div class="barwrap"><div class="bar" style="width:59%"></div></div></td></tr>
-<tr><td><b>加拿大元</b> <span style="color:var(--muted)">CAD</span></td><td class="num">HK$5.46</td><td><div class="barwrap"><div class="bar" style="width:53%"></div></div></td></tr>
-<tr><td><b>澳洲元</b> <span style="color:var(--muted)">AUD</span></td><td class="num">HK$5.19</td><td><div class="barwrap"><div class="bar" style="width:51%"></div></div></td></tr>
-<tr><td><b>新西蘭元</b> <span style="color:var(--muted)">NZD</span></td><td class="num">HK$4.27</td><td><div class="barwrap"><div class="bar" style="width:42%"></div></div></td></tr>
-<tr><td><b>以色列錫克爾</b> <span style="color:var(--muted)">ILS</span></td><td class="num">HK$2.34</td><td><div class="barwrap"><div class="bar" style="width:23%"></div></div></td></tr>
-<tr><td><b>波蘭茲羅提</b> <span style="color:var(--muted)">PLN</span></td><td class="num">HK$1.92</td><td><div class="barwrap"><div class="bar" style="width:19%"></div></div></td></tr>
-<tr><td><b>馬來西亞令吉</b> <span style="color:var(--muted)">MYR</span></td><td class="num">HK$1.90</td><td><div class="barwrap"><div class="bar" style="width:19%"></div></div></td></tr>
-
-      </tbody>
-    </table>
-    <p style="color:var(--muted);font-size:.9em">€1 本身值 HK$8.58，排第二位，僅次於英鎊。最低係印尼盾，1 盾只值 HK$0.0004 左右。</p>
-  </div>
-
-  <div class="card">
-    <h2>📋 29 種貨幣完整匯率表</h2>
-    <p>歐洲央行報價方式係「€1 兌幾多外幣」；升跌一欄係嗰隻貨幣兌歐元嘅價值變化（+ 即係兌歐元升值），對比上個交易日 2026-11-20。撳表頭可以排序。</p>
+    <h2>🗺️ 即時軌跡地圖</h2>
+    <p>🛰️ 就係太空站而家嘅位置，紫色線係佢啱啱飛過嘅軌跡，圓圈係佢喺地面嘅可見覆蓋範圍。地圖會跟住佢一齊郁。</p>
+    <div id="map"></div>
     <div class="controls">
-      <input id="q" type="text" placeholder="搜尋貨幣名／代碼，例如：日圓、USD…" oninput="renderTable()">
-      <button class="on" data-r="全部" onclick="setRegion(this)">全部地區</button>
-      <button data-r="歐洲" onclick="setRegion(this)">歐洲</button>
-      <button data-r="亞洲" onclick="setRegion(this)">亞洲</button>
-      <button data-r="北美洲" onclick="setRegion(this)">北美洲</button>
-      <button data-r="大洋洲" onclick="setRegion(this)">大洋洲</button>
-      <button data-r="南美洲" onclick="setRegion(this)">南美洲</button>
-      <button data-r="非洲" onclick="setRegion(this)">非洲</button>
+      <button id="followBtn" class="on" onclick="toggleFollow()">📍 跟住太空站：開</button>
+      <button onclick="map.setView([22.3193,114.1694],4)">🇭🇰 睇香港</button>
+      <button onclick="map.setView([0,0],2)">🌍 睇全球</button>
+      <span id="mapNote" style="color:var(--muted);font-size:.9em"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🌏 離邊個城市最近？</h2>
+    <p>用即時位置計，太空站而家離下面邊個大城市最近（地面距離，沿地球表面計）。撳表頭可以排序，搜尋框可以搵城市。</p>
+    <div class="controls">
+      <input id="cityQ" type="search" placeholder="🔍 搜尋城市，例如：香港、東京、倫敦…" oninput="renderCities()">
+      <button onclick="renderCities()">重新排序</button>
     </div>
     <table>
-      <thead><tr><th onclick="sortBy('zh')">貨幣 ↕</th><th onclick="sortBy('rate')">€1 兌幾多 ↕</th><th onclick="sortBy('per_hkd')">1 單位兌港元 ↕</th><th onclick="sortBy('chg')">兌歐元升跌 ↕</th><th>地區</th></tr></thead>
-      <tbody id="fxBody">
-<tr data-region="歐洲" data-name="英鎊 GBP £"><td><b>英鎊</b> <span style="color:var(--muted)">GBP</span></td><td class="num">0.8367</td><td class="num">HK$10.25</td><td class="num"><span class="up">+0.07%</span></td><td>歐洲</td></tr>
-<tr data-region="歐洲" data-name="瑞士法郎 CHF CHF "><td><b>瑞士法郎</b> <span style="color:var(--muted)">CHF</span></td><td class="num">0.9186</td><td class="num">HK$9.34</td><td class="num"><span class="up">+0.40%</span></td><td>歐洲</td></tr>
-<tr data-region="北美洲" data-name="美元 USD $"><td><b>美元</b> <span style="color:var(--muted)">USD</span></td><td class="num">1.0939</td><td class="num">HK$7.84</td><td class="num"><span class="up">+0.47%</span></td><td>北美洲</td></tr>
-<tr data-region="亞洲" data-name="新加坡元 SGD S$"><td><b>新加坡元</b> <span style="color:var(--muted)">SGD</span></td><td class="num">1.4124</td><td class="num">HK$6.07</td><td class="num"><span class="up">+0.25%</span></td><td>亞洲</td></tr>
-<tr data-region="北美洲" data-name="加拿大元 CAD C$"><td><b>加拿大元</b> <span style="color:var(--muted)">CAD</span></td><td class="num">1.5711</td><td class="num">HK$5.46</td><td class="num"><span class="up">+0.08%</span></td><td>北美洲</td></tr>
-<tr data-region="大洋洲" data-name="澳洲元 AUD A$"><td><b>澳洲元</b> <span style="color:var(--muted)">AUD</span></td><td class="num">1.6532</td><td class="num">HK$5.19</td><td class="num"><span class="dn">-0.27%</span></td><td>大洋洲</td></tr>
-<tr data-region="大洋洲" data-name="新西蘭元 NZD NZ$"><td><b>新西蘭元</b> <span style="color:var(--muted)">NZD</span></td><td class="num">2.0079</td><td class="num">HK$4.27</td><td class="num"><span class="dn">-0.55%</span></td><td>大洋洲</td></tr>
-<tr data-region="亞洲" data-name="以色列錫克爾 ILS ₪"><td><b>以色列錫克爾</b> <span style="color:var(--muted)">ILS</span></td><td class="num">3.6643</td><td class="num">HK$2.34</td><td class="num"><span class="up">+0.26%</span></td><td>亞洲</td></tr>
-<tr data-region="歐洲" data-name="波蘭茲羅提 PLN zł"><td><b>波蘭茲羅提</b> <span style="color:var(--muted)">PLN</span></td><td class="num">4.4588</td><td class="num">HK$1.92</td><td class="num"><span class="dn">-0.01%</span></td><td>歐洲</td></tr>
-<tr data-region="亞洲" data-name="馬來西亞令吉 MYR RM"><td><b>馬來西亞令吉</b> <span style="color:var(--muted)">MYR</span></td><td class="num">4.5101</td><td class="num">HK$1.90</td><td class="num"><span class="up">+0.21%</span></td><td>亞洲</td></tr>
-<tr data-region="歐洲" data-name="羅馬尼亞列伊 RON lei"><td><b>羅馬尼亞列伊</b> <span style="color:var(--muted)">RON</span></td><td class="num">5.3483</td><td class="num">HK$1.60</td><td class="num"><span class="up">+0.02%</span></td><td>歐洲</td></tr>
-<tr data-region="南美洲" data-name="巴西雷亞爾 BRL R$"><td><b>巴西雷亞爾</b> <span style="color:var(--muted)">BRL</span></td><td class="num">6.5611</td><td class="num">HK$1.31</td><td class="num"><span class="dn">-0.54%</span></td><td>南美洲</td></tr>
-<tr data-region="亞洲" data-name="人民幣 CNY ¥"><td><b>人民幣</b> <span style="color:var(--muted)">CNY</span></td><td class="num">7.2905</td><td class="num">HK$1.18</td><td class="num"><span class="up">+0.66%</span></td><td>亞洲</td></tr>
-<tr data-region="歐洲" data-name="丹麥克朗 DKK kr"><td><b>丹麥克朗</b> <span style="color:var(--muted)">DKK</span></td><td class="num">7.4746</td><td class="num">HK$1.15</td><td class="num"><span class="up">+0.00%</span></td><td>歐洲</td></tr>
-<tr data-region="亞洲" data-name="港元 HKD HK$"><td><b>港元</b> <span style="color:var(--muted)">HKD</span></td><td class="num">8.5772</td><td class="num">HK$1.00</td><td class="num"><span class="up">+0.44%</span></td><td>亞洲</td></tr>
-<tr data-region="歐洲" data-name="挪威克朗 NOK kr"><td><b>挪威克朗</b> <span style="color:var(--muted)">NOK</span></td><td class="num">10.7285</td><td class="num">HK$0.7995</td><td class="num"><span class="dn">-0.10%</span></td><td>歐洲</td></tr>
-<tr data-region="歐洲" data-name="瑞典克朗 SEK kr"><td><b>瑞典克朗</b> <span style="color:var(--muted)">SEK</span></td><td class="num">11.2375</td><td class="num">HK$0.7633</td><td class="num"><span class="dn">-0.22%</span></td><td>歐洲</td></tr>
-<tr data-region="非洲" data-name="南非蘭特 ZAR R"><td><b>南非蘭特</b> <span style="color:var(--muted)">ZAR</span></td><td class="num">19.1513</td><td class="num">HK$0.4479</td><td class="num"><span class="up">+0.25%</span></td><td>非洲</td></tr>
-<tr data-region="北美洲" data-name="墨西哥比索 MXN Mex$"><td><b>墨西哥比索</b> <span style="color:var(--muted)">MXN</span></td><td class="num">21.0528</td><td class="num">HK$0.4074</td><td class="num"><span class="dn">-0.47%</span></td><td>北美洲</td></tr>
-<tr data-region="歐洲" data-name="捷克克朗 CZK Kč"><td><b>捷克克朗</b> <span style="color:var(--muted)">CZK</span></td><td class="num">24.4550</td><td class="num">HK$0.3507</td><td class="num"><span class="up">+0.06%</span></td><td>歐洲</td></tr>
-<tr data-region="亞洲" data-name="泰銖 THB ฿"><td><b>泰銖</b> <span style="color:var(--muted)">THB</span></td><td class="num">37.2420</td><td class="num">HK$0.2303</td><td class="num"><span class="up">+0.05%</span></td><td>亞洲</td></tr>
-<tr data-region="亞洲" data-name="土耳其里拉 TRY ₺"><td><b>土耳其里拉</b> <span style="color:var(--muted)">TRY</span></td><td class="num">55.3405</td><td class="num">HK$0.1550</td><td class="num"><span class="up">+0.43%</span></td><td>亞洲</td></tr>
-<tr data-region="亞洲" data-name="菲律賓比索 PHP ₱"><td><b>菲律賓比索</b> <span style="color:var(--muted)">PHP</span></td><td class="num">69.8510</td><td class="num">HK$0.1228</td><td class="num"><span class="up">+0.34%</span></td><td>亞洲</td></tr>
-<tr data-region="亞洲" data-name="印度盧比 INR ₹"><td><b>印度盧比</b> <span style="color:var(--muted)">INR</span></td><td class="num">101.64</td><td class="num">HK$0.0844</td><td class="num"><span class="up">+0.21%</span></td><td>亞洲</td></tr>
-<tr data-region="歐洲" data-name="冰島克朗 ISK kr"><td><b>冰島克朗</b> <span style="color:var(--muted)">ISK</span></td><td class="num">137.20</td><td class="num">HK$0.0625</td><td class="num"><span class="up">+0.00%</span></td><td>歐洲</td></tr>
-<tr data-region="亞洲" data-name="日圓 JPY ¥"><td><b>日圓</b> <span style="color:var(--muted)">JPY</span></td><td class="num">174.01</td><td class="num">HK$0.0493</td><td class="num"><span class="up">+0.20%</span></td><td>亞洲</td></tr>
-<tr data-region="歐洲" data-name="匈牙利福林 HUF Ft"><td><b>匈牙利福林</b> <span style="color:var(--muted)">HUF</span></td><td class="num">372.28</td><td class="num">HK$0.0230</td><td class="num"><span class="up">+0.34%</span></td><td>歐洲</td></tr>
-<tr data-region="亞洲" data-name="韓圜 KRW ₩"><td><b>韓圜</b> <span style="color:var(--muted)">KRW</span></td><td class="num">1,475.51</td><td class="num">HK$0.005813</td><td class="num"><span class="dn">-0.24%</span></td><td>亞洲</td></tr>
-<tr data-region="亞洲" data-name="印尼盾 IDR Rp"><td><b>印尼盾</b> <span style="color:var(--muted)">IDR</span></td><td class="num">19,932.94</td><td class="num">HK$0.00043</td><td class="num"><span class="up">+0.69%</span></td><td>亞洲</td></tr>
-
-      </tbody>
+      <thead><tr><th onclick="sortCities('name')">城市 ↕</th><th onclick="sortCities('dist')">離太空站幾遠 ↕</th><th>方向</th></tr></thead>
+      <tbody id="cityBody"></tbody>
     </table>
-    <p id="countLine" style="color:var(--muted);font-size:.9em"></p>
+    <p style="color:var(--muted);font-size:.9em">快照一刻（06:58:34 HKT）最近係西雅圖，147 公里；其次係溫哥華約 199 公里。太空站飛得咁快，呢個排名每分鐘都會變。</p>
   </div>
 
   <div class="card">
-    <h2>📈 上個交易日邊隻升、邊隻跌？</h2>
-    <p>對比 2026-11-20（星期五）收市參考價，呢個星期一邊隻貨幣兌歐元升值最多、邊隻跌得最多。</p>
-    <div class="twocol">
-      <div>
-        <h3 style="margin:0 0 6px;color:#2e7d32">⬆️ 兌歐元升值最多</h3>
-        <table><thead><tr><th>貨幣</th><th>升幅</th></tr></thead><tbody>
-<tr><td><b>印尼盾</b> IDR</td><td class="num"><span class="up">+0.69%</span></td></tr>
-<tr><td><b>人民幣</b> CNY</td><td class="num"><span class="up">+0.66%</span></td></tr>
-<tr><td><b>美元</b> USD</td><td class="num"><span class="up">+0.47%</span></td></tr>
-<tr><td><b>港元</b> HKD</td><td class="num"><span class="up">+0.44%</span></td></tr>
-<tr><td><b>土耳其里拉</b> TRY</td><td class="num"><span class="up">+0.43%</span></td></tr>
-
-        </tbody></table>
-      </div>
-      <div>
-        <h3 style="margin:0 0 6px;color:#c62828">⬇️ 兌歐元跌得最多</h3>
-        <table><thead><tr><th>貨幣</th><th>跌幅</th></tr></thead><tbody>
-<tr><td><b>新西蘭元</b> NZD</td><td class="num"><span class="dn">-0.55%</span></td></tr>
-<tr><td><b>巴西雷亞爾</b> BRL</td><td class="num"><span class="dn">-0.54%</span></td></tr>
-<tr><td><b>墨西哥比索</b> MXN</td><td class="num"><span class="dn">-0.47%</span></td></tr>
-<tr><td><b>澳洲元</b> AUD</td><td class="num"><span class="dn">-0.27%</span></td></tr>
-<tr><td><b>韓圜</b> KRW</td><td class="num"><span class="dn">-0.24%</span></td></tr>
-
-        </tbody></table>
-      </div>
+    <h2>👨‍🚀 而家上面有邊 7 個人？</h2>
+    <p>遠征 75 號（Expedition 75）機組人員，截至 2026-11-24 經 NASA 遠征 75 號專頁核實。撳表頭排序，或者按機構篩選。</p>
+    <div class="controls" id="crewFilters">
+      <button class="on" data-ag="all" onclick="filterCrew('all',this)">全部 7 人</button>
+      <button data-ag="NASA" onclick="filterCrew('NASA',this)">NASA（美國）</button>
+      <button data-ag="Roscosmos" onclick="filterCrew('Roscosmos',this)">Roscosmos（俄羅斯）</button>
+      <button data-ag="CSA" onclick="filterCrew('CSA',this)">CSA（加拿大）</button>
     </div>
-    <p>港元兌歐元升咗 +0.44%，美元升 +0.47% — 港元同美元掛鈎，升跌通常一齊行。留意歐央行星期六、日唔公布匯率，所以對上一個交易日係星期五。</p>
-  </div>
-
-  <div class="card">
-    <h2>🧠 冷知識</h2>
-    <ul class="facts">
-      <li>歐洲央行每個工作日大約歐洲中部時間 16:00 公布參考匯率，根據當日 14:10 左右嘅市場報價釐定；呢個係參考價，唔係銀行或者找換店嘅即市買賣價。</li>
-      <li>報價方向好易撈亂：歐央行寫「€1 = 1.0939 美元」，數字跌唔代表美元跌 — 數字跌即係用少啲美元就兌到 €1，即係美元升值。呢版將升跌轉做「外幣兌歐元嘅價值變化」，等大家唔使反轉諗。</li>
-      <li>數字最大嘅係印尼盾（€1 = 19,932.94 盾），但 1 盾只值 HK$0.0004；數字最細唔係最唔值錢 — 真正「一個單位最值錢」係英鎊，£1 = HK$10.25。</li>
-      <li>港元兌美元掛鈎喺 7.75–7.85 區間，所以港元兌歐元嘅走勢好多時跟住美元行；今次美元兌歐元升 0.47%，港元亦升 0.44%。</li>
-      <li>歐央行參考匯率名單只有 29 種貨幣左右，冇新台幣、冇俄羅斯盧布（自 2022 年 3 月起暫停公布盧布參考價），亦冇港元以外嘅其他聯繫匯率貨幣。</li>
-    </ul>
+    <table>
+      <thead><tr><th onclick="sortCrew('name')">姓名 ↕</th><th>機構</th><th>職位</th><th onclick="sortCrew('days')">上咗去幾耐 ↕</th><th>點上去</th></tr></thead>
+      <tbody id="crewBody"></tbody>
+    </table>
+    <p style="color:var(--muted);font-size:.92em">另外仲有 3 個人喺中國天宮太空站，即係而家全世界合共有 10 個人喺太空（截至 2026-11-24 核實）。</p>
   </div>
 
   <div class="card quiz">
-    <h2>🎯 考下你</h2>
-    <p><b>1.</b> HK$1,000 用快照匯率可以兌到幾多日圓？</p>
-    <button onclick="quiz(this,false)">A. 約 2,029 日圓</button>
-    <button onclick="quiz(this,true)">B. 約 20,288 日圓</button>
-    <button onclick="quiz(this,false)">C. 約 202,880 日圓</button>
-    <p class="ans" id="a1"></p>
-    <p><b>2.</b> €1 兌幾多港元？</p>
-    <button onclick="quiz(this,false)">A. HK$7.84（嗰個係 1 美元）</button>
-    <button onclick="quiz(this,true)">B. HK$8.58</button>
-    <button onclick="quiz(this,false)">C. HK$10.25（嗰個係 1 英鎊）</button>
-    <p class="ans" id="a2"></p>
-    <p><b>3.</b> 上個交易日，邊隻貨幣兌歐元升值最多？</p>
-    <button onclick="quiz(this,false)">A. 日圓</button>
-    <button onclick="quiz(this,true)">B. 印尼盾（+0.69%）</button>
-    <button onclick="quiz(this,false)">C. 新西蘭元（佢跌得最多，-0.55%）</button>
-    <p class="ans" id="a3"></p>
+    <h2>🧠 太空站小測驗</h2>
+    <p>撳一個答案，睇下你估唔估中：</p>
+    <div id="quizBox"></div>
   </div>
 
   <div class="card">
-    <h2>🔁 想睇最新匯率？</h2>
-    <p>歐洲央行每個工作日約 16:00（歐洲中部時間）更新，香港時間即係大約夜晚 23:00。撳下面掣再試一次即時讀取，或者直接去 ECB 官網睇原始數據。</p>
-    <div class="controls">
-      <button onclick="fetchLive(true)">再試即時讀取</button>
-      <a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" target="_blank" rel="noopener">去 ECB 官網睇參考匯率 →</a>
-    </div>
+    <h2>💡 冷知識</h2>
+    <ul class="facts">
+      <li>🚀 太空站每秒飛約 <b>7.67 公里</b> — 即係由香港中環去機場（約 35 公里）唔使 5 秒。</li>
+      <li>🌅 因為每約 93 分鐘繞地球一圈，站上面嘅太空人一日會睇到大約 <b>16 次日出同日落</b>。</li>
+      <li>📏 太空站離地面大約 <b>418 公里</b> — 香港去台北嘅直線距離大約係 810 公里，即係一半多少少。</li>
+      <li>🔭 天氣好、時間啱嘅時候，喺地面用肉眼都睇到太空站飛過，佢係天上最光嘅人造物體之一。</li>
+      <li>🛰️ 太空站由 1998 年開始組裝，上面長期有人居住已經超過 25 年。</li>
+      <li>🌍 太空站軌道傾角 51.6°，即係佢飛到最北／最南都係緯度 51.6° 左右，永遠唔會飛過香港正上空（香港緯度 22.3°），但會經過香港附近上空。</li>
+    </ul>
+  </div>
+
+  <div class="card note">
+    <b>數據來源同說明：</b>即時位置、高度、速度、日光狀態嚟自 <b>Where The ISS At?</b>（wheretheiss.at）公開 API，數據源自 NORAD 軌道根數（TLE），免金鑰、限速每秒 1 次，本頁每 5 秒讀一次。機組名單嚟自 <b>NASA 遠征 75 號專頁</b>（nasa.gov/mission/expedition-75）及 Wikipedia Expedition 75 條目，核實日期 2026-11-25。城市距離用 Haversine 公式由即時經緯度計出，係沿地球表面嘅地面距離，唔係直線斜距。open-notify.org 嘅太空人名單 API 喺核實時未能連線，所以機組名單用已核實快照，唔係即時讀取。
   </div>
 </main>
 <footer>
-  <p><b>數據來源：</b>European Central Bank（歐洲央行）— Euro foreign exchange reference rates，每日參考匯率 XML（eurofxref-daily.xml）及 90 日歷史（eurofxref-hist.xml）。<br>
-  匯率日期：<b>2026-11-23（星期一）</b>，對上交易日 2026-11-20（星期五）；快照由 K仔喺 <b>2026-11-24 07:03 HKT</b> 直接讀取 ECB 官方 XML 核實。頁面載入時會嘗試即時讀取同一官方 XML；由於 ECB 伺服器冇送出跨域（CORS）許可，瀏覽器一般會阻擋，屆時顯示已核實快照並會注明。匯率只作參考，唔係即市買賣價。<br>
-  第 011 期 · Daily Fun Web · 數據來自開放數據平台，頁面本身用咗呢份數據做晒成版內容（排行榜、兌換計數機、升跌比較）。</p>
-  <p><a href="https://github.com/abcdkk-debug/daily-fun-web">GitHub repo</a> · <a href="https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml">ECB 原始 XML（每日）</a></p>
+  第 012 期 · 2026-11-25 · Daily Fun Web — 每日用世界各地開放數據整一版有趣網頁。<br>
+  數據：Where The ISS At? API（wheretheiss.at）· 機組名單：NASA Expedition 75 · <a href="archive/index.html">📚 過往期數總覽</a> · <a href="https://github.com/abcdkk-debug/daily-fun-web">GitHub repo</a>
 </footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-var SNAP = {"date": "2026-11-23", "prev": "2026-11-20", "rows": [{"code": "USD", "zh": "美元", "region": "北美洲", "rate": 1.0939, "per_hkd": 7.840936, "chg": 0.466222}, {"code": "JPY", "zh": "日圓", "region": "亞洲", "rate": 174.01, "per_hkd": 0.049291, "chg": 0.195391}, {"code": "CZK", "zh": "捷克克朗", "region": "歐洲", "rate": 24.455, "per_hkd": 0.350734, "chg": 0.057248}, {"code": "DKK", "zh": "丹麥克朗", "region": "歐洲", "rate": 7.4746, "per_hkd": 1.147513, "chg": 0.0}, {"code": "GBP", "zh": "英鎊", "region": "歐洲", "rate": 0.83673, "per_hkd": 10.250858, "chg": 0.074098}, {"code": "HUF", "zh": "匈牙利福林", "region": "歐洲", "rate": 372.28, "per_hkd": 0.02304, "chg": 0.341141}, {"code": "PLN", "zh": "波蘭茲羅提", "region": "歐洲", "rate": 4.4588, "per_hkd": 1.923657, "chg": -0.011214}, {"code": "RON", "zh": "羅馬尼亞列伊", "region": "歐洲", "rate": 5.3483, "per_hkd": 1.603725, "chg": 0.018698}, {"code": "SEK", "zh": "瑞典克朗", "region": "歐洲", "rate": 11.2375, "per_hkd": 0.763266, "chg": -0.222469}, {"code": "CHF", "zh": "瑞士法郎", "region": "歐洲", "rate": 0.9186, "per_hkd": 9.337252, "chg": 0.402787}, {"code": "ISK", "zh": "冰島克朗", "region": "歐洲", "rate": 137.2, "per_hkd": 0.062516, "chg": 0.0}, {"code": "NOK", "zh": "挪威克朗", "region": "歐洲", "rate": 10.7285, "per_hkd": 0.799478, "chg": -0.09787}, {"code": "TRY", "zh": "土耳其里拉", "region": "亞洲", "rate": 55.3405, "per_hkd": 0.15499, "chg": 0.430607}, {"code": "AUD", "zh": "澳洲元", "region": "大洋洲", "rate": 1.6532, "per_hkd": 5.188241, "chg": -0.272199}, {"code": "BRL", "zh": "巴西雷亞爾", "region": "南美洲", "rate": 6.5611, "per_hkd": 1.307281, "chg": -0.536495}, {"code": "CAD", "zh": "加拿大元", "region": "北美洲", "rate": 1.5711, "per_hkd": 5.45936, "chg": 0.07638}, {"code": "CNY", "zh": "人民幣", "region": "亞洲", "rate": 7.2905, "per_hkd": 1.17649, "chg": 0.662506}, {"code": "HKD", "zh": "港元", "region": "亞洲", "rate": 8.5772, "per_hkd": 1.0, "chg": 0.440703}, {"code": "IDR", "zh": "印尼盾", "region": "亞洲", "rate": 19932.94, "per_hkd": 0.00043, "chg": 0.694479}, {"code": "ILS", "zh": "以色列錫克爾", "region": "亞洲", "rate": 3.6643, "per_hkd": 2.340747, "chg": 0.256529}, {"code": "INR", "zh": "印度盧比", "region": "亞洲", "rate": 101.6395, "per_hkd": 0.084388, "chg": 0.207105}, {"code": "KRW", "zh": "韓圜", "region": "亞洲", "rate": 1475.51, "per_hkd": 0.005813, "chg": -0.235173}, {"code": "MXN", "zh": "墨西哥比索", "region": "北美洲", "rate": 21.0528, "per_hkd": 0.407414, "chg": -0.465971}, {"code": "MYR", "zh": "馬來西亞令吉", "region": "亞洲", "rate": 4.5101, "per_hkd": 1.901776, "chg": 0.210638}, {"code": "NZD", "zh": "新西蘭元", "region": "大洋洲", "rate": 2.0079, "per_hkd": 4.271727, "chg": -0.552816}, {"code": "PHP", "zh": "菲律賓比索", "region": "亞洲", "rate": 69.851, "per_hkd": 0.122793, "chg": 0.343588}, {"code": "SGD", "zh": "新加坡元", "region": "亞洲", "rate": 1.4124, "per_hkd": 6.072784, "chg": 0.254885}, {"code": "THB", "zh": "泰銖", "region": "亞洲", "rate": 37.242, "per_hkd": 0.23031, "chg": 0.053703}, {"code": "ZAR", "zh": "南非蘭特", "region": "非洲", "rate": 19.1513, "per_hkd": 0.447865, "chg": 0.247503}], "hkd": 8.5772};
-var META = [{"code": "USD", "zh": "美元", "region": "北美洲"}, {"code": "JPY", "zh": "日圓", "region": "亞洲"}, {"code": "CZK", "zh": "捷克克朗", "region": "歐洲"}, {"code": "DKK", "zh": "丹麥克朗", "region": "歐洲"}, {"code": "GBP", "zh": "英鎊", "region": "歐洲"}, {"code": "HUF", "zh": "匈牙利福林", "region": "歐洲"}, {"code": "PLN", "zh": "波蘭茲羅提", "region": "歐洲"}, {"code": "RON", "zh": "羅馬尼亞列伊", "region": "歐洲"}, {"code": "SEK", "zh": "瑞典克朗", "region": "歐洲"}, {"code": "CHF", "zh": "瑞士法郎", "region": "歐洲"}, {"code": "ISK", "zh": "冰島克朗", "region": "歐洲"}, {"code": "NOK", "zh": "挪威克朗", "region": "歐洲"}, {"code": "TRY", "zh": "土耳其里拉", "region": "亞洲"}, {"code": "AUD", "zh": "澳洲元", "region": "大洋洲"}, {"code": "BRL", "zh": "巴西雷亞爾", "region": "南美洲"}, {"code": "CAD", "zh": "加拿大元", "region": "北美洲"}, {"code": "CNY", "zh": "人民幣", "region": "亞洲"}, {"code": "HKD", "zh": "港元", "region": "亞洲"}, {"code": "IDR", "zh": "印尼盾", "region": "亞洲"}, {"code": "ILS", "zh": "以色列錫克爾", "region": "亞洲"}, {"code": "INR", "zh": "印度盧比", "region": "亞洲"}, {"code": "KRW", "zh": "韓圜", "region": "亞洲"}, {"code": "MXN", "zh": "墨西哥比索", "region": "北美洲"}, {"code": "MYR", "zh": "馬來西亞令吉", "region": "亞洲"}, {"code": "NZD", "zh": "新西蘭元", "region": "大洋洲"}, {"code": "PHP", "zh": "菲律賓比索", "region": "亞洲"}, {"code": "SGD", "zh": "新加坡元", "region": "亞洲"}, {"code": "THB", "zh": "泰銖", "region": "亞洲"}, {"code": "ZAR", "zh": "南非蘭特", "region": "非洲"}];
-var cur = {rows: SNAP.rows, date: SNAP.date, prev: SNAP.prev, live: false};
-var sortKey = 'per_hkd', sortDir = -1, region = '全部';
-function fmtHKD(v){ if(v>=1) return v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); if(v>=0.01) return v.toLocaleString('en-US',{minimumFractionDigits:4,maximumFractionDigits:4}); return v.toFixed(6).replace(/0+$/,'').replace(/\.$/,''); }
-function fmtRate(v){ return v.toLocaleString('en-US',{minimumFractionDigits: v<100?4:2, maximumFractionDigits: v<100?4:2}); }
-function chgHtml(c){ var s = c>=0?'+':''; return '<span class="'+(c>=0?'up':'dn')+'">'+s+c.toFixed(2)+'%</span>'; }
-function rowHtml(x){
-  return '<tr><td><b>'+x.zh+'</b> <span style="color:var(--muted)">'+x.code+'</span></td>'
-    +'<td class="num">'+fmtRate(x.rate)+'</td>'
-    +'<td class="num">HK$'+fmtHKD(x.per_hkd)+'</td>'
-    +'<td class="num">'+chgHtml(x.chg)+'</td><td>'+x.region+'</td></tr>';
+var SNAPSHOT={timestamp:1795561114,lat:47.665351,lon:-124.289903,alt:418.10,vel:27608.73,vis:"daylight",foot:4497.77,at:"2026-11-25 06:58:34 HKT"};
+var SNAPSHOT2={timestamp:1795561176,lat:49.114389,lon:-118.927955,alt:418.49,vel:27608.34,vis:"daylight",foot:4499.76,at:"2026-11-25 06:59:36 HKT"};
+var cur=SNAPSHOT, liveOK=false;
+var R=6371;
+function hav(lat1,lon1,lat2,lon2){var p1=lat1*Math.PI/180,p2=lat2*Math.PI/180,dp=(lat2-lat1)*Math.PI/180,dl=(lon2-lon1)*Math.PI/180;var a=Math.sin(dp/2)*Math.sin(dp/2)+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)*Math.sin(dl/2);return 2*R*Math.asin(Math.sqrt(a));}
+function bearing(lat1,lon1,lat2,lon2){var p1=lat1*Math.PI/180,p2=lat2*Math.PI/180,dl=(lon2-lon1)*Math.PI/180;var y=Math.sin(dl)*Math.cos(p2),x=Math.cos(p1)*Math.sin(p2)-Math.sin(p1)*Math.cos(p2)*Math.cos(dl);var b=(Math.atan2(y,x)*180/Math.PI+360)%360;var dirs=["北","東北","東","東南","南","西南","西","西北"];return dirs[Math.round(b/45)%8];}
+function fmt(n){return n.toLocaleString("en-US",{maximumFractionDigits:0});}
+function fmtCoord(v,isLat){var d=Math.abs(v).toFixed(2);return d+"°"+(isLat?(v>=0?"N":"S"):(v>=0?"E":"W"));}
+
+var CITIES=[
+["香港",22.3193,114.1694,"中國"],["台北",25.0329,121.5654,"台灣"],["上海",31.2304,121.4737,"中國"],["北京",39.9042,116.4074,"中國"],
+["東京",35.6762,139.6503,"日本"],["首爾",37.5665,126.9780,"韓國"],["新加坡",1.3521,103.8198,"新加坡"],["曼谷",13.7563,100.5018,"泰國"],
+["悉尼",-33.8688,151.2093,"澳洲"],["墨爾本",-37.8136,144.9631,"澳洲"],["倫敦",51.5074,-0.1278,"英國"],["巴黎",48.8566,2.3522,"法國"],
+["柏林",52.52,13.405,"德國"],["莫斯科",55.7558,37.6173,"俄羅斯"],["迪拜",25.2048,55.2708,"阿聯酋"],["孟買",19.076,72.8777,"印度"],
+["開羅",30.0444,31.2357,"埃及"],["紐約",40.7128,-74.006,"美國"],["洛杉磯",34.0522,-118.2437,"美國"],["三藩市",37.7749,-122.4194,"美國"],
+["西雅圖",47.6062,-122.3321,"美國"],["芝加哥",41.8781,-87.6298,"美國"],["多倫多",43.6532,-79.3832,"加拿大"],["溫哥華",49.2827,-123.1207,"加拿大"],
+["里約熱內盧",-22.9068,-43.1729,"巴西"],["開普敦",-33.9249,18.4241,"南非"],["檀香山",21.3069,-157.8583,"美國"],["安克雷奇",61.2181,-149.9003,"美國"]];
+var citySort="dist";
+function sortCities(k){citySort=k;renderCities();}
+function renderCities(){
+  var q=(document.getElementById("cityQ").value||"").trim();
+  var rows=CITIES.map(function(c){return{name:c[0],lat:c[1],lon:c[2],place:c[3],dist:hav(cur.lat,cur.lon,c[1],c[2]),dir:bearing(cur.lat,cur.lon,c[1],c[2])};});
+  if(q){rows=rows.filter(function(r){return r.name.indexOf(q)>-1||r.place.indexOf(q)>-1;});}
+  rows.sort(function(a,b){return citySort==="name"?a.name.localeCompare(b.name,"zh-Hant"):a.dist-b.dist;});
+  document.getElementById("cityBody").innerHTML=rows.map(function(r){
+    return "<tr><td><b>"+r.name+"</b> <span style='color:var(--muted)'>"+r.place+"</span></td><td class='num'>"+fmt(r.dist)+" 公里</td><td>"+r.dir+"方</td></tr>";
+  }).join("")||"<tr><td colspan='3'>搵唔到呢個城市，試下另一個名。</td></tr>";
+  var near=rows.slice().sort(function(a,b){return a.dist-b.dist;})[0];
+  if(near&&!q){document.getElementById("stCity").textContent=near.name+" · "+fmt(near.dist)+" 公里";}
 }
-function renderTable(){
-  var q = (document.getElementById('q').value||'').toLowerCase();
-  var list = cur.rows.filter(function(x){ return (region==='全部'||x.region===region) && (!q || (x.zh+x.code).toLowerCase().indexOf(q)>=0); });
-  list.sort(function(a,b){ var k=sortKey; var d=(a[k]<b[k]?-1:a[k]>b[k]?1:0); return d*sortDir; });
-  document.getElementById('fxBody').innerHTML = list.map(rowHtml).join('') || '<tr><td colspan="5">搵唔到符合條件嘅貨幣。</td></tr>';
-  document.getElementById('countLine').textContent = '顯示 ' + list.length + ' / ' + cur.rows.length + ' 種貨幣（' + cur.date + ' 匯率）。';
+
+var CREW=[
+{name:"Pyotr Dubrov",agency:"Roscosmos",role:"站長",days:134,craft:"Soyuz MS-29（2026-07-14 上去）"},
+{name:"Anil Menon",agency:"NASA",role:"飛行工程師",days:134,craft:"Soyuz MS-29（2026-07-14 上去）"},
+{name:"Anna Kikina",agency:"Roscosmos",role:"飛行工程師",days:134,craft:"Soyuz MS-29（2026-07-14 上去）"},
+{name:"Jessica Watkins",agency:"NASA",role:"飛行工程師",days:55,craft:"SpaceX Crew-13（2026-10-01 上去）"},
+{name:"Luke Delaney",agency:"NASA",role:"飛行工程師",days:55,craft:"SpaceX Crew-13（2026-10-01 上去）"},
+{name:"Joshua Kutryk",agency:"CSA",role:"飛行工程師",days:55,craft:"SpaceX Crew-13（2026-10-01 上去）"},
+{name:"Sergey Teteryatnikov",agency:"Roscosmos",role:"飛行工程師",days:55,craft:"SpaceX Crew-13（2026-10-01 上去）"}];
+var crewFilter="all",crewSort="days";
+function filterCrew(ag,btn){crewFilter=ag;document.querySelectorAll("#crewFilters button").forEach(function(b){b.classList.remove("on");});btn.classList.add("on");renderCrew();}
+function sortCrew(k){crewSort=k;renderCrew();}
+function renderCrew(){
+  var rows=CREW.filter(function(c){return crewFilter==="all"||c.agency===crewFilter;});
+  rows.sort(function(a,b){return crewSort==="name"?a.name.localeCompare(b.name):b.days-a.days;});
+  document.getElementById("crewBody").innerHTML=rows.map(function(c){
+    return "<tr><td><b>"+c.name+"</b></td><td>"+c.agency+"</td><td>"+c.role+"</td><td class='num'>"+c.days+" 日</td><td>"+c.craft+"</td></tr>";
+  }).join("");
 }
-function sortBy(k){ if(sortKey===k){ sortDir*=-1; } else { sortKey=k; sortDir = (k==='zh')?1:-1; } renderTable(); }
-function setRegion(btn){ region = btn.getAttribute('data-r');
-  document.querySelectorAll('.controls button[data-r]').forEach(function(b){ b.classList.toggle('on', b===btn); });
-  renderTable(); }
-function calc(){
-  var amt = parseFloat(document.getElementById('hkdAmt').value);
-  if(isNaN(amt)||amt<0){ document.getElementById('convOut').textContent='請輸入有效嘅港元金額。'; return; }
-  var code = document.getElementById('curSel').value;
-  var rate = code==='EUR' ? 1 : null;
-  var got = amt / SNAP.hkd;
-  var out;
-  if(code==='EUR'){ out = 'HK$' + amt.toLocaleString('en-US') + ' ＝ <b>€' + got.toLocaleString('en-US',{maximumFractionDigits:2}) + '</b>'; }
-  else { var r = null; cur.rows.forEach(function(x){ if(x.code===code) r=x.rate; });
-    out = 'HK$' + amt.toLocaleString('en-US') + ' ＝ <b>' + (got*r).toLocaleString('en-US',{maximumFractionDigits:2}) + ' ' + code + '</b>（€1 = ' + fmtRate(r) + ' ' + code + '）'; }
-  document.getElementById('convOut').innerHTML = out;
+
+var QUIZ=[
+{q:"國際太空站每秒大約飛幾遠？",opts:["約 0.8 公里","約 7.7 公里","約 77 公里"],a:1,why:"速度約 27,609 公里/小時，即係每秒約 7.67 公里。"},
+{q:"太空站繞地球一圈要幾耐？",opts:["約 24 小時","約 93 分鐘","約 7 日"],a:1,why:"用高度 418 公里同速度計出嚟約 92.7 分鐘，即係一日繞大約 15.5 圈。"},
+{q:"而家太空站上面有幾多人？",opts:["3 人","7 人","12 人"],a:1,why:"遠征 75 號 7 個人；加埋天宮太空站 3 個人，全世界而家有 10 個人喺太空。"},
+{q:"太空站離地面大約幾高？",opts:["約 42 公里","約 418 公里","約 4,180 公里"],a:1,why:"快照高度 418 公里，大約係香港去台北直線距離嘅一半多少少。"}];
+var qi=0;
+function renderQuiz(){
+  var box=document.getElementById("quizBox");
+  if(qi>=QUIZ.length){box.innerHTML="<p class='ans'>🎉 答晒！你而家係半個太空站專家喇。</p><button onclick='qi=0;renderQuiz()'>再玩一次</button>";return;}
+  var q=QUIZ[qi];
+  box.innerHTML="<p><b>第 "+(qi+1)+" 題："+q.q+"</b></p>"+q.opts.map(function(o,i){return "<button onclick='answerQuiz("+i+")'>"+o+"</button>";}).join("");
 }
-function buildChips(){
-  var codes = ['USD','JPY','GBP','CNY','EUR','SGD','AUD','KRW','THB'];
-  document.getElementById('chips').innerHTML = codes.map(function(c){
-    var label = c==='EUR' ? '€1 = HK$' + SNAP.hkd.toFixed(4) : 'HK$1,000 → ' + (1000/SNAP.hkd*(c==='EUR'?1:(cur.rows.find(function(x){return x.code===c;})||{}).rate||0)).toLocaleString('en-US',{maximumFractionDigits: c==='JPY'||c==='KRW'?0:2}) + ' ' + c;
-    return '<button data-cur="'+c+'" onclick="pickCur(this)">'+label+'</button>';
-  }).join('');
+function answerQuiz(i){
+  var q=QUIZ[qi],box=document.getElementById("quizBox");
+  var ok=i===q.a;
+  box.innerHTML="<p class='ans'>"+(ok?"✅ 啱晒！":"❌ 唔係呢個。正確答案係："+q.opts[q.a])+"</p><p>"+q.why+"</p><button onclick='qi++;renderQuiz()'>下一題 →</button>";
 }
-function pickCur(btn){ document.getElementById('curSel').value = btn.getAttribute('data-cur'); calc(); }
-function quiz(btn, ok){
-  var el = btn.nextElementSibling;
-  while(el && !el.classList.contains('ans')) el = el.nextElementSibling;
-  if(!el) return;
-  el.textContent = ok ? '✅ 啱晒！' : '❌ 唔係呢個，再諗下。';
-  el.style.color = ok ? '#2e7d32' : '#c62828';
+
+var map=null,marker=null,trail=null,footCircle=null,follow=true,trailPts=[];
+function initMap(){
+  if(typeof L==="undefined"){document.getElementById("mapNote").textContent="地圖套件（Leaflet）載入唔到，請檢查網絡後重新整理。";return;}
+  map=L.map("map").setView([cur.lat,cur.lon],3);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:10,attribution:"© OpenStreetMap contributors"}).addTo(map);
+  marker=L.marker([cur.lat,cur.lon],{icon:L.divIcon({className:"",html:"<div class='iss-icon'>🛰️</div>",iconSize:[30,30],iconAnchor:[15,15]})}).addTo(map).bindPopup("🛰️ 國際太空站<br>緯度 "+cur.lat.toFixed(2)+"，經度 "+cur.lon.toFixed(2));
+  trail=L.polyline([],{color:"#7b2fbe",weight:3}).addTo(map);
+  footCircle=L.circle([cur.lat,cur.lon],{radius:cur.foot*500,color:"#3d5afe",weight:1,fillOpacity:.08}).addTo(map);
+  document.getElementById("mapNote").textContent="地圖：© OpenStreetMap";
 }
-function setStatus(t){ document.getElementById('status').textContent = t; }
-function useSnapshot(reason){
-  cur = {rows: SNAP.rows, date: SNAP.date, prev: SNAP.prev, live:false};
-  renderTable(); calc(); buildChips();
-  setStatus('ℹ️ 顯示已核實快照（匯率日期 ' + SNAP.date + '）：即時讀取唔到 — ' + reason + '。歐央行伺服器冇送出 CORS 許可，瀏覽器會擋住跨域讀取。');
+function toggleFollow(){follow=!follow;var b=document.getElementById("followBtn");b.textContent=follow?"📍 跟住太空站：開":"📍 跟住太空站：閂";b.classList.toggle("on",follow);}
+
+function updateUI(d,srcLabel){
+  cur=d;
+  document.getElementById("stLatLon").textContent=fmtCoord(d.lat,true)+", "+fmtCoord(d.lon,false);
+  document.getElementById("stWhen").textContent=srcLabel;
+  document.getElementById("stAlt").textContent=fmt(d.alt)+" 公里";
+  document.getElementById("stVel").textContent=fmt(d.vel)+" 公里/小時";
+  document.getElementById("stPerSec").textContent="每秒約 "+(d.vel/3600).toFixed(2)+" 公里";
+  var period=2*Math.PI*(R+d.alt)/d.vel*60;
+  document.getElementById("stOrbit").textContent="約 "+period.toFixed(1)+" 分鐘";
+  document.getElementById("stSun").textContent="即係一日睇到約 "+Math.round(1440/period)+" 次日出";
+  document.getElementById("stHk").textContent=fmt(hav(d.lat,d.lon,22.3193,114.1694))+" 公里";
+  document.getElementById("stVis").textContent=d.vis==="daylight"?"☀️ 日光下":"🌑 地球陰影入面";
+  document.getElementById("stFoot").textContent="地面覆蓋直徑約 "+fmt(d.foot)+" 公里";
+  renderCities();
+  if(map){
+    marker.setLatLng([d.lat,d.lon]).setPopupContent("🛰️ 國際太空站<br>緯度 "+d.lat.toFixed(2)+"，經度 "+d.lon.toFixed(2)+"<br>高度 "+fmt(d.alt)+" 公里 · 速度 "+fmt(d.vel)+" 公里/小時");
+    trailPts.push([d.lat,d.lon]);if(trailPts.length>60)trailPts.shift();
+    trail.setLatLngs(trailPts);
+    footCircle.setLatLng([d.lat,d.lon]).setRadius(d.foot*500);
+    if(follow)map.panTo([d.lat,d.lon],{animate:true});
+  }
 }
-function fetchLive(manual){
-  var ctrl = new AbortController();
-  var to = setTimeout(function(){ ctrl.abort(); }, 20000);
-  fetch('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml', {signal: ctrl.signal})
-    .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
-    .then(function(txt){
-      clearTimeout(to);
-      var doc = new DOMParser().parseFromString(txt, 'text/xml');
-      var cubes = doc.querySelectorAll('Cube[time]');
-      if(!cubes.length) throw new Error('解析唔到 XML');
-      var date = cubes[0].getAttribute('time');
-      var items = cubes[0].querySelectorAll('Cube[currency]');
-      var byCode = {};
-      items.forEach(function(c){ byCode[c.getAttribute('currency')] = parseFloat(c.getAttribute('rate')); });
-      var hkd = byCode['HKD']; if(!hkd) throw new Error('冇港元匯率');
-      var rows = META.map(function(m){
-        var r = byCode[m.code]; if(r==null) return null;
-        var old = SNAP.rows.find(function(x){ return x.code===m.code; });
-        var p = old ? old.rate : r;
-        return {code:m.code, zh:m.zh, region:m.region, rate:r, per_hkd: hkd/r, chg: (p/r-1)*100};
-      }).filter(Boolean);
-      cur = {rows: rows, date: date, prev: SNAP.date, live:true};
-      renderTable(); calc(); buildChips();
-      setStatus('✅ 即時數據已更新：歐央行 ' + date + ' 參考匯率（' + rows.length + ' 種貨幣）。€1 = HK$' + hkd.toFixed(4) + '。');
-    })
-    .catch(function(e){ clearTimeout(to); useSnapshot(manual ? ('再試失敗：' + (e.name==='AbortError' ? '逾時 20 秒' : (e.message||'網絡錯誤'))) : (e.name==='AbortError' ? '逾時 20 秒' : (e.message||'網絡／CORS 錯誤'))); });
+async function fetchLive(){
+  var ctrl=new AbortController();var t=setTimeout(function(){ctrl.abort();},8000);
+  try{
+    var r=await fetch("https://api.wheretheiss.at/v1/satellites/25544",{signal:ctrl.signal});
+    clearTimeout(t);
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    var j=await r.json();
+    var d={lat:j.latitude,lon:j.longitude,alt:j.altitude,vel:j.velocity,vis:j.visibility,foot:j.footprint,timestamp:j.timestamp};
+    if(!isFinite(d.lat)||!isFinite(d.lon))throw new Error("bad data");
+    liveOK=true;
+    var when=new Date(d.timestamp*1000).toLocaleString("zh-HK",{timeZone:"Asia/Hong_Kong",hour:"2-digit",minute:"2-digit",second:"2-digit"})+" HKT 即時";
+    document.getElementById("status").textContent="✅ 即時數據更新中（每 5 秒讀一次）— 最後更新："+when+"。來源：Where The ISS At? API。";
+    updateUI(d,when);
+  }catch(e){
+    clearTimeout(t);
+    if(!liveOK){
+      document.getElementById("status").textContent="⚠️ 即時讀取失敗（"+e.message+"），而家顯示已核實快照："+SNAPSHOT.at+"。稍後會再試。";
+      updateUI(SNAPSHOT,"快照 "+SNAPSHOT.at);
+    }else{
+      document.getElementById("status").textContent="⚠️ 呢次即時讀取失敗，繼續顯示上一次成功讀到嘅位置。";
+    }
+  }
 }
-renderTable(); calc(); buildChips(); fetchLive(false);
+initMap();
+renderCrew();
+renderQuiz();
+updateUI(SNAPSHOT,"快照 "+SNAPSHOT.at);
+fetchLive();
+setInterval(fetchLive,5000);
 </script>
 </body>
 </html>

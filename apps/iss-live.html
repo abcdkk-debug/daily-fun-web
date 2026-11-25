@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 012 期｜國際太空站而家喺邊？— ISS 即時位置</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  :root{--ink:#101736;--muted:#4a5578;--bg:#e9edf7;--card:#ffffff;--accent:#3d5afe;--violet:#7b2fbe;--teal:#009688;--sand:#ffc93c;--line:#c9d2e8}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  header{background:linear-gradient(135deg,#050914,#1b2a6b 55%,#7b2fbe);color:#fff;padding:34px 20px 28px;text-align:center}
+  header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.9}
+  header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
+  header p{margin:.2em auto;max-width:720px;opacity:.95}
+  main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(16,23,54,.10)}
+  .card h2{margin-top:0}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .stat{background:#1b2a6b;color:#fff;border:1px solid #1b2a6b;border-radius:12px;padding:16px;text-align:center}
+  .stat b{display:block;font-size:1.7em;line-height:1.15;color:#fff}
+  .stat span{font-size:.85em;opacity:.95}
+  .stat.violet{background:#5e35b1;border-color:#5e35b1}
+  .stat.teal{background:#00796b;border-color:#00796b}
+  .stat.amber{background:#b8860b;border-color:#b8860b}
+  .stat small{display:block;font-size:.72em;opacity:.85;margin-top:2px}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .controls button{border:1.5px solid var(--accent);background:#fff;color:var(--accent);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em;font-weight:700}
+  .controls button.on{background:var(--accent);color:#fff}
+  .controls input,.controls select{border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.95em;background:#fff;color:var(--ink)}
+  .controls input{flex:1;min-width:180px}
+  table{width:100%;border-collapse:collapse;font-size:.95em}
+  th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+  th{cursor:pointer;white-space:nowrap;color:var(--accent)}
+  th:hover{color:#1b2a6b}
+  .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  #map{height:420px;border-radius:12px;border:1px solid var(--line);z-index:0}
+  .iss-icon{font-size:30px;line-height:1;text-align:center;text-shadow:0 0 6px #fff}
+  #status{font-size:.9em;color:var(--muted)}
+  .note{background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:12px 14px;font-size:.92em}
+  .facts li{margin:8px 0}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1.5px solid var(--line);background:#f4f6fd;color:var(--ink);border-radius:10px;cursor:pointer;font-size:1em}
+  .quiz button:hover{border-color:var(--accent)}
+  .quiz .ans{font-weight:700;margin-top:10px}
+  footer{max-width:920px;margin:0 auto;padding:0 16px 34px;color:var(--muted);font-size:.88em;line-height:1.8}
+  footer a{color:var(--accent)}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:640px){.twocol{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">📚 想睇返之前發佈過嘅嘢？ <a href="archive/index.html" style="color:#ffc93c;font-weight:700">去「過往期數」總覽 →</a></div>
+<header>
+  <div class="kicker">DAILY FUN WEB · 第 012 期 · 2026-11-25</div>
+  <h1>🛰️ 國際太空站而家喺邊？</h1>
+  <p>國際太空站（ISS）每秒飛成 7 公里幾，90 分鐘左右就繞地球一圈。呢頁每 5 秒即時讀一次佢嘅位置，等你親眼睇住佢喺地圖上面飛，仲可以睇下佢離香港幾遠、同埋而家上面有邊 7 個人。</p>
+</header>
+<main>
+  <div class="card">
+    <p id="status">⏳ 嘗試讀取國際太空站即時位置…</p>
+    <div class="stats">
+      <div class="stat"><b id="stLatLon">47.67°N, 124.29°W</b><span>即時位置（緯度，經度）</span><small id="stWhen">快照 06:58:34 HKT</small></div>
+      <div class="stat violet"><b id="stAlt">418 公里</b><span>離地面高度</span><small>大約係香港去台北直線距離嘅一半多少少</small></div>
+      <div class="stat teal"><b id="stVel">27,609 公里/小時</b><span>飛行速度</span><small id="stPerSec">每秒約 7.67 公里</small></div>
+      <div class="stat amber"><b id="stOrbit">約 92.7 分鐘</b><span>繞地球一圈</span><small id="stSun">即係一日睇到約 16 次日出</small></div>
+    </div>
+    <div class="stats" style="margin-top:12px">
+      <div class="stat"><b id="stHk">10,295 公里</b><span>離香港幾遠（地面距離）</span><small>沿地球表面計</small></div>
+      <div class="stat violet"><b id="stCity">西雅圖 · 147 公里</b><span>最近嘅大城市</span><small>美國華盛頓州</small></div>
+      <div class="stat teal"><b id="stVis">☀️ 日光下</b><span>太空站見唔見到太陽</span><small id="stFoot">地面覆蓋直徑約 4,498 公里</small></div>
+      <div class="stat amber"><b id="stCrew">7 人</b><span>而家喺太空站上面</span><small>遠征 75 號（Expedition 75）</small></div>
+    </div>
+    <p style="color:var(--muted);font-size:.92em">位置快照核實時間：2026-11-25 06:58:34 HKT（緯度 47.665351，經度 -124.289903，高度 418.10 公里，速度 27,608.73 公里/小時，日光下）；06:59:36 第二個樣本：緯度 49.114389，經度 -118.927955，高度 418.49 公里。頁面載入後每 5 秒即時讀 Where The ISS At? 官方 API（免金鑰、有 CORS 許可）；讀唔到就顯示呢個已核實快照，並會注明。</p>
+  </div>
+
+  <div class="card">
+    <h2>🗺️ 即時軌跡地圖</h2>
+    <p>🛰️ 就係太空站而家嘅位置，紫色線係佢啱啱飛過嘅軌跡，圓圈係佢喺地面嘅可見覆蓋範圍。地圖會跟住佢一齊郁。</p>
+    <div id="map"></div>
+    <div class="controls">
+      <button id="followBtn" class="on" onclick="toggleFollow()">📍 跟住太空站：開</button>
+      <button onclick="map.setView([22.3193,114.1694],4)">🇭🇰 睇香港</button>
+      <button onclick="map.setView([0,0],2)">🌍 睇全球</button>
+      <span id="mapNote" style="color:var(--muted);font-size:.9em"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🌏 離邊個城市最近？</h2>
+    <p>用即時位置計，太空站而家離下面邊個大城市最近（地面距離，沿地球表面計）。撳表頭可以排序，搜尋框可以搵城市。</p>
+    <div class="controls">
+      <input id="cityQ" type="search" placeholder="🔍 搜尋城市，例如：香港、東京、倫敦…" oninput="renderCities()">
+      <button onclick="renderCities()">重新排序</button>
+    </div>
+    <table>
+      <thead><tr><th onclick="sortCities('name')">城市 ↕</th><th onclick="sortCities('dist')">離太空站幾遠 ↕</th><th>方向</th></tr></thead>
+      <tbody id="cityBody"></tbody>
+    </table>
+    <p style="color:var(--muted);font-size:.9em">快照一刻（06:58:34 HKT）最近係西雅圖，147 公里；其次係溫哥華約 199 公里。太空站飛得咁快，呢個排名每分鐘都會變。</p>
+  </div>
+
+  <div class="card">
+    <h2>👨‍🚀 而家上面有邊 7 個人？</h2>
+    <p>遠征 75 號（Expedition 75）機組人員，截至 2026-11-24 經 NASA 遠征 75 號專頁核實。撳表頭排序，或者按機構篩選。</p>
+    <div class="controls" id="crewFilters">
+      <button class="on" data-ag="all" onclick="filterCrew('all',this)">全部 7 人</button>
+      <button data-ag="NASA" onclick="filterCrew('NASA',this)">NASA（美國）</button>
+      <button data-ag="Roscosmos" onclick="filterCrew('Roscosmos',this)">Roscosmos（俄羅斯）</button>
+      <button data-ag="CSA" onclick="filterCrew('CSA',this)">CSA（加拿大）</button>
+    </div>
+    <table>
+      <thead><tr><th onclick="sortCrew('name')">姓名 ↕</th><th>機構</th><th>職位</th><th onclick="sortCrew('days')">上咗去幾耐 ↕</th><th>點上去</th></tr></thead>
+      <tbody id="crewBody"></tbody>
+    </table>
+    <p style="color:var(--muted);font-size:.92em">另外仲有 3 個人喺中國天宮太空站，即係而家全世界合共有 10 個人喺太空（截至 2026-11-24 核實）。</p>
+  </div>
+
+  <div class="card quiz">
+    <h2>🧠 太空站小測驗</h2>
+    <p>撳一個答案，睇下你估唔估中：</p>
+    <div id="quizBox"></div>
+  </div>
+
+  <div class="card">
+    <h2>💡 冷知識</h2>
+    <ul class="facts">
+      <li>🚀 太空站每秒飛約 <b>7.67 公里</b> — 即係由香港中環去機場（約 35 公里）唔使 5 秒。</li>
+      <li>🌅 因為每約 93 分鐘繞地球一圈，站上面嘅太空人一日會睇到大約 <b>16 次日出同日落</b>。</li>
+      <li>📏 太空站離地面大約 <b>418 公里</b> — 香港去台北嘅直線距離大約係 810 公里，即係一半多少少。</li>
+      <li>🔭 天氣好、時間啱嘅時候，喺地面用肉眼都睇到太空站飛過，佢係天上最光嘅人造物體之一。</li>
+      <li>🛰️ 太空站由 1998 年開始組裝，上面長期有人居住已經超過 25 年。</li>
+      <li>🌍 太空站軌道傾角 51.6°，即係佢飛到最北／最南都係緯度 51.6° 左右，永遠唔會飛過香港正上空（香港緯度 22.3°），但會經過香港附近上空。</li>
+    </ul>
+  </div>
+
+  <div class="card note">
+    <b>數據來源同說明：</b>即時位置、高度、速度、日光狀態嚟自 <b>Where The ISS At?</b>（wheretheiss.at）公開 API，數據源自 NORAD 軌道根數（TLE），免金鑰、限速每秒 1 次，本頁每 5 秒讀一次。機組名單嚟自 <b>NASA 遠征 75 號專頁</b>（nasa.gov/mission/expedition-75）及 Wikipedia Expedition 75 條目，核實日期 2026-11-25。城市距離用 Haversine 公式由即時經緯度計出，係沿地球表面嘅地面距離，唔係直線斜距。open-notify.org 嘅太空人名單 API 喺核實時未能連線，所以機組名單用已核實快照，唔係即時讀取。
+  </div>
+</main>
+<footer>
+  第 012 期 · 2026-11-25 · Daily Fun Web — 每日用世界各地開放數據整一版有趣網頁。<br>
+  數據：Where The ISS At? API（wheretheiss.at）· 機組名單：NASA Expedition 75 · <a href="archive/index.html">📚 過往期數總覽</a> · <a href="https://github.com/abcdkk-debug/daily-fun-web">GitHub repo</a>
+</footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+var SNAPSHOT={timestamp:1795561114,lat:47.665351,lon:-124.289903,alt:418.10,vel:27608.73,vis:"daylight",foot:4497.77,at:"2026-11-25 06:58:34 HKT"};
+var SNAPSHOT2={timestamp:1795561176,lat:49.114389,lon:-118.927955,alt:418.49,vel:27608.34,vis:"daylight",foot:4499.76,at:"2026-11-25 06:59:36 HKT"};
+var cur=SNAPSHOT, liveOK=false;
+var R=6371;
+function hav(lat1,lon1,lat2,lon2){var p1=lat1*Math.PI/180,p2=lat2*Math.PI/180,dp=(lat2-lat1)*Math.PI/180,dl=(lon2-lon1)*Math.PI/180;var a=Math.sin(dp/2)*Math.sin(dp/2)+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)*Math.sin(dl/2);return 2*R*Math.asin(Math.sqrt(a));}
+function bearing(lat1,lon1,lat2,lon2){var p1=lat1*Math.PI/180,p2=lat2*Math.PI/180,dl=(lon2-lon1)*Math.PI/180;var y=Math.sin(dl)*Math.cos(p2),x=Math.cos(p1)*Math.sin(p2)-Math.sin(p1)*Math.cos(p2)*Math.cos(dl);var b=(Math.atan2(y,x)*180/Math.PI+360)%360;var dirs=["北","東北","東","東南","南","西南","西","西北"];return dirs[Math.round(b/45)%8];}
+function fmt(n){return n.toLocaleString("en-US",{maximumFractionDigits:0});}
+function fmtCoord(v,isLat){var d=Math.abs(v).toFixed(2);return d+"°"+(isLat?(v>=0?"N":"S"):(v>=0?"E":"W"));}
+
+var CITIES=[
+["香港",22.3193,114.1694,"中國"],["台北",25.0329,121.5654,"台灣"],["上海",31.2304,121.4737,"中國"],["北京",39.9042,116.4074,"中國"],
+["東京",35.6762,139.6503,"日本"],["首爾",37.5665,126.9780,"韓國"],["新加坡",1.3521,103.8198,"新加坡"],["曼谷",13.7563,100.5018,"泰國"],
+["悉尼",-33.8688,151.2093,"澳洲"],["墨爾本",-37.8136,144.9631,"澳洲"],["倫敦",51.5074,-0.1278,"英國"],["巴黎",48.8566,2.3522,"法國"],
+["柏林",52.52,13.405,"德國"],["莫斯科",55.7558,37.6173,"俄羅斯"],["迪拜",25.2048,55.2708,"阿聯酋"],["孟買",19.076,72.8777,"印度"],
+["開羅",30.0444,31.2357,"埃及"],["紐約",40.7128,-74.006,"美國"],["洛杉磯",34.0522,-118.2437,"美國"],["三藩市",37.7749,-122.4194,"美國"],
+["西雅圖",47.6062,-122.3321,"美國"],["芝加哥",41.8781,-87.6298,"美國"],["多倫多",43.6532,-79.3832,"加拿大"],["溫哥華",49.2827,-123.1207,"加拿大"],
+["里約熱內盧",-22.9068,-43.1729,"巴西"],["開普敦",-33.9249,18.4241,"南非"],["檀香山",21.3069,-157.8583,"美國"],["安克雷奇",61.2181,-149.9003,"美國"]];
+var citySort="dist";
+function sortCities(k){citySort=k;renderCities();}
+function renderCities(){
+  var q=(document.getElementById("cityQ").value||"").trim();
+  var rows=CITIES.map(function(c){return{name:c[0],lat:c[1],lon:c[2],place:c[3],dist:hav(cur.lat,cur.lon,c[1],c[2]),dir:bearing(cur.lat,cur.lon,c[1],c[2])};});
+  if(q){rows=rows.filter(function(r){return r.name.indexOf(q)>-1||r.place.indexOf(q)>-1;});}
+  rows.sort(function(a,b){return citySort==="name"?a.name.localeCompare(b.name,"zh-Hant"):a.dist-b.dist;});
+  document.getElementById("cityBody").innerHTML=rows.map(function(r){
+    return "<tr><td><b>"+r.name+"</b> <span style='color:var(--muted)'>"+r.place+"</span></td><td class='num'>"+fmt(r.dist)+" 公里</td><td>"+r.dir+"方</td></tr>";
+  }).join("")||"<tr><td colspan='3'>搵唔到呢個城市，試下另一個名。</td></tr>";
+  var near=rows.slice().sort(function(a,b){return a.dist-b.dist;})[0];
+  if(near&&!q){document.getElementById("stCity").textContent=near.name+" · "+fmt(near.dist)+" 公里";}
+}
+
+var CREW=[
+{name:"Pyotr Dubrov",agency:"Roscosmos",role:"站長",days:134,craft:"Soyuz MS-29（2026-07-14 上去）"},
+{name:"Anil Menon",agency:"NASA",role:"飛行工程師",days:134,craft:"Soyuz MS-29（2026-07-14 上去）"},
+{name:"Anna Kikina",agency:"Roscosmos",role:"飛行工程師",days:134,craft:"Soyuz MS-29（2026-07-14 上去）"},
+{name:"Jessica Watkins",agency:"NASA",role:"飛行工程師",days:55,craft:"SpaceX Crew-13（2026-10-01 上去）"},
+{name:"Luke Delaney",agency:"NASA",role:"飛行工程師",days:55,craft:"SpaceX Crew-13（2026-10-01 上去）"},
+{name:"Joshua Kutryk",agency:"CSA",role:"飛行工程師",days:55,craft:"SpaceX Crew-13（2026-10-01 上去）"},
+{name:"Sergey Teteryatnikov",agency:"Roscosmos",role:"飛行工程師",days:55,craft:"SpaceX Crew-13（2026-10-01 上去）"}];
+var crewFilter="all",crewSort="days";
+function filterCrew(ag,btn){crewFilter=ag;document.querySelectorAll("#crewFilters button").forEach(function(b){b.classList.remove("on");});btn.classList.add("on");renderCrew();}
+function sortCrew(k){crewSort=k;renderCrew();}
+function renderCrew(){
+  var rows=CREW.filter(function(c){return crewFilter==="all"||c.agency===crewFilter;});
+  rows.sort(function(a,b){return crewSort==="name"?a.name.localeCompare(b.name):b.days-a.days;});
+  document.getElementById("crewBody").innerHTML=rows.map(function(c){
+    return "<tr><td><b>"+c.name+"</b></td><td>"+c.agency+"</td><td>"+c.role+"</td><td class='num'>"+c.days+" 日</td><td>"+c.craft+"</td></tr>";
+  }).join("");
+}
+
+var QUIZ=[
+{q:"國際太空站每秒大約飛幾遠？",opts:["約 0.8 公里","約 7.7 公里","約 77 公里"],a:1,why:"速度約 27,609 公里/小時，即係每秒約 7.67 公里。"},
+{q:"太空站繞地球一圈要幾耐？",opts:["約 24 小時","約 93 分鐘","約 7 日"],a:1,why:"用高度 418 公里同速度計出嚟約 92.7 分鐘，即係一日繞大約 15.5 圈。"},
+{q:"而家太空站上面有幾多人？",opts:["3 人","7 人","12 人"],a:1,why:"遠征 75 號 7 個人；加埋天宮太空站 3 個人，全世界而家有 10 個人喺太空。"},
+{q:"太空站離地面大約幾高？",opts:["約 42 公里","約 418 公里","約 4,180 公里"],a:1,why:"快照高度 418 公里，大約係香港去台北直線距離嘅一半多少少。"}];
+var qi=0;
+function renderQuiz(){
+  var box=document.getElementById("quizBox");
+  if(qi>=QUIZ.length){box.innerHTML="<p class='ans'>🎉 答晒！你而家係半個太空站專家喇。</p><button onclick='qi=0;renderQuiz()'>再玩一次</button>";return;}
+  var q=QUIZ[qi];
+  box.innerHTML="<p><b>第 "+(qi+1)+" 題："+q.q+"</b></p>"+q.opts.map(function(o,i){return "<button onclick='answerQuiz("+i+")'>"+o+"</button>";}).join("");
+}
+function answerQuiz(i){
+  var q=QUIZ[qi],box=document.getElementById("quizBox");
+  var ok=i===q.a;
+  box.innerHTML="<p class='ans'>"+(ok?"✅ 啱晒！":"❌ 唔係呢個。正確答案係："+q.opts[q.a])+"</p><p>"+q.why+"</p><button onclick='qi++;renderQuiz()'>下一題 →</button>";
+}
+
+var map=null,marker=null,trail=null,footCircle=null,follow=true,trailPts=[];
+function initMap(){
+  if(typeof L==="undefined"){document.getElementById("mapNote").textContent="地圖套件（Leaflet）載入唔到，請檢查網絡後重新整理。";return;}
+  map=L.map("map").setView([cur.lat,cur.lon],3);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:10,attribution:"© OpenStreetMap contributors"}).addTo(map);
+  marker=L.marker([cur.lat,cur.lon],{icon:L.divIcon({className:"",html:"<div class='iss-icon'>🛰️</div>",iconSize:[30,30],iconAnchor:[15,15]})}).addTo(map).bindPopup("🛰️ 國際太空站<br>緯度 "+cur.lat.toFixed(2)+"，經度 "+cur.lon.toFixed(2));
+  trail=L.polyline([],{color:"#7b2fbe",weight:3}).addTo(map);
+  footCircle=L.circle([cur.lat,cur.lon],{radius:cur.foot*500,color:"#3d5afe",weight:1,fillOpacity:.08}).addTo(map);
+  document.getElementById("mapNote").textContent="地圖：© OpenStreetMap";
+}
+function toggleFollow(){follow=!follow;var b=document.getElementById("followBtn");b.textContent=follow?"📍 跟住太空站：開":"📍 跟住太空站：閂";b.classList.toggle("on",follow);}
+
+function updateUI(d,srcLabel){
+  cur=d;
+  document.getElementById("stLatLon").textContent=fmtCoord(d.lat,true)+", "+fmtCoord(d.lon,false);
+  document.getElementById("stWhen").textContent=srcLabel;
+  document.getElementById("stAlt").textContent=fmt(d.alt)+" 公里";
+  document.getElementById("stVel").textContent=fmt(d.vel)+" 公里/小時";
+  document.getElementById("stPerSec").textContent="每秒約 "+(d.vel/3600).toFixed(2)+" 公里";
+  var period=2*Math.PI*(R+d.alt)/d.vel*60;
+  document.getElementById("stOrbit").textContent="約 "+period.toFixed(1)+" 分鐘";
+  document.getElementById("stSun").textContent="即係一日睇到約 "+Math.round(1440/period)+" 次日出";
+  document.getElementById("stHk").textContent=fmt(hav(d.lat,d.lon,22.3193,114.1694))+" 公里";
+  document.getElementById("stVis").textContent=d.vis==="daylight"?"☀️ 日光下":"🌑 地球陰影入面";
+  document.getElementById("stFoot").textContent="地面覆蓋直徑約 "+fmt(d.foot)+" 公里";
+  renderCities();
+  if(map){
+    marker.setLatLng([d.lat,d.lon]).setPopupContent("🛰️ 國際太空站<br>緯度 "+d.lat.toFixed(2)+"，經度 "+d.lon.toFixed(2)+"<br>高度 "+fmt(d.alt)+" 公里 · 速度 "+fmt(d.vel)+" 公里/小時");
+    trailPts.push([d.lat,d.lon]);if(trailPts.length>60)trailPts.shift();
+    trail.setLatLngs(trailPts);
+    footCircle.setLatLng([d.lat,d.lon]).setRadius(d.foot*500);
+    if(follow)map.panTo([d.lat,d.lon],{animate:true});
+  }
+}
+async function fetchLive(){
+  var ctrl=new AbortController();var t=setTimeout(function(){ctrl.abort();},8000);
+  try{
+    var r=await fetch("https://api.wheretheiss.at/v1/satellites/25544",{signal:ctrl.signal});
+    clearTimeout(t);
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    var j=await r.json();
+    var d={lat:j.latitude,lon:j.longitude,alt:j.altitude,vel:j.velocity,vis:j.visibility,foot:j.footprint,timestamp:j.timestamp};
+    if(!isFinite(d.lat)||!isFinite(d.lon))throw new Error("bad data");
+    liveOK=true;
+    var when=new Date(d.timestamp*1000).toLocaleString("zh-HK",{timeZone:"Asia/Hong_Kong",hour:"2-digit",minute:"2-digit",second:"2-digit"})+" HKT 即時";
+    document.getElementById("status").textContent="✅ 即時數據更新中（每 5 秒讀一次）— 最後更新："+when+"。來源：Where The ISS At? API。";
+    updateUI(d,when);
+  }catch(e){
+    clearTimeout(t);
+    if(!liveOK){
+      document.getElementById("status").textContent="⚠️ 即時讀取失敗（"+e.message+"），而家顯示已核實快照："+SNAPSHOT.at+"。稍後會再試。";
+      updateUI(SNAPSHOT,"快照 "+SNAPSHOT.at);
+    }else{
+      document.getElementById("status").textContent="⚠️ 呢次即時讀取失敗，繼續顯示上一次成功讀到嘅位置。";
+    }
+  }
+}
+initMap();
+renderCrew();
+renderQuiz();
+updateUI(SNAPSHOT,"快照 "+SNAPSHOT.at);
+fetchLive();
+setInterval(fetchLive,5000);
+</script>
+</body>
+</html>
