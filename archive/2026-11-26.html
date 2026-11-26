@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 013 期｜邊個國家最靠可再生能源？</title>
+<style>
+  :root{--ink:#10231a;--muted:#4a5a50;--bg:#eaf4ec;--card:#ffffff;--accent:#1b7a4d;--deep:#0b3d2e;--teal:#009688;--sand:#ffc93c;--line:#c4d8c9}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  header{background:linear-gradient(135deg,#0b3d2e,#1b7a4d 55%,#43a047);color:#fff;padding:34px 20px 28px;text-align:center}
+  header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.9}
+  header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
+  header p{margin:.2em auto;max-width:720px;opacity:.95}
+  main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(16,35,26,.10)}
+  .card h2{margin-top:0}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .stat{background:#0b3d2e;color:#fff;border:1px solid #0b3d2e;border-radius:12px;padding:16px;text-align:center}
+  .stat b{display:block;font-size:1.7em;line-height:1.15;color:#fff}
+  .stat span{font-size:.85em;opacity:.95}
+  .stat.green{background:#1b7a4d;border-color:#1b7a4d}
+  .stat.teal{background:#00796b;border-color:#00796b}
+  .stat.amber{background:#b8860b;border-color:#b8860b}
+  .stat small{display:block;font-size:.72em;opacity:.85;margin-top:2px}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .controls button{border:1.5px solid var(--accent);background:#fff;color:var(--accent);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em;font-weight:700}
+  .controls button.on{background:var(--accent);color:#fff}
+  .controls input,.controls select{border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.95em;background:#fff;color:var(--ink)}
+  .controls input{flex:1;min-width:180px}
+  table{width:100%;border-collapse:collapse;font-size:.95em}
+  th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+  th{cursor:pointer;white-space:nowrap;color:var(--accent)}
+  th:hover{color:#0b3d2e}
+  .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr.hkrow{background:#fff8e1;font-weight:700}
+  .bar-row{display:grid;grid-template-columns:170px 1fr 64px;gap:10px;align-items:center;margin:9px 0;font-size:.95em}
+  .bar-label small{color:var(--muted);font-weight:400}
+  .bar-track{background:#eaf4ec;border-radius:999px;height:16px;overflow:hidden}
+  .bar-fill{height:100%;background:linear-gradient(90deg,#43a047,#1b7a4d);border-radius:999px}
+  #trendChart{width:100%;height:300px;display:block}
+  .legend{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .legend button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;cursor:pointer;font-size:.9em}
+  .legend button.on{border-color:var(--accent);background:#eaf4ec;font-weight:700}
+  .legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
+  #status{font-size:.9em;color:var(--muted)}
+  .note{background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:12px 14px;font-size:.92em}
+  .facts li{margin:8px 0}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1.5px solid var(--line);background:#f4fbf6;color:var(--ink);border-radius:10px;cursor:pointer;font-size:1em}
+  .quiz button:hover{border-color:var(--accent)}
+  .quiz .ans{font-weight:700;margin-top:10px}
+  footer{max-width:920px;margin:0 auto;padding:0 16px 34px;color:var(--muted);font-size:.88em;line-height:1.8}
+  footer a{color:var(--accent)}
+  @media(max-width:640px){.bar-row{grid-template-columns:110px 1fr 56px;font-size:.88em}}
+</style>
+</head>
+<body>
+<div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">📚 想睇返之前發佈過嘅嘢？ <a href="index.html" style="color:#ffc93c;font-weight:700">去「過往期數」總覽 →</a></div>
+<header>
+  <div class="kicker">DAILY FUN WEB · 第 013 期 · 2026-11-26</div>
+  <h1>🌱 邊個國家最靠可再生能源？</h1>
+  <p>太陽、風、水力、地熱……全球能源有幾多來自可再生能源？用 Our World in Data 2025 年最新數據，睇下邊個國家最綠、邊個仲係靠晒化石燃料，仲有香港排第幾。</p>
+</header>
+<main>
+  <div class="card">
+    <p id="status">⏳ 嘗試即時讀取 Our World in Data 最新數據…</p>
+    <div class="stats">
+      <div class="stat"><b id="stWorld">8.6%</b><span>世界平均（2025 年）</span><small>一次能源入面可再生能源佔比</small></div>
+      <div class="stat green"><b>84.7%</b><span>最高：冰島</span><small>地熱 + 水力，幾乎唔使燒嘢</small></div>
+      <div class="stat teal"><b>1.2%</b><span>香港（2025 年）</span><small>79 個國家之中排第 67 位</small></div>
+      <div class="stat amber"><b>8.7%</b><span>中位數</span><small>一半國家低過呢個數</small></div>
+    </div>
+    <div class="stats" style="margin-top:12px">
+      <div class="stat"><b>3 個</b><span>可再生能源過半嘅國家</span><small>冰島、挪威、新西蘭</small></div>
+      <div class="stat green"><b>2.5 倍</b><span>世界 25 年升幅</span><small>2000 年 3.5% → 2025 年 8.6%</small></div>
+      <div class="stat teal"><b>9.2%</b><span>中國（2025 年）</span><small>2015 年得 4.5%，十年翻一倍有多</small></div>
+      <div class="stat amber"><b>0.0%</b><span>最低：土庫曼</span><small>11 個國家低過 1%</small></div>
+    </div>
+    <p style="color:var(--muted);font-size:.92em">數據快照核實時間：2026-11-26 07:00 HKT（2025 年全年數據，79 個國家／地區有完整數據）。頁面載入後會嘗試即時讀 Our World in Data 官方 CSV；由於該檔案暫未開放瀏覽器跨域讀取，讀唔到就會顯示呢個已核實快照，並會注明。</p>
+  </div>
+
+  <div class="card">
+    <h2>🏆 可再生能源佔比十大</h2>
+    <p>2025 年一次能源入面，可再生能源佔比最高嘅十個國家。冰島拋離第二名成 30 個百分點。</p>
+    <div class="bar-row"><span class="bar-label">1. 冰島 <small>Iceland</small></span><div class="bar-track"><div class="bar-fill" style="width:100.0%"></div></div><b class="num">84.7%</b></div>
+<div class="bar-row"><span class="bar-label">2. 挪威 <small>Norway</small></span><div class="bar-track"><div class="bar-fill" style="width:62.7%"></div></div><b class="num">53.1%</b></div>
+<div class="bar-row"><span class="bar-label">3. 新西蘭 <small>New Zealand</small></span><div class="bar-track"><div class="bar-fill" style="width:59.6%"></div></div><b class="num">50.5%</b></div>
+<div class="bar-row"><span class="bar-label">4. 巴西 <small>Brazil</small></span><div class="bar-track"><div class="bar-fill" style="width:42.7%"></div></div><b class="num">36.1%</b></div>
+<div class="bar-row"><span class="bar-label">5. 丹麥 <small>Denmark</small></span><div class="bar-track"><div class="bar-fill" style="width:40.1%"></div></div><b class="num">34.0%</b></div>
+<div class="bar-row"><span class="bar-label">6. 瑞典 <small>Sweden</small></span><div class="bar-track"><div class="bar-fill" style="width:38.2%"></div></div><b class="num">32.3%</b></div>
+<div class="bar-row"><span class="bar-label">7. 芬蘭 <small>Finland</small></span><div class="bar-track"><div class="bar-fill" style="width:29.5%"></div></div><b class="num">25.0%</b></div>
+<div class="bar-row"><span class="bar-label">8. 奧地利 <small>Austria</small></span><div class="bar-track"><div class="bar-fill" style="width:29.1%"></div></div><b class="num">24.7%</b></div>
+<div class="bar-row"><span class="bar-label">9. 葡萄牙 <small>Portugal</small></span><div class="bar-track"><div class="bar-fill" style="width:29.0%"></div></div><b class="num">24.6%</b></div>
+<div class="bar-row"><span class="bar-label">10. 瑞士 <small>Switzerland</small></span><div class="bar-track"><div class="bar-fill" style="width:24.2%"></div></div><b class="num">20.5%</b></div>
+  </div>
+
+  <div class="card">
+    <h2>📈 十年走勢：邊個追得最快？</h2>
+    <p>2015–2025 年可再生能源佔比變化。撳下面嘅掣揀想睇嘅國家／地區，世界平均用黑色線。</p>
+    <div class="legend" id="trendLegend"></div>
+    <canvas id="trendChart" width="860" height="300"></canvas>
+    <p style="color:var(--muted);font-size:.9em">中國十年由 4.5% 升到 9.2%；德國由 9.1% 升到 15.2%；香港由 0.2% 慢慢爬到 1.2%。冰島本身已經好高，十年嚟大致維持喺 83–90% 之間。</p>
+  </div>
+
+  <div class="card">
+    <h2>🌍 79 個國家完整排名</h2>
+    <p>2025 年可再生能源佔一次能源百分比。搜尋國家名（中文／英文都得），或者按佔比範圍、地區篩選；撳表頭可以排序。💛 黃色嗰行係香港。</p>
+    <div class="controls">
+      <input id="q" type="search" placeholder="🔍 搜尋國家，例如：香港、日本、德國…" oninput="renderTable()">
+      <button class="on" data-f="all" onclick="setFilter('all',this)">全部 79 個</button>
+      <button data-f="high" onclick="setFilter('high',this)">≥ 25%</button>
+      <button data-f="mid" onclick="setFilter('mid',this)">10–25%</button>
+      <button data-f="low" onclick="setFilter('low',this)">&lt; 10%</button>
+      <button data-f="asia" onclick="setFilter('asia',this)">🌏 亞洲</button>
+    </div>
+    <table>
+      <thead><tr><th onclick="sortBy('rank')">排名 ↕</th><th onclick="sortBy('cn')">國家 ↕</th><th onclick="sortBy('value')">可再生能源佔比 ↕</th><th>同世界平均比較</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <p id="countLine" style="color:var(--muted);font-size:.9em"></p>
+  </div>
+
+  <div class="card">
+    <h2>💡 冷知識</h2>
+    <ul class="facts">
+      <li>🇮🇸 <b>冰島 84.7%</b>：全國能源幾乎全靠地熱同水力，連暖氣都用地熱水；不過呢個係「一次能源」佔比，佢發電本身幾乎 100% 係可再生能源。</li>
+      <li>🇳🇴 <b>挪威 53.1%</b>：水力發電大國，成個國家嘅電幾乎全用水力發，仲出口埋電去歐洲。</li>
+      <li>🇧🇷 <b>巴西 36.1%</b>：水力 + 生物燃料（甘蔗乙醇）撐起，係發展中國家入面佔比最高之一。</li>
+      <li>🇭🇰 <b>香港 1.2%</b>：79 個國家排第 67 位，仲低過世界平均 8.6% 好多；不過由 2020 年 0.5% 升到 2025 年 1.2%，五年升咗一倍有多。</li>
+      <li>🌏 <b>亞洲普遍偏低</b>：新加坡 0.4%、南韓 3.2%、日本 8.1%、印度 5.5%；亞洲最高係菲律賓 19.1%（水力 + 地熱）。</li>
+      <li>📊 <b>世界整體</b>：由 2000 年 3.5% 升到 2025 年 8.6%，25 年升咗 2.5 倍，但即係話全球能源仲有超過九成唔係可再生。</li>
+      <li>⚠️ <b>乜嘢計入「可再生」？</b>水力、太陽能、風能、地熱、生物能源同廢物；唔包括傳統生物質（例如直接燒柴）。唔同國家統計口徑一致，數據源自 Energy Institute《世界能源統計年鑑》。</li>
+    </ul>
+  </div>
+
+  <div class="card quiz">
+    <h2>🧠 小測驗</h2>
+    <p><b>Q1：</b>邊個國家嘅可再生能源佔比最高？</p>
+    <button onclick="quiz(this,false)">🇳🇴 挪威 — 水力發電大國</button>
+    <button onclick="quiz(this,true)">🇮🇸 冰島 — 84.7%，地熱 + 水力</button>
+    <button onclick="quiz(this,false)">🇧🇷 巴西 — 水力 + 甘蔗乙醇</button>
+    <button onclick="quiz(this,false)">🇳🇿 新西蘭 — 剛剛過半</button>
+    <p class="ans" id="ans1"></p>
+    <p><b>Q2：</b>香港 2025 年可再生能源佔比大約係幾多？</p>
+    <button onclick="quiz2(this,false)">約 12% — 已經唔錯</button>
+    <button onclick="quiz2(this,true)">約 1.2% — 79 個國家排第 67 位</button>
+    <button onclick="quiz2(this,false)">約 0.1% — 幾乎係零</button>
+    <button onclick="quiz2(this,false)">約 25% — 過咗四分一</button>
+    <p class="ans" id="ans2"></p>
+  </div>
+</main>
+<footer>
+  <p>📊 <b>數據來源：</b>Our World in Data — 「Share of primary energy from renewables」（一次能源入面可再生能源佔比），原始數據：Energy Institute《Statistical Review of World Energy》（2025 年版）。數據集：<a href="https://ourworldindata.org/grapher/renewable-share-energy.csv">ourworldindata.org/grapher/renewable-share-energy.csv</a>；圖表頁：<a href="https://ourworldindata.org/grapher/renewable-share-energy">ourworldindata.org/grapher/renewable-share-energy</a>。快照查核日期：2026-11-26（2026-11-26 07:00 HKT），涵蓋 2025 年 79 個國家／地區。Our World in Data 數據以 CC BY 授權開放使用。</p>
+  <p>Daily Fun Web · 第 013 期 · 2026-11-26 · 每日用世界各地開放數據整一版有趣網頁</p>
+</footer>
+<script>
+var SNAPSHOT = [{"name": "Iceland", "code": "ISL", "value": 84.71, "cn": "冰島", "asia": false}, {"name": "Norway", "code": "NOR", "value": 53.09, "cn": "挪威", "asia": false}, {"name": "New Zealand", "code": "NZL", "value": 50.46, "cn": "新西蘭", "asia": false}, {"name": "Brazil", "code": "BRA", "value": 36.14, "cn": "巴西", "asia": false}, {"name": "Denmark", "code": "DNK", "value": 33.95, "cn": "丹麥", "asia": false}, {"name": "Sweden", "code": "SWE", "value": 32.32, "cn": "瑞典", "asia": false}, {"name": "Finland", "code": "FIN", "value": 24.97, "cn": "芬蘭", "asia": false}, {"name": "Austria", "code": "AUT", "value": 24.68, "cn": "奧地利", "asia": false}, {"name": "Portugal", "code": "PRT", "value": 24.59, "cn": "葡萄牙", "asia": false}, {"name": "Switzerland", "code": "CHE", "value": 20.54, "cn": "瑞士", "asia": false}, {"name": "Latvia", "code": "LVA", "value": 19.9, "cn": "拉脫維亞", "asia": false}, {"name": "Philippines", "code": "PHL", "value": 19.13, "cn": "菲律賓", "asia": true}, {"name": "Colombia", "code": "COL", "value": 18.6, "cn": "哥倫比亞", "asia": false}, {"name": "Chile", "code": "CHL", "value": 18.37, "cn": "智利", "asia": false}, {"name": "Lithuania", "code": "LTU", "value": 18.28, "cn": "立陶宛", "asia": false}, {"name": "Italy", "code": "ITA", "value": 15.47, "cn": "意大利", "asia": false}, {"name": "Peru", "code": "PER", "value": 15.18, "cn": "秘魯", "asia": false}, {"name": "Ecuador", "code": "ECU", "value": 15.17, "cn": "厄瓜多爾", "asia": false}, {"name": "Germany", "code": "DEU", "value": 15.17, "cn": "德國", "asia": false}, {"name": "United Kingdom", "code": "GBR", "value": 14.91, "cn": "英國", "asia": false}, {"name": "Croatia", "code": "HRV", "value": 14.37, "cn": "克羅地亞", "asia": false}, {"name": "Canada", "code": "CAN", "value": 14.27, "cn": "加拿大", "asia": false}, {"name": "Spain", "code": "ESP", "value": 14.19, "cn": "西班牙", "asia": false}, {"name": "Turkey", "code": "TUR", "value": 14.1, "cn": "土耳其", "asia": true}, {"name": "Ireland", "code": "IRL", "value": 14.01, "cn": "愛爾蘭", "asia": false}, {"name": "Estonia", "code": "EST", "value": 13.48, "cn": "愛沙尼亞", "asia": false}, {"name": "Venezuela", "code": "VEN", "value": 13.02, "cn": "委內瑞拉", "asia": false}, {"name": "North Macedonia", "code": "MKD", "value": 12.98, "cn": "北馬其頓", "asia": false}, {"name": "Sri Lanka", "code": "LKA", "value": 12.37, "cn": "斯里蘭卡", "asia": true}, {"name": "Vietnam", "code": "VNM", "value": 11.79, "cn": "越南", "asia": true}, {"name": "Indonesia", "code": "IDN", "value": 11.68, "cn": "印尼", "asia": true}, {"name": "Slovenia", "code": "SVN", "value": 11.14, "cn": "斯洛文尼亞", "asia": false}, {"name": "Netherlands", "code": "NLD", "value": 10.61, "cn": "荷蘭", "asia": false}, {"name": "Greece", "code": "GRC", "value": 10.36, "cn": "希臘", "asia": false}, {"name": "Luxembourg", "code": "LUX", "value": 9.64, "cn": "盧森堡", "asia": false}, {"name": "Bulgaria", "code": "BGR", "value": 9.51, "cn": "保加利亞", "asia": false}, {"name": "Romania", "code": "ROU", "value": 9.34, "cn": "羅馬尼亞", "asia": false}, {"name": "Pakistan", "code": "PAK", "value": 9.31, "cn": "巴基斯坦", "asia": true}, {"name": "China", "code": "CHN", "value": 9.19, "cn": "中國", "asia": true}, {"name": "Hungary", "code": "HUN", "value": 8.65, "cn": "匈牙利", "asia": false}, {"name": "Poland", "code": "POL", "value": 8.33, "cn": "波蘭", "asia": false}, {"name": "Argentina", "code": "ARG", "value": 8.27, "cn": "阿根廷", "asia": false}, {"name": "France", "code": "FRA", "value": 8.23, "cn": "法國", "asia": false}, {"name": "Japan", "code": "JPN", "value": 8.1, "cn": "日本", "asia": true}, {"name": "Australia", "code": "AUS", "value": 7.89, "cn": "澳洲", "asia": false}, {"name": "Thailand", "code": "THA", "value": 7.83, "cn": "泰國", "asia": true}, {"name": "Belgium", "code": "BEL", "value": 7.25, "cn": "比利時", "asia": false}, {"name": "United States", "code": "USA", "value": 7.22, "cn": "美國", "asia": false}, {"name": "Czechia", "code": "CZE", "value": 6.72, "cn": "捷克", "asia": false}, {"name": "Cyprus", "code": "CYP", "value": 6.16, "cn": "塞浦路斯", "asia": true}, {"name": "Mexico", "code": "MEX", "value": 5.68, "cn": "墨西哥", "asia": false}, {"name": "Slovakia", "code": "SVK", "value": 5.52, "cn": "斯洛伐克", "asia": false}, {"name": "India", "code": "IND", "value": 5.51, "cn": "印度", "asia": true}, {"name": "Israel", "code": "ISR", "value": 5.44, "cn": "以色列", "asia": true}, {"name": "Malaysia", "code": "MYS", "value": 4.74, "cn": "馬來西亞", "asia": true}, {"name": "Morocco", "code": "MAR", "value": 4.17, "cn": "摩洛哥", "asia": false}, {"name": "Taiwan", "code": "TWN", "value": 3.43, "cn": "台灣", "asia": true}, {"name": "South Korea", "code": "KOR", "value": 3.2, "cn": "南韓", "asia": true}, {"name": "Egypt", "code": "EGY", "value": 3.09, "cn": "埃及", "asia": false}, {"name": "Ukraine", "code": "UKR", "value": 3.02, "cn": "烏克蘭", "asia": false}, {"name": "Uzbekistan", "code": "UZB", "value": 2.84, "cn": "烏茲別克", "asia": true}, {"name": "Russia", "code": "RUS", "value": 2.53, "cn": "俄羅斯", "asia": true}, {"name": "South Africa", "code": "ZAF", "value": 2.41, "cn": "南非", "asia": false}, {"name": "Azerbaijan", "code": "AZE", "value": 1.99, "cn": "阿塞拜疆", "asia": true}, {"name": "Kazakhstan", "code": "KAZ", "value": 1.93, "cn": "哈薩克", "asia": true}, {"name": "United Arab Emirates", "code": "ARE", "value": 1.42, "cn": "阿聯酋", "asia": true}, {"name": "Hong Kong", "code": "HKG", "value": 1.15, "cn": "香港", "asia": true}, {"name": "Oman", "code": "OMN", "value": 1.05, "cn": "阿曼", "asia": true}, {"name": "Belarus", "code": "BLR", "value": 0.83, "cn": "白俄羅斯", "asia": false}, {"name": "Qatar", "code": "QAT", "value": 0.63, "cn": "卡塔爾", "asia": true}, {"name": "Saudi Arabia", "code": "SAU", "value": 0.59, "cn": "沙特阿拉伯", "asia": true}, {"name": "Bangladesh", "code": "BGD", "value": 0.46, "cn": "孟加拉", "asia": true}, {"name": "Iraq", "code": "IRQ", "value": 0.43, "cn": "伊拉克", "asia": true}, {"name": "Iran", "code": "IRN", "value": 0.42, "cn": "伊朗", "asia": true}, {"name": "Singapore", "code": "SGP", "value": 0.41, "cn": "新加坡", "asia": true}, {"name": "Trinidad and Tobago", "code": "TTO", "value": 0.1, "cn": "千里達及托巴哥", "asia": false}, {"name": "Algeria", "code": "DZA", "value": 0.09, "cn": "阿爾及利亞", "asia": false}, {"name": "Kuwait", "code": "KWT", "value": 0.02, "cn": "科威特", "asia": false}, {"name": "Turkmenistan", "code": "TKM", "value": 0.0, "cn": "土庫曼", "asia": false}];
+var SNAP_YEAR = 2025;
+var TREND = {"Iceland": {"2015": 85.4, "2016": 84.1, "2017": 83.2, "2018": 83.7, "2019": 85.6, "2020": 89.8, "2021": 87.9, "2022": 85.8, "2023": 85.9, "2024": 85.2, "2025": 84.7}, "Norway": {"2015": 46.0, "2016": 47.4, "2017": 46.4, "2018": 46.4, "2019": 44.7, "2020": 49.7, "2021": 50.5, "2022": 48.5, "2023": 50.4, "2024": 52.7, "2025": 53.1}, "Brazil": {"2015": 26.1, "2016": 28.0, "2017": 28.0, "2018": 30.6, "2019": 31.7, "2020": 33.5, "2021": 30.4, "2022": 33.1, "2023": 34.4, "2024": 35.8, "2025": 36.1}, "China": {"2015": 4.5, "2016": 5.0, "2017": 5.2, "2018": 5.5, "2019": 5.9, "2020": 6.3, "2021": 6.6, "2022": 7.1, "2023": 7.2, "2024": 8.2, "2025": 9.2}, "United States": {"2015": 4.8, "2016": 5.2, "2017": 5.6, "2018": 5.5, "2019": 5.6, "2020": 6.2, "2021": 6.2, "2022": 6.5, "2023": 6.8, "2024": 7.2, "2025": 7.2}, "Hong Kong": {"2015": 0.2, "2016": 0.2, "2017": 0.2, "2018": 0.2, "2019": 0.2, "2020": 0.5, "2021": 0.7, "2022": 0.9, "2023": 0.9, "2024": 1.0, "2025": 1.2}, "Germany": {"2015": 9.1, "2016": 9.1, "2017": 9.6, "2018": 10.2, "2019": 11.0, "2020": 12.6, "2021": 11.5, "2022": 12.7, "2023": 14.7, "2024": 15.1, "2025": 15.2}, "World": {"2015": 5.5, "2016": 5.8, "2017": 5.9, "2018": 6.2, "2019": 6.5, "2020": 7.1, "2021": 7.1, "2022": 7.4, "2023": 7.7, "2024": 8.2, "2025": 8.6}};
+var TREND_CN = {"World": "世界", "Iceland": "冰島", "Norway": "挪威", "Brazil": "巴西", "China": "中國", "United States": "美國", "Hong Kong": "香港", "Germany": "德國"};
+var WORLD_AVG = 8.59;
+var data = SNAPSHOT.slice();
+var liveOK = false;
+var curFilter = 'all', curSort = 'rank', sortDir = 1;
+
+function fmt(v){return v.toFixed(1)+'%';}
+function cmpWorld(v){var d=v-WORLD_AVG;return (d>=0?'高過世界平均 ':'低過世界平均 ')+Math.abs(d).toFixed(1)+' 個百分點';}
+
+function renderTable(){
+  var q=(document.getElementById('q').value||'').trim().toLowerCase();
+  var rows=data.filter(function(c){
+    if(q && c.cn.toLowerCase().indexOf(q)<0 && c.name.toLowerCase().indexOf(q)<0) return false;
+    if(curFilter==='high') return c.value>=25;
+    if(curFilter==='mid') return c.value>=10 && c.value<25;
+    if(curFilter==='low') return c.value<10;
+    if(curFilter==='asia') return c.asia;
+    return true;
+  });
+  rows.sort(function(a,b){
+    if(curSort==='value') return (a.value-b.value)*sortDir;
+    if(curSort==='cn') return a.cn.localeCompare(b.cn,'zh-Hant')*sortDir;
+    return (data.indexOf(a)-data.indexOf(b))*sortDir;
+  });
+  var tb=document.getElementById('tbody');
+  tb.innerHTML=rows.map(function(c){
+    var rank=data.indexOf(c)+1;
+    return '<tr'+(c.name==='Hong Kong'?' class="hkrow"':'')+'><td class="num">'+rank+'</td><td>'+c.cn+' <small style="color:var(--muted)">'+c.name+'</small></td><td class="num"><b>'+fmt(c.value)+'</b></td><td>'+cmpWorld(c.value)+'</td></tr>';
+  }).join('') || '<tr><td colspan="4">搵唔到符合條件嘅國家，試下改搜尋字眼。</td></tr>';
+  document.getElementById('countLine').textContent='顯示 '+rows.length+' 個國家／地區（共 '+data.length+' 個，'+SNAP_YEAR+' 年數據）'+(liveOK?' · 已即時更新':' · 快照 '+SNAP_YEAR+' 年');
+}
+function setFilter(f,btn){
+  curFilter=f;
+  document.querySelectorAll('.controls button[data-f]').forEach(function(b){b.classList.toggle('on',b===btn);});
+  renderTable();
+}
+function sortBy(k){
+  if(curSort===k){sortDir*=-1;}else{curSort=k;sortDir=(k==='value')?-1:1;}
+  renderTable();
+}
+
+/* trend chart */
+var COLORS={World:'#10231a',Iceland:'#e53935',Norway:'#1e88e5',Brazil:'#43a047',China:'#d81b60',Germany:'#fb8c00','United States':'#8e24aa','Hong Kong':'#fdd835'};
+var activeSeries={World:true,Iceland:true,Norway:true,Brazil:true,China:true,Germany:true,'United States':false,'Hong Kong':true};
+function buildLegend(){
+  var lg=document.getElementById('trendLegend');
+  lg.innerHTML=Object.keys(TREND).map(function(k){
+    return '<button class="'+(activeSeries[k]?'on':'')+'" data-k="'+k+'" onclick="toggleSeries(\''+k+'\')"><span class="dot" style="background:'+COLORS[k]+'"></span>'+TREND_CN[k]+'</button>';
+  }).join('');
+}
+function toggleSeries(k){activeSeries[k]=!activeSeries[k];buildLegend();drawChart();}
+function drawChart(){
+  var cv=document.getElementById('trendChart');var ctx=cv.getContext('2d');
+  var W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);
+  var padL=44,padR=14,padT=16,padB=30;
+  var years=[];for(var y=2015;y<=2025;y++)years.push(y);
+  var maxV=90;
+  ctx.strokeStyle='#dfe8df';ctx.fillStyle='#4a5a50';ctx.font='11px sans-serif';ctx.lineWidth=1;
+  [0,25,50,75,90].forEach(function(v){
+    var yy=padT+(1-v/maxV)*(H-padT-padB);
+    ctx.beginPath();ctx.moveTo(padL,yy);ctx.lineTo(W-padR,yy);ctx.stroke();
+    ctx.fillText(v+'%',6,yy+4);
+  });
+  years.forEach(function(y,i){
+    var xx=padL+i*(W-padL-padR)/(years.length-1);
+    ctx.fillText(String(y),xx-12,H-10);
+  });
+  Object.keys(TREND).forEach(function(k){
+    if(!activeSeries[k])return;
+    ctx.strokeStyle=COLORS[k];ctx.lineWidth=k==='World'?3:2;ctx.beginPath();
+    years.forEach(function(y,i){
+      var v=TREND[k][String(y)];if(v==null)return;
+      var xx=padL+i*(W-padL-padR)/(years.length-1);
+      var yy=padT+(1-v/maxV)*(H-padT-padB);
+      if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);
+    });
+    ctx.stroke();
+    var last=TREND[k]['2025'];
+    var lx=padL+(years.length-1)*(W-padL-padR)/(years.length-1);
+    var ly=padT+(1-last/maxV)*(H-padT-padB);
+    ctx.fillStyle=COLORS[k];ctx.beginPath();ctx.arc(lx,ly,3.5,0,7);ctx.fill();
+    ctx.font='bold 11px sans-serif';ctx.fillText(TREND_CN[k]+' '+last.toFixed(1)+'%',Math.max(padL,lx-118),Math.max(12,ly-8));
+  });
+}
+
+/* quiz */
+function quiz(btn,ok){
+  document.getElementById('ans1').textContent=ok?'✅ 啱！冰島 84.7%，拋離第二名挪威（53.1%）成 30 個百分點。':'❌ 唔係呢個。再估下：最高嗰個係地熱 + 水力之國。';
+}
+function quiz2(btn,ok){
+  document.getElementById('ans2').textContent=ok?'✅ 啱！香港 2025 年得 1.2%，79 個國家排第 67 位。':'❌ 唔係。香港可再生能源佔比仲好低，低過世界平均 8.6% 好多。';
+}
+
+/* live fetch attempt (OWID CSV); falls back to verified snapshot */
+function tryLive(){
+  var status=document.getElementById('status');
+  var ctl=new AbortController();var to=setTimeout(function(){ctl.abort();},9000);
+  fetch('https://ourworldindata.org/grapher/renewable-share-energy.csv',{signal:ctl.signal})
+    .then(function(r){clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);return r.text();})
+    .then(function(txt){
+      var lines=txt.trim().split('\n');var head=lines[0].split(',');
+      var yi=head.indexOf('Year'),vi=head.indexOf('Renewables');
+      var latest={};
+      for(var i=1;i<lines.length;i++){
+        var p=lines[i].split(',');if(p.length<4)continue;
+        var code=p[1],y=parseInt(p[2],10),v=parseFloat(p[3]);
+        if(code.length!==3||isNaN(y)||isNaN(v))continue;
+        if(!latest[p[0]]||y>latest[p[0]].y)latest[p[0]]={y:y,v:v,code:code};
+      }
+      var arr=Object.keys(latest).map(function(n){return {name:n,code:latest[n].code,value:latest[n].v,cn:CNMAP[n]||n,asia:ASIAMAP[n]||false};});
+      arr.sort(function(a,b){return b.value-a.value;});
+      var yr=arr.length?latest[arr[0].name].y:SNAP_YEAR;
+      if(arr.length>=50&&yr>=SNAP_YEAR){
+        data=arr;SNAP_YEAR=yr;liveOK=true;
+        status.textContent='✅ 已即時讀取 Our World in Data 最新數據（'+yr+' 年，'+arr.length+' 個國家／地區）。';
+        renderTable();
+      }else{
+        status.textContent='ℹ️ 即時讀取未有更新數據，顯示今朝核實嘅快照（'+SNAP_YEAR+' 年，'+data.length+' 個國家／地區）。';
+      }
+    })
+    .catch(function(e){
+      clearTimeout(to);
+      status.textContent='ℹ️ 即時讀取唔到（OWID 檔案暫未開放瀏覽器跨域讀取），顯示今朝 2026-11-26 07:00 HKT 核實嘅快照（'+SNAP_YEAR+' 年，'+data.length+' 個國家／地區）。';
+    });
+}
+var CNMAP={},ASIAMAP={};
+SNAPSHOT.forEach(function(c){CNMAP[c.name]=c.cn;ASIAMAP[c.name]=c.asia;});
+buildLegend();drawChart();renderTable();
+document.getElementById('status').textContent='⏳ 嘗試即時讀取 Our World in Data 最新數據…';
+tryLive();
+</script>
+</body>
+</html>
