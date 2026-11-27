@@ -1,292 +1,232 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-HK">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>第 013 期｜邊個國家最靠可再生能源？</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌡️ 而家全世界邊度最凍？— 全球即時氣溫大比拼 | Daily Fun Web 第 014 期</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
-  :root{--ink:#10231a;--muted:#4a5a50;--bg:#eaf4ec;--card:#ffffff;--accent:#1b7a4d;--deep:#0b3d2e;--teal:#009688;--sand:#ffc93c;--line:#c4d8c9}
+  :root{--ink:#1d2440;--paper:#fff8ec;--yellow:#ffc93c;--teal:#2ec4b6;--blue:#4361ee;--purple:#7b2fbe;--red:#ef476f;--cold:#4361ee;--hot:#ef476f}
   *{box-sizing:border-box}
-  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
-  header{background:linear-gradient(135deg,#0b3d2e,#1b7a4d 55%,#43a047);color:#fff;padding:34px 20px 28px;text-align:center}
-  header .kicker{font-size:.85em;letter-spacing:.18em;opacity:.9}
-  header h1{margin:.35em 0 .2em;font-size:clamp(1.6em,5vw,2.4em);line-height:1.25}
-  header p{margin:.2em auto;max-width:720px;opacity:.95}
-  main{max-width:920px;margin:0 auto;padding:20px 16px 40px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 2px 8px rgba(16,35,26,.10)}
-  .card h2{margin-top:0}
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-  .stat{background:#0b3d2e;color:#fff;border:1px solid #0b3d2e;border-radius:12px;padding:16px;text-align:center}
-  .stat b{display:block;font-size:1.7em;line-height:1.15;color:#fff}
-  .stat span{font-size:.85em;opacity:.95}
-  .stat.green{background:#1b7a4d;border-color:#1b7a4d}
-  .stat.teal{background:#00796b;border-color:#00796b}
-  .stat.amber{background:#b8860b;border-color:#b8860b}
-  .stat small{display:block;font-size:.72em;opacity:.85;margin-top:2px}
-  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
-  .controls button{border:1.5px solid var(--accent);background:#fff;color:var(--accent);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.95em;font-weight:700}
-  .controls button.on{background:var(--accent);color:#fff}
-  .controls input,.controls select{border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.95em;background:#fff;color:var(--ink)}
-  .controls input{flex:1;min-width:180px}
-  table{width:100%;border-collapse:collapse;font-size:.95em}
-  th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
-  th{cursor:pointer;white-space:nowrap;color:var(--accent)}
-  th:hover{color:#0b3d2e}
-  .num{font-variant-numeric:tabular-nums;white-space:nowrap}
-  tr.hkrow{background:#fff8e1;font-weight:700}
-  .bar-row{display:grid;grid-template-columns:170px 1fr 64px;gap:10px;align-items:center;margin:9px 0;font-size:.95em}
-  .bar-label small{color:var(--muted);font-weight:400}
-  .bar-track{background:#eaf4ec;border-radius:999px;height:16px;overflow:hidden}
-  .bar-fill{height:100%;background:linear-gradient(90deg,#43a047,#1b7a4d);border-radius:999px}
-  #trendChart{width:100%;height:300px;display:block}
-  .legend{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
-  .legend button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;cursor:pointer;font-size:.9em}
-  .legend button.on{border-color:var(--accent);background:#eaf4ec;font-weight:700}
-  .legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
-  #status{font-size:.9em;color:var(--muted)}
-  .note{background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:12px 14px;font-size:.92em}
-  .facts li{margin:8px 0}
-  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1.5px solid var(--line);background:#f4fbf6;color:var(--ink);border-radius:10px;cursor:pointer;font-size:1em}
-  .quiz button:hover{border-color:var(--accent)}
-  .quiz .ans{font-weight:700;margin-top:10px}
-  footer{max-width:920px;margin:0 auto;padding:0 16px 34px;color:var(--muted);font-size:.88em;line-height:1.8}
-  footer a{color:var(--accent)}
-  @media(max-width:640px){.bar-row{grid-template-columns:110px 1fr 56px;font-size:.88em}}
+  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei",system-ui,sans-serif;background:var(--paper);color:var(--ink)}
+  header{background:linear-gradient(135deg,#4361ee,#2ec4b6 55%,#ffc93c);color:#fff;padding:38px 20px 30px;text-align:center}
+  header h1{font-size:clamp(26px,6vw,44px);margin:0 0 8px;text-shadow:2px 2px 0 rgba(0,0,0,.25)}
+  header p{opacity:.96;max-width:680px;margin:0 auto;line-height:1.7}
+  main{max-width:920px;margin:0 auto;padding:24px 16px 50px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+  .card{background:#fff;border:2.5px solid var(--ink);border-radius:16px;box-shadow:4px 4px 0 var(--ink);padding:14px;text-align:center}
+  .card .big{font-size:30px;font-weight:900}
+  .card .lbl{font-size:14px;color:#5a6076;margin-top:2px;line-height:1.5}
+  .hot .big{color:var(--red)} .cold .big{color:var(--blue)}
+  .panel{background:#fff;border:2.5px solid var(--ink);border-radius:16px;box-shadow:4px 4px 0 var(--ink);padding:18px 20px;margin:18px 0}
+  .panel h2{margin:0 0 10px;font-size:21px}
+  .panel p{line-height:1.7;margin:8px 0}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+  .controls input[type=search]{flex:1;min-width:180px;padding:10px 14px;border:2.5px solid var(--ink);border-radius:999px;font-size:16px;font-family:inherit}
+  .controls select{padding:10px 12px;border:2.5px solid var(--ink);border-radius:999px;font-size:15px;font-family:inherit;background:#fff}
+  .chip{border:2.5px solid var(--ink);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:700;background:#fff;cursor:pointer;font-family:inherit}
+  .chip.on{background:var(--yellow)}
+  .row{display:flex;align-items:center;gap:12px;padding:10px 6px;border-bottom:1.5px dashed #c9cede}
+  .row:last-child{border-bottom:none}
+  .rank{width:34px;text-align:center;font-weight:900;font-size:18px;flex:none}
+  .city{flex:1;min-width:0}
+  .city .nm{font-weight:800;font-size:17px}
+  .city .sub{font-size:13px;color:#5a6076}
+  .barwrap{flex:1.4;min-width:90px}
+  .bar{height:16px;border-radius:999px;background:linear-gradient(90deg,#4361ee,#7bdff2,#ffc93c,#ef476f)}
+  .barfill{height:16px;border-radius:999px;background:rgba(255,255,255,.55);margin-left:auto}
+  .temp{width:86px;text-align:right;font-weight:900;font-size:20px;flex:none}
+  .temp small{display:block;font-size:12px;color:#5a6076;font-weight:600}
+  #map{height:420px;border:2.5px solid var(--ink);border-radius:16px;box-shadow:4px 4px 0 var(--ink);z-index:0}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:#3c4257;margin-top:8px}
+  .dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:4px;vertical-align:middle}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border:2.5px solid var(--ink);border-radius:12px;background:#fff;font-size:16px;font-family:inherit;cursor:pointer}
+  .quiz button:hover{background:var(--yellow)}
+  .quiz .ans{font-weight:800;margin-top:6px}
+  .status{font-size:14px;padding:10px 14px;border-radius:12px;background:#e8f6f3;border:2px solid var(--teal);margin:12px 0;line-height:1.6}
+  .status.live{background:#e8f6f3}
+  .status.snap{background:#fff3cd;border-color:#d9a400}
+  footer{max-width:920px;margin:0 auto;padding:0 16px 38px;color:#5a6076;font-size:14px;line-height:1.8}
+  a{color:var(--blue)}
+  .hk{background:#fff3cd}
 </style>
 </head>
 <body>
 <div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">📚 想睇返之前發佈過嘅嘢？ <a href="archive/index.html" style="color:#ffc93c;font-weight:700">去「過往期數」總覽 →</a></div>
 <header>
-  <div class="kicker">DAILY FUN WEB · 第 013 期 · 2026-11-26</div>
-  <h1>🌱 邊個國家最靠可再生能源？</h1>
-  <p>太陽、風、水力、地熱……全球能源有幾多來自可再生能源？用 Our World in Data 2025 年最新數據，睇下邊個國家最綠、邊個仲係靠晒化石燃料，仲有香港排第幾。</p>
+  <h1>🌡️ 而家全世界邊度最凍？</h1>
+  <p>同一時間，洛杉磯著短袖、安克雷奇凍到 -6.7°C。呢頁用 Open-Meteo 即時天氣數據，一次過比較全球 36 個城市而家幾多度，仲有互動地圖同排行榜。</p>
 </header>
 <main>
-  <div class="card">
-    <p id="status">⏳ 嘗試即時讀取 Our World in Data 最新數據…</p>
-    <div class="stats">
-      <div class="stat"><b id="stWorld">8.6%</b><span>世界平均（2025 年）</span><small>一次能源入面可再生能源佔比</small></div>
-      <div class="stat green"><b>84.7%</b><span>最高：冰島</span><small>地熱 + 水力，幾乎唔使燒嘢</small></div>
-      <div class="stat teal"><b>1.2%</b><span>香港（2025 年）</span><small>79 個國家之中排第 67 位</small></div>
-      <div class="stat amber"><b>8.7%</b><span>中位數</span><small>一半國家低過呢個數</small></div>
+  <div class="status live" id="status">⏳ 載入緊即時數據…</div>
+
+  <div class="cards">
+    <div class="card hot"><div class="big" id="statHot">27.7°C</div><div class="lbl">🔥 最熱：洛杉磯</div></div>
+    <div class="card cold"><div class="big" id="statCold">-6.7°C</div><div class="lbl">🥶 最凍：安克雷奇</div></div>
+    <div class="card"><div class="big">34.4°C</div><div class="lbl">↔️ 最熱同最凍相差</div></div>
+    <div class="card"><div class="big">12.1°C</div><div class="lbl">🌍 36 個城市平均氣溫</div></div>
+    <div class="card"><div class="big">16.1°C</div><div class="lbl">🇭🇰 香港而家 · 36 城排第 16 熱</div></div>
+    <div class="card"><div class="big">5 城</div><div class="lbl">❄️ 低過 0°C（柏林、斯德哥爾摩、奧斯陸、莫斯科、安克雷奇）</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>🗺️ 全球氣溫地圖</h2>
+    <p>每個點都係一個城市，顏色由藍（凍）去紅（熱），撳入去睇即時氣溫、體感溫度、濕度同天氣。</p>
+    <div id="map"></div>
+    <div class="legend">
+      <span><span class="dot" style="background:#4361ee"></span>低過 0°C</span>
+      <span><span class="dot" style="background:#7bdff2"></span>0–10°C</span>
+      <span><span class="dot" style="background:#ffc93c"></span>10–20°C</span>
+      <span><span class="dot" style="background:#f4842b"></span>20–25°C</span>
+      <span><span class="dot" style="background:#ef476f"></span>高過 25°C</span>
     </div>
-    <div class="stats" style="margin-top:12px">
-      <div class="stat"><b>3 個</b><span>可再生能源過半嘅國家</span><small>冰島、挪威、新西蘭</small></div>
-      <div class="stat green"><b>2.5 倍</b><span>世界 25 年升幅</span><small>2000 年 3.5% → 2025 年 8.6%</small></div>
-      <div class="stat teal"><b>9.2%</b><span>中國（2025 年）</span><small>2015 年得 4.5%，十年翻一倍有多</small></div>
-      <div class="stat amber"><b>0.0%</b><span>最低：土庫曼</span><small>11 個國家低過 1%</small></div>
-    </div>
-    <p style="color:var(--muted);font-size:.92em">數據快照核實時間：2026-11-26 07:00 HKT（2025 年全年數據，79 個國家／地區有完整數據）。頁面載入後會嘗試即時讀 Our World in Data 官方 CSV；由於該檔案暫未開放瀏覽器跨域讀取，讀唔到就會顯示呢個已核實快照，並會注明。</p>
   </div>
 
-  <div class="card">
-    <h2>🏆 可再生能源佔比十大</h2>
-    <p>2025 年一次能源入面，可再生能源佔比最高嘅十個國家。冰島拋離第二名成 30 個百分點。</p>
-    <div class="bar-row"><span class="bar-label">1. 冰島 <small>Iceland</small></span><div class="bar-track"><div class="bar-fill" style="width:100.0%"></div></div><b class="num">84.7%</b></div>
-<div class="bar-row"><span class="bar-label">2. 挪威 <small>Norway</small></span><div class="bar-track"><div class="bar-fill" style="width:62.7%"></div></div><b class="num">53.1%</b></div>
-<div class="bar-row"><span class="bar-label">3. 新西蘭 <small>New Zealand</small></span><div class="bar-track"><div class="bar-fill" style="width:59.6%"></div></div><b class="num">50.5%</b></div>
-<div class="bar-row"><span class="bar-label">4. 巴西 <small>Brazil</small></span><div class="bar-track"><div class="bar-fill" style="width:42.7%"></div></div><b class="num">36.1%</b></div>
-<div class="bar-row"><span class="bar-label">5. 丹麥 <small>Denmark</small></span><div class="bar-track"><div class="bar-fill" style="width:40.1%"></div></div><b class="num">34.0%</b></div>
-<div class="bar-row"><span class="bar-label">6. 瑞典 <small>Sweden</small></span><div class="bar-track"><div class="bar-fill" style="width:38.2%"></div></div><b class="num">32.3%</b></div>
-<div class="bar-row"><span class="bar-label">7. 芬蘭 <small>Finland</small></span><div class="bar-track"><div class="bar-fill" style="width:29.5%"></div></div><b class="num">25.0%</b></div>
-<div class="bar-row"><span class="bar-label">8. 奧地利 <small>Austria</small></span><div class="bar-track"><div class="bar-fill" style="width:29.1%"></div></div><b class="num">24.7%</b></div>
-<div class="bar-row"><span class="bar-label">9. 葡萄牙 <small>Portugal</small></span><div class="bar-track"><div class="bar-fill" style="width:29.0%"></div></div><b class="num">24.6%</b></div>
-<div class="bar-row"><span class="bar-label">10. 瑞士 <small>Switzerland</small></span><div class="bar-track"><div class="bar-fill" style="width:24.2%"></div></div><b class="num">20.5%</b></div>
-  </div>
-
-  <div class="card">
-    <h2>📈 十年走勢：邊個追得最快？</h2>
-    <p>2015–2025 年可再生能源佔比變化。撳下面嘅掣揀想睇嘅國家／地區，世界平均用黑色線。</p>
-    <div class="legend" id="trendLegend"></div>
-    <canvas id="trendChart" width="860" height="300"></canvas>
-    <p style="color:var(--muted);font-size:.9em">中國十年由 4.5% 升到 9.2%；德國由 9.1% 升到 15.2%；香港由 0.2% 慢慢爬到 1.2%。冰島本身已經好高，十年嚟大致維持喺 83–90% 之間。</p>
-  </div>
-
-  <div class="card">
-    <h2>🌍 79 個國家完整排名</h2>
-    <p>2025 年可再生能源佔一次能源百分比。搜尋國家名（中文／英文都得），或者按佔比範圍、地區篩選；撳表頭可以排序。💛 黃色嗰行係香港。</p>
+  <div class="panel">
+    <h2>🏆 36 個城市即時氣溫排行榜</h2>
     <div class="controls">
-      <input id="q" type="search" placeholder="🔍 搜尋國家，例如：香港、日本、德國…" oninput="renderTable()">
-      <button class="on" data-f="all" onclick="setFilter('all',this)">全部 79 個</button>
-      <button data-f="high" onclick="setFilter('high',this)">≥ 25%</button>
-      <button data-f="mid" onclick="setFilter('mid',this)">10–25%</button>
-      <button data-f="low" onclick="setFilter('low',this)">&lt; 10%</button>
-      <button data-f="asia" onclick="setFilter('asia',this)">🌏 亞洲</button>
+      <input type="search" id="q" placeholder="🔍 搜尋城市（中文／英文），例如：東京、Paris…">
+      <select id="sort">
+        <option value="hot">🔥 最熱排先</option>
+        <option value="cold">🥶 最凍排先</option>
+        <option value="name">🔤 按名稱</option>
+      </select>
     </div>
-    <table>
-      <thead><tr><th onclick="sortBy('rank')">排名 ↕</th><th onclick="sortBy('cn')">國家 ↕</th><th onclick="sortBy('value')">可再生能源佔比 ↕</th><th>同世界平均比較</th></tr></thead>
-      <tbody id="tbody"></tbody>
-    </table>
-    <p id="countLine" style="color:var(--muted);font-size:.9em"></p>
+    <div class="controls" id="filters">
+      <button class="chip on" data-f="all">全部 36 城</button>
+      <button class="chip" data-f="cold">🥶 凍冰冰（&lt; 10°C）· 16 城</button>
+      <button class="chip" data-f="mild">😌 啱啱好（10–25°C）· 17 城</button>
+      <button class="chip" data-f="hot">🥵 熱辣辣（&gt; 25°C）· 3 城</button>
+    </div>
+    <div id="list"></div>
+    <p id="count" style="color:#5a6076;font-size:14px"></p>
   </div>
 
-  <div class="card">
-    <h2>💡 冷知識</h2>
-    <ul class="facts">
-      <li>🇮🇸 <b>冰島 84.7%</b>：全國能源幾乎全靠地熱同水力，連暖氣都用地熱水；不過呢個係「一次能源」佔比，佢發電本身幾乎 100% 係可再生能源。</li>
-      <li>🇳🇴 <b>挪威 53.1%</b>：水力發電大國，成個國家嘅電幾乎全用水力發，仲出口埋電去歐洲。</li>
-      <li>🇧🇷 <b>巴西 36.1%</b>：水力 + 生物燃料（甘蔗乙醇）撐起，係發展中國家入面佔比最高之一。</li>
-      <li>🇭🇰 <b>香港 1.2%</b>：79 個國家排第 67 位，仲低過世界平均 8.6% 好多；不過由 2020 年 0.5% 升到 2025 年 1.2%，五年升咗一倍有多。</li>
-      <li>🌏 <b>亞洲普遍偏低</b>：新加坡 0.4%、南韓 3.2%、日本 8.1%、印度 5.5%；亞洲最高係菲律賓 19.1%（水力 + 地熱）。</li>
-      <li>📊 <b>世界整體</b>：由 2000 年 3.5% 升到 2025 年 8.6%，25 年升咗 2.5 倍，但即係話全球能源仲有超過九成唔係可再生。</li>
-      <li>⚠️ <b>乜嘢計入「可再生」？</b>水力、太陽能、風能、地熱、生物能源同廢物；唔包括傳統生物質（例如直接燒柴）。唔同國家統計口徑一致，數據源自 Energy Institute《世界能源統計年鑑》。</li>
-    </ul>
+  <div class="panel quiz">
+    <h2>🧠 估下先：氣溫冷知識小測驗</h2>
+    <p><b>Q1：</b>呢 36 個城市入面，邊個而家最凍？</p>
+    <button data-a="q1" data-v="oslo">奧斯陸（挪威）</button>
+    <button data-a="q1" data-v="anchorage">安克雷奇（阿拉斯加）</button>
+    <button data-a="q1" data-v="moscow">莫斯科（俄羅斯）</button>
+    <p class="ans" id="ans-q1"></p>
+    <p><b>Q2：</b>邊個城市嘅風最大，搞到體感比實際氣溫凍足 9°C？</p>
+    <button data-a="q2" data-v="reykjavik">雷克雅未克（冰島）— 風速 50.4 km/h</button>
+    <button data-a="q2" data-v="chicago">芝加哥（美國）— 風速 36.2 km/h</button>
+    <button data-a="q2" data-v="nyc">紐約（美國）— 風速 38.0 km/h</button>
+    <p class="ans" id="ans-q2"></p>
+    <p><b>Q3：</b>香港 16.1°C，喺 36 個城市入面排第幾熱？</p>
+    <button data-a="q3" data-v="8">第 8 熱</button>
+    <button data-a="q3" data-v="16">第 16 熱</button>
+    <button data-a="q3" data-v="24">第 24 熱</button>
+    <p class="ans" id="ans-q3"></p>
   </div>
 
-  <div class="card quiz">
-    <h2>🧠 小測驗</h2>
-    <p><b>Q1：</b>邊個國家嘅可再生能源佔比最高？</p>
-    <button onclick="quiz(this,false)">🇳🇴 挪威 — 水力發電大國</button>
-    <button onclick="quiz(this,true)">🇮🇸 冰島 — 84.7%，地熱 + 水力</button>
-    <button onclick="quiz(this,false)">🇧🇷 巴西 — 水力 + 甘蔗乙醇</button>
-    <button onclick="quiz(this,false)">🇳🇿 新西蘭 — 剛剛過半</button>
-    <p class="ans" id="ans1"></p>
-    <p><b>Q2：</b>香港 2025 年可再生能源佔比大約係幾多？</p>
-    <button onclick="quiz2(this,false)">約 12% — 已經唔錯</button>
-    <button onclick="quiz2(this,true)">約 1.2% — 79 個國家排第 67 位</button>
-    <button onclick="quiz2(this,false)">約 0.1% — 幾乎係零</button>
-    <button onclick="quiz2(this,false)">約 25% — 過咗四分一</button>
-    <p class="ans" id="ans2"></p>
+  <div class="panel">
+    <h2>🤔 點解同一時間可以差成 34.4°C？</h2>
+    <p>11 月尾北半球入冬，歐洲同北美北部已經跌穿 0°C；南半球就啱啱入夏，悉尼、墨爾本、布宜諾斯艾利斯都有 20°C 以上。緯度、季節同埋海洋調節，三樣加埋就係今朝呢個溫差。洛杉磯 27.7°C 仲要係凌晨時段嘅數字 — 佢哋嗰邊係 11 月 26 號下午。</p>
+    <p>體感溫度都好值得睇：雷克雅未克實際 5.7°C，但風速高達 50.4 km/h，體感得 -3.3°C，凍足 9°C；紐約落住中雨，實際 7.3°C、體感得 0.7°C。</p>
   </div>
 </main>
 <footer>
-  <p>📊 <b>數據來源：</b>Our World in Data — 「Share of primary energy from renewables」（一次能源入面可再生能源佔比），原始數據：Energy Institute《Statistical Review of World Energy》（2025 年版）。數據集：<a href="https://ourworldindata.org/grapher/renewable-share-energy.csv">ourworldindata.org/grapher/renewable-share-energy.csv</a>；圖表頁：<a href="https://ourworldindata.org/grapher/renewable-share-energy">ourworldindata.org/grapher/renewable-share-energy</a>。快照查核日期：2026-11-26（2026-11-26 07:00 HKT），涵蓋 2025 年 79 個國家／地區。Our World in Data 數據以 CC BY 授權開放使用。</p>
-  <p>Daily Fun Web · 第 013 期 · 2026-11-26 · 每日用世界各地開放數據整一版有趣網頁</p>
+  <p>📊 <b>數據來源：</b>Open-Meteo 天氣 API（open-meteo.com，免金鑰、開放數據；原始數據來自各國國家氣象機構，包括美國 NWS、德國 DWD、法國 Météo-France、日本 JMA 等，CC BY 4.0）。頁面載入時即時讀取 36 個城市嘅 <code>current</code> 天氣數據（氣溫、體感溫度、相對濕度、天氣代碼、風速）。</p>
+  <p>🕒 <b>查核快照：</b><span id="snapTime">2026-11-27 06:55 HKT</span>（香港時間）讀到嘅數據；即時讀取失敗時會顯示呢份快照。快照數字：最熱洛杉磯 27.7°C、最凍安克雷奇 -6.7°C、香港 16.1°C（體感 16.6°C、濕度 87%、大致天晴）。</p>
+  <p>📚 過往期數：<a href="archive/index.html">archive/index.html 總覽</a> · 第 014 期 · 2026-11-27 · Daily Fun Web</p>
 </footer>
 <script>
-var SNAPSHOT = [{"name": "Iceland", "code": "ISL", "value": 84.71, "cn": "冰島", "asia": false}, {"name": "Norway", "code": "NOR", "value": 53.09, "cn": "挪威", "asia": false}, {"name": "New Zealand", "code": "NZL", "value": 50.46, "cn": "新西蘭", "asia": false}, {"name": "Brazil", "code": "BRA", "value": 36.14, "cn": "巴西", "asia": false}, {"name": "Denmark", "code": "DNK", "value": 33.95, "cn": "丹麥", "asia": false}, {"name": "Sweden", "code": "SWE", "value": 32.32, "cn": "瑞典", "asia": false}, {"name": "Finland", "code": "FIN", "value": 24.97, "cn": "芬蘭", "asia": false}, {"name": "Austria", "code": "AUT", "value": 24.68, "cn": "奧地利", "asia": false}, {"name": "Portugal", "code": "PRT", "value": 24.59, "cn": "葡萄牙", "asia": false}, {"name": "Switzerland", "code": "CHE", "value": 20.54, "cn": "瑞士", "asia": false}, {"name": "Latvia", "code": "LVA", "value": 19.9, "cn": "拉脫維亞", "asia": false}, {"name": "Philippines", "code": "PHL", "value": 19.13, "cn": "菲律賓", "asia": true}, {"name": "Colombia", "code": "COL", "value": 18.6, "cn": "哥倫比亞", "asia": false}, {"name": "Chile", "code": "CHL", "value": 18.37, "cn": "智利", "asia": false}, {"name": "Lithuania", "code": "LTU", "value": 18.28, "cn": "立陶宛", "asia": false}, {"name": "Italy", "code": "ITA", "value": 15.47, "cn": "意大利", "asia": false}, {"name": "Peru", "code": "PER", "value": 15.18, "cn": "秘魯", "asia": false}, {"name": "Ecuador", "code": "ECU", "value": 15.17, "cn": "厄瓜多爾", "asia": false}, {"name": "Germany", "code": "DEU", "value": 15.17, "cn": "德國", "asia": false}, {"name": "United Kingdom", "code": "GBR", "value": 14.91, "cn": "英國", "asia": false}, {"name": "Croatia", "code": "HRV", "value": 14.37, "cn": "克羅地亞", "asia": false}, {"name": "Canada", "code": "CAN", "value": 14.27, "cn": "加拿大", "asia": false}, {"name": "Spain", "code": "ESP", "value": 14.19, "cn": "西班牙", "asia": false}, {"name": "Turkey", "code": "TUR", "value": 14.1, "cn": "土耳其", "asia": true}, {"name": "Ireland", "code": "IRL", "value": 14.01, "cn": "愛爾蘭", "asia": false}, {"name": "Estonia", "code": "EST", "value": 13.48, "cn": "愛沙尼亞", "asia": false}, {"name": "Venezuela", "code": "VEN", "value": 13.02, "cn": "委內瑞拉", "asia": false}, {"name": "North Macedonia", "code": "MKD", "value": 12.98, "cn": "北馬其頓", "asia": false}, {"name": "Sri Lanka", "code": "LKA", "value": 12.37, "cn": "斯里蘭卡", "asia": true}, {"name": "Vietnam", "code": "VNM", "value": 11.79, "cn": "越南", "asia": true}, {"name": "Indonesia", "code": "IDN", "value": 11.68, "cn": "印尼", "asia": true}, {"name": "Slovenia", "code": "SVN", "value": 11.14, "cn": "斯洛文尼亞", "asia": false}, {"name": "Netherlands", "code": "NLD", "value": 10.61, "cn": "荷蘭", "asia": false}, {"name": "Greece", "code": "GRC", "value": 10.36, "cn": "希臘", "asia": false}, {"name": "Luxembourg", "code": "LUX", "value": 9.64, "cn": "盧森堡", "asia": false}, {"name": "Bulgaria", "code": "BGR", "value": 9.51, "cn": "保加利亞", "asia": false}, {"name": "Romania", "code": "ROU", "value": 9.34, "cn": "羅馬尼亞", "asia": false}, {"name": "Pakistan", "code": "PAK", "value": 9.31, "cn": "巴基斯坦", "asia": true}, {"name": "China", "code": "CHN", "value": 9.19, "cn": "中國", "asia": true}, {"name": "Hungary", "code": "HUN", "value": 8.65, "cn": "匈牙利", "asia": false}, {"name": "Poland", "code": "POL", "value": 8.33, "cn": "波蘭", "asia": false}, {"name": "Argentina", "code": "ARG", "value": 8.27, "cn": "阿根廷", "asia": false}, {"name": "France", "code": "FRA", "value": 8.23, "cn": "法國", "asia": false}, {"name": "Japan", "code": "JPN", "value": 8.1, "cn": "日本", "asia": true}, {"name": "Australia", "code": "AUS", "value": 7.89, "cn": "澳洲", "asia": false}, {"name": "Thailand", "code": "THA", "value": 7.83, "cn": "泰國", "asia": true}, {"name": "Belgium", "code": "BEL", "value": 7.25, "cn": "比利時", "asia": false}, {"name": "United States", "code": "USA", "value": 7.22, "cn": "美國", "asia": false}, {"name": "Czechia", "code": "CZE", "value": 6.72, "cn": "捷克", "asia": false}, {"name": "Cyprus", "code": "CYP", "value": 6.16, "cn": "塞浦路斯", "asia": true}, {"name": "Mexico", "code": "MEX", "value": 5.68, "cn": "墨西哥", "asia": false}, {"name": "Slovakia", "code": "SVK", "value": 5.52, "cn": "斯洛伐克", "asia": false}, {"name": "India", "code": "IND", "value": 5.51, "cn": "印度", "asia": true}, {"name": "Israel", "code": "ISR", "value": 5.44, "cn": "以色列", "asia": true}, {"name": "Malaysia", "code": "MYS", "value": 4.74, "cn": "馬來西亞", "asia": true}, {"name": "Morocco", "code": "MAR", "value": 4.17, "cn": "摩洛哥", "asia": false}, {"name": "Taiwan", "code": "TWN", "value": 3.43, "cn": "台灣", "asia": true}, {"name": "South Korea", "code": "KOR", "value": 3.2, "cn": "南韓", "asia": true}, {"name": "Egypt", "code": "EGY", "value": 3.09, "cn": "埃及", "asia": false}, {"name": "Ukraine", "code": "UKR", "value": 3.02, "cn": "烏克蘭", "asia": false}, {"name": "Uzbekistan", "code": "UZB", "value": 2.84, "cn": "烏茲別克", "asia": true}, {"name": "Russia", "code": "RUS", "value": 2.53, "cn": "俄羅斯", "asia": true}, {"name": "South Africa", "code": "ZAF", "value": 2.41, "cn": "南非", "asia": false}, {"name": "Azerbaijan", "code": "AZE", "value": 1.99, "cn": "阿塞拜疆", "asia": true}, {"name": "Kazakhstan", "code": "KAZ", "value": 1.93, "cn": "哈薩克", "asia": true}, {"name": "United Arab Emirates", "code": "ARE", "value": 1.42, "cn": "阿聯酋", "asia": true}, {"name": "Hong Kong", "code": "HKG", "value": 1.15, "cn": "香港", "asia": true}, {"name": "Oman", "code": "OMN", "value": 1.05, "cn": "阿曼", "asia": true}, {"name": "Belarus", "code": "BLR", "value": 0.83, "cn": "白俄羅斯", "asia": false}, {"name": "Qatar", "code": "QAT", "value": 0.63, "cn": "卡塔爾", "asia": true}, {"name": "Saudi Arabia", "code": "SAU", "value": 0.59, "cn": "沙特阿拉伯", "asia": true}, {"name": "Bangladesh", "code": "BGD", "value": 0.46, "cn": "孟加拉", "asia": true}, {"name": "Iraq", "code": "IRQ", "value": 0.43, "cn": "伊拉克", "asia": true}, {"name": "Iran", "code": "IRN", "value": 0.42, "cn": "伊朗", "asia": true}, {"name": "Singapore", "code": "SGP", "value": 0.41, "cn": "新加坡", "asia": true}, {"name": "Trinidad and Tobago", "code": "TTO", "value": 0.1, "cn": "千里達及托巴哥", "asia": false}, {"name": "Algeria", "code": "DZA", "value": 0.09, "cn": "阿爾及利亞", "asia": false}, {"name": "Kuwait", "code": "KWT", "value": 0.02, "cn": "科威特", "asia": false}, {"name": "Turkmenistan", "code": "TKM", "value": 0.0, "cn": "土庫曼", "asia": false}];
-var SNAP_YEAR = 2025;
-var TREND = {"Iceland": {"2015": 85.4, "2016": 84.1, "2017": 83.2, "2018": 83.7, "2019": 85.6, "2020": 89.8, "2021": 87.9, "2022": 85.8, "2023": 85.9, "2024": 85.2, "2025": 84.7}, "Norway": {"2015": 46.0, "2016": 47.4, "2017": 46.4, "2018": 46.4, "2019": 44.7, "2020": 49.7, "2021": 50.5, "2022": 48.5, "2023": 50.4, "2024": 52.7, "2025": 53.1}, "Brazil": {"2015": 26.1, "2016": 28.0, "2017": 28.0, "2018": 30.6, "2019": 31.7, "2020": 33.5, "2021": 30.4, "2022": 33.1, "2023": 34.4, "2024": 35.8, "2025": 36.1}, "China": {"2015": 4.5, "2016": 5.0, "2017": 5.2, "2018": 5.5, "2019": 5.9, "2020": 6.3, "2021": 6.6, "2022": 7.1, "2023": 7.2, "2024": 8.2, "2025": 9.2}, "United States": {"2015": 4.8, "2016": 5.2, "2017": 5.6, "2018": 5.5, "2019": 5.6, "2020": 6.2, "2021": 6.2, "2022": 6.5, "2023": 6.8, "2024": 7.2, "2025": 7.2}, "Hong Kong": {"2015": 0.2, "2016": 0.2, "2017": 0.2, "2018": 0.2, "2019": 0.2, "2020": 0.5, "2021": 0.7, "2022": 0.9, "2023": 0.9, "2024": 1.0, "2025": 1.2}, "Germany": {"2015": 9.1, "2016": 9.1, "2017": 9.6, "2018": 10.2, "2019": 11.0, "2020": 12.6, "2021": 11.5, "2022": 12.7, "2023": 14.7, "2024": 15.1, "2025": 15.2}, "World": {"2015": 5.5, "2016": 5.8, "2017": 5.9, "2018": 6.2, "2019": 6.5, "2020": 7.1, "2021": 7.1, "2022": 7.4, "2023": 7.7, "2024": 8.2, "2025": 8.6}};
-var TREND_CN = {"World": "世界", "Iceland": "冰島", "Norway": "挪威", "Brazil": "巴西", "China": "中國", "United States": "美國", "Hong Kong": "香港", "Germany": "德國"};
-var WORLD_AVG = 8.59;
-var data = SNAPSHOT.slice();
-var liveOK = false;
-var curFilter = 'all', curSort = 'rank', sortDir = 1;
+const SNAPSHOT = [{"zh": "香港", "en": "Hong Kong", "lat": 22.32, "lon": 114.17, "temp": 16.1, "feels": 16.6, "hum": 87, "code": 1, "wind": 4.9, "time": "2026-11-27T06:45"}, {"zh": "新加坡", "en": "Singapore", "lat": 1.35, "lon": 103.82, "temp": 24.6, "feels": 29.8, "hum": 100, "code": 51, "wind": 7.8, "time": "2026-11-27T06:45"}, {"zh": "東京", "en": "Tokyo", "lat": 35.68, "lon": 139.69, "temp": 7.3, "feels": 5.6, "hum": 77, "code": 0, "wind": 1.1, "time": "2026-11-27T07:45"}, {"zh": "首爾", "en": "Seoul", "lat": 37.57, "lon": 126.98, "temp": 7.4, "feels": 5.6, "hum": 96, "code": 1, "wind": 7.0, "time": "2026-11-27T07:45"}, {"zh": "北京", "en": "Beijing", "lat": 39.9, "lon": 116.41, "temp": 7.3, "feels": 2.2, "hum": 35, "code": 1, "wind": 14.7, "time": "2026-11-27T06:45"}, {"zh": "上海", "en": "Shanghai", "lat": 31.23, "lon": 121.47, "temp": 8.5, "feels": 6.3, "hum": 85, "code": 0, "wind": 8.1, "time": "2026-11-27T06:45"}, {"zh": "台北", "en": "Taipei", "lat": 25.03, "lon": 121.57, "temp": 17.7, "feels": 19.6, "hum": 95, "code": 45, "wind": 3.9, "time": "2026-11-27T06:45"}, {"zh": "曼谷", "en": "Bangkok", "lat": 13.76, "lon": 100.5, "temp": 26.3, "feels": 30.8, "hum": 77, "code": 0, "wind": 2.2, "time": "2026-11-27T05:45"}, {"zh": "孟買", "en": "Mumbai", "lat": 19.08, "lon": 72.88, "temp": 23.2, "feels": 25.1, "hum": 67, "code": 0, "wind": 3.3, "time": "2026-11-27T04:15"}, {"zh": "新德里", "en": "New Delhi", "lat": 28.61, "lon": 77.21, "temp": 14.6, "feels": 14.0, "hum": 66, "code": 0, "wind": 1.5, "time": "2026-11-27T04:15"}, {"zh": "杜拜", "en": "Dubai", "lat": 25.2, "lon": 55.27, "temp": 25.8, "feels": 28.9, "hum": 67, "code": 0, "wind": 2.4, "time": "2026-11-27T02:45"}, {"zh": "悉尼", "en": "Sydney", "lat": -33.87, "lon": 151.21, "temp": 23.6, "feels": 24.5, "hum": 70, "code": 3, "wind": 14.0, "time": "2026-11-27T09:45"}, {"zh": "墨爾本", "en": "Melbourne", "lat": -37.81, "lon": 144.96, "temp": 20.8, "feels": 22.7, "hum": 84, "code": 51, "wind": 7.1, "time": "2026-11-27T09:45"}, {"zh": "奧克蘭", "en": "Auckland", "lat": -36.85, "lon": 174.76, "temp": 21.1, "feels": 21.5, "hum": 44, "code": 3, "wind": 7.6, "time": "2026-11-27T11:45"}, {"zh": "倫敦", "en": "London", "lat": 51.51, "lon": -0.13, "temp": 3.2, "feels": -0.7, "hum": 76, "code": 3, "wind": 11.2, "time": "2026-11-26T22:45"}, {"zh": "巴黎", "en": "Paris", "lat": 48.86, "lon": 2.35, "temp": 1.2, "feels": -2.2, "hum": 82, "code": 2, "wind": 6.8, "time": "2026-11-26T23:45"}, {"zh": "柏林", "en": "Berlin", "lat": 52.52, "lon": 13.41, "temp": -1.6, "feels": -5.9, "hum": 82, "code": 0, "wind": 10.8, "time": "2026-11-26T23:45"}, {"zh": "莫斯科", "en": "Moscow", "lat": 55.76, "lon": 37.62, "temp": -4.7, "feels": -9.1, "hum": 83, "code": 2, "wind": 9.7, "time": "2026-11-27T01:45"}, {"zh": "雷克雅未克", "en": "Reykjavik", "lat": 64.15, "lon": -21.94, "temp": 5.7, "feels": -3.3, "hum": 82, "code": 53, "wind": 50.4, "time": "2026-11-26T22:45"}, {"zh": "奧斯陸", "en": "Oslo", "lat": 59.91, "lon": 10.75, "temp": -3.9, "feels": -7.6, "hum": 79, "code": 3, "wind": 5.0, "time": "2026-11-26T23:45"}, {"zh": "斯德哥爾摩", "en": "Stockholm", "lat": 59.33, "lon": 18.07, "temp": -2.1, "feels": -6.1, "hum": 84, "code": 0, "wind": 8.3, "time": "2026-11-26T23:45"}, {"zh": "馬德里", "en": "Madrid", "lat": 40.42, "lon": -3.7, "temp": 5.0, "feels": 2.6, "hum": 72, "code": 0, "wind": 2.5, "time": "2026-11-26T23:45"}, {"zh": "羅馬", "en": "Rome", "lat": 41.9, "lon": 12.5, "temp": 11.3, "feels": 10.1, "hum": 86, "code": 2, "wind": 6.3, "time": "2026-11-26T23:45"}, {"zh": "紐約", "en": "New York", "lat": 40.71, "lon": -74.01, "temp": 7.3, "feels": 0.7, "hum": 92, "code": 63, "wind": 38.0, "time": "2026-11-26T17:45"}, {"zh": "洛杉磯", "en": "Los Angeles", "lat": 34.05, "lon": -118.24, "temp": 27.7, "feels": 24.9, "hum": 20, "code": 0, "wind": 7.5, "time": "2026-11-26T14:45"}, {"zh": "芝加哥", "en": "Chicago", "lat": 41.88, "lon": -87.63, "temp": 5.8, "feels": -1.1, "hum": 83, "code": 61, "wind": 36.2, "time": "2026-11-26T16:45"}, {"zh": "多倫多", "en": "Toronto", "lat": 43.65, "lon": -79.38, "temp": 4.0, "feels": -3.1, "hum": 39, "code": 3, "wind": 27.2, "time": "2026-11-26T17:45"}, {"zh": "溫哥華", "en": "Vancouver", "lat": 49.28, "lon": -123.12, "temp": 11.1, "feels": 7.8, "hum": 76, "code": 3, "wind": 18.1, "time": "2026-11-26T15:45"}, {"zh": "墨西哥城", "en": "Mexico City", "lat": 19.43, "lon": -99.13, "temp": 15.8, "feels": 14.4, "hum": 66, "code": 51, "wind": 8.6, "time": "2026-11-26T16:45"}, {"zh": "聖保羅", "en": "São Paulo", "lat": -23.55, "lon": -46.63, "temp": 17.6, "feels": 17.5, "hum": 88, "code": 3, "wind": 13.6, "time": "2026-11-26T19:45"}, {"zh": "布宜諾斯艾利斯", "en": "Buenos Aires", "lat": -34.6, "lon": -58.38, "temp": 21.9, "feels": 20.4, "hum": 49, "code": 0, "wind": 11.5, "time": "2026-11-26T19:45"}, {"zh": "開羅", "en": "Cairo", "lat": 30.04, "lon": 31.24, "temp": 16.3, "feels": 16.9, "hum": 88, "code": 1, "wind": 5.8, "time": "2026-11-27T00:45"}, {"zh": "內羅畢", "en": "Nairobi", "lat": -1.29, "lon": 36.82, "temp": 17.4, "feels": 18.6, "hum": 94, "code": 3, "wind": 7.3, "time": "2026-11-27T01:45"}, {"zh": "約翰內斯堡", "en": "Johannesburg", "lat": -26.2, "lon": 28.05, "temp": 16.2, "feels": 16.8, "hum": 90, "code": 0, "wind": 6.2, "time": "2026-11-27T00:45"}, {"zh": "檀香山", "en": "Honolulu", "lat": 21.31, "lon": -157.86, "temp": 23.8, "feels": 22.1, "hum": 45, "code": 2, "wind": 20.4, "time": "2026-11-26T12:45"}, {"zh": "安克雷奇", "en": "Anchorage", "lat": 61.22, "lon": -149.9, "temp": -6.7, "feels": -10.3, "hum": 75, "code": 2, "wind": 2.0, "time": "2026-11-26T13:45"}];
+const SNAP_TIME = "2026-11-27 06:55 HKT";
+const WMO = {0:"晴朗",1:"大致天晴",2:"間中有雲",3:"陰天",45:"薄霧",48:"霧淞",51:"毛毛雨（輕微）",53:"毛毛雨（中度）",55:"毛毛雨（密）",56:"凍毛毛雨（輕微）",57:"凍毛毛雨（密）",61:"小雨",63:"中雨",65:"大雨",66:"凍雨（輕微）",67:"凍雨（重）",71:"小雪",73:"中雪",75:"大雪",77:"雪粒",80:"小驟雨",81:"中驟雨",82:"大驟雨",85:"小雪驟",86:"大雪驟",95:"雷暴",96:"雷暴伴小冰雹",99:"雷暴伴大冰雹"};
+let data = SNAPSHOT.slice();
+let filter = "all";
+let map, markers = [];
 
-function fmt(v){return v.toFixed(1)+'%';}
-function cmpWorld(v){var d=v-WORLD_AVG;return (d>=0?'高過世界平均 ':'低過世界平均 ')+Math.abs(d).toFixed(1)+' 個百分點';}
+function tempColor(t){ if(t<0) return "#4361ee"; if(t<10) return "#38b6d3"; if(t<20) return "#ffc93c"; if(t<=25) return "#f4842b"; return "#ef476f"; }
+function fmtTime(iso){ return iso.replace("T"," ").slice(0,16); }
 
-function renderTable(){
-  var q=(document.getElementById('q').value||'').trim().toLowerCase();
-  var rows=data.filter(function(c){
-    if(q && c.cn.toLowerCase().indexOf(q)<0 && c.name.toLowerCase().indexOf(q)<0) return false;
-    if(curFilter==='high') return c.value>=25;
-    if(curFilter==='mid') return c.value>=10 && c.value<25;
-    if(curFilter==='low') return c.value<10;
-    if(curFilter==='asia') return c.asia;
+function render(){
+  const q = (document.getElementById("q").value||"").trim().toLowerCase();
+  let rows = data.filter(r=>{
+    if(filter==="cold" && !(r.temp<10)) return false;
+    if(filter==="mild" && !(r.temp>=10 && r.temp<=25)) return false;
+    if(filter==="hot" && !(r.temp>25)) return false;
+    if(q && !(r.zh.includes(q) || r.en.toLowerCase().includes(q))) return false;
     return true;
   });
-  rows.sort(function(a,b){
-    if(curSort==='value') return (a.value-b.value)*sortDir;
-    if(curSort==='cn') return a.cn.localeCompare(b.cn,'zh-Hant')*sortDir;
-    return (data.indexOf(a)-data.indexOf(b))*sortDir;
-  });
-  var tb=document.getElementById('tbody');
-  tb.innerHTML=rows.map(function(c){
-    var rank=data.indexOf(c)+1;
-    return '<tr'+(c.name==='Hong Kong'?' class="hkrow"':'')+'><td class="num">'+rank+'</td><td>'+c.cn+' <small style="color:var(--muted)">'+c.name+'</small></td><td class="num"><b>'+fmt(c.value)+'</b></td><td>'+cmpWorld(c.value)+'</td></tr>';
-  }).join('') || '<tr><td colspan="4">搵唔到符合條件嘅國家，試下改搜尋字眼。</td></tr>';
-  document.getElementById('countLine').textContent='顯示 '+rows.length+' 個國家／地區（共 '+data.length+' 個，'+SNAP_YEAR+' 年數據）'+(liveOK?' · 已即時更新':' · 快照 '+SNAP_YEAR+' 年');
-}
-function setFilter(f,btn){
-  curFilter=f;
-  document.querySelectorAll('.controls button[data-f]').forEach(function(b){b.classList.toggle('on',b===btn);});
-  renderTable();
-}
-function sortBy(k){
-  if(curSort===k){sortDir*=-1;}else{curSort=k;sortDir=(k==='value')?-1:1;}
-  renderTable();
+  const sort = document.getElementById("sort").value;
+  if(sort==="hot") rows.sort((a,b)=>b.temp-a.temp);
+  else if(sort==="cold") rows.sort((a,b)=>a.temp-b.temp);
+  else rows.sort((a,b)=>a.zh.localeCompare(b.zh,"zh-Hant"));
+  const min=-7, max=28;
+  document.getElementById("list").innerHTML = rows.map((r,i)=>{
+    const pct = Math.max(0,Math.min(100,(r.temp-min)/(max-min)*100));
+    return `<div class="row${r.zh==="香港"?" hk":""}"><div class="rank">${sort==="name"?"·":(i+1)}</div>
+    <div class="city"><div class="nm">${r.zh} <span style="color:#5a6076;font-weight:600">${r.en}</span></div>
+    <div class="sub">${WMO[r.code]||("天氣代碼 "+r.code)} · 濕度 ${r.hum}% · 風 ${r.wind} km/h · 當地 ${fmtTime(r.time)}</div></div>
+    <div class="barwrap"><div class="bar" style="background:${tempColor(r.temp)};width:${pct}%"></div></div>
+    <div class="temp">${r.temp.toFixed(1)}°C<small>體感 ${r.feels.toFixed(1)}°C</small></div></div>`;
+  }).join("") || "<p>搵唔到符合條件嘅城市，試下改關鍵字或者篩選。</p>";
+  document.getElementById("count").textContent = `顯示 ${rows.length} / 36 個城市`;
+  drawMap(rows);
 }
 
-/* trend chart */
-var COLORS={World:'#10231a',Iceland:'#e53935',Norway:'#1e88e5',Brazil:'#43a047',China:'#d81b60',Germany:'#fb8c00','United States':'#8e24aa','Hong Kong':'#fdd835'};
-var activeSeries={World:true,Iceland:true,Norway:true,Brazil:true,China:true,Germany:true,'United States':false,'Hong Kong':true};
-function buildLegend(){
-  var lg=document.getElementById('trendLegend');
-  lg.innerHTML=Object.keys(TREND).map(function(k){
-    return '<button class="'+(activeSeries[k]?'on':'')+'" data-k="'+k+'" onclick="toggleSeries(\''+k+'\')"><span class="dot" style="background:'+COLORS[k]+'"></span>'+TREND_CN[k]+'</button>';
-  }).join('');
-}
-function toggleSeries(k){activeSeries[k]=!activeSeries[k];buildLegend();drawChart();}
-function drawChart(){
-  var cv=document.getElementById('trendChart');var ctx=cv.getContext('2d');
-  var W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);
-  var padL=44,padR=14,padT=16,padB=30;
-  var years=[];for(var y=2015;y<=2025;y++)years.push(y);
-  var maxV=90;
-  ctx.strokeStyle='#dfe8df';ctx.fillStyle='#4a5a50';ctx.font='11px sans-serif';ctx.lineWidth=1;
-  [0,25,50,75,90].forEach(function(v){
-    var yy=padT+(1-v/maxV)*(H-padT-padB);
-    ctx.beginPath();ctx.moveTo(padL,yy);ctx.lineTo(W-padR,yy);ctx.stroke();
-    ctx.fillText(v+'%',6,yy+4);
-  });
-  years.forEach(function(y,i){
-    var xx=padL+i*(W-padL-padR)/(years.length-1);
-    ctx.fillText(String(y),xx-12,H-10);
-  });
-  Object.keys(TREND).forEach(function(k){
-    if(!activeSeries[k])return;
-    ctx.strokeStyle=COLORS[k];ctx.lineWidth=k==='World'?3:2;ctx.beginPath();
-    years.forEach(function(y,i){
-      var v=TREND[k][String(y)];if(v==null)return;
-      var xx=padL+i*(W-padL-padR)/(years.length-1);
-      var yy=padT+(1-v/maxV)*(H-padT-padB);
-      if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);
-    });
-    ctx.stroke();
-    var last=TREND[k]['2025'];
-    var lx=padL+(years.length-1)*(W-padL-padR)/(years.length-1);
-    var ly=padT+(1-last/maxV)*(H-padT-padB);
-    ctx.fillStyle=COLORS[k];ctx.beginPath();ctx.arc(lx,ly,3.5,0,7);ctx.fill();
-    ctx.font='bold 11px sans-serif';ctx.fillText(TREND_CN[k]+' '+last.toFixed(1)+'%',Math.max(padL,lx-118),Math.max(12,ly-8));
+function drawMap(rows){
+  if(!map){
+    map = L.map("map").setView([25,10],2);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+  }
+  markers.forEach(m=>m.remove()); markers=[];
+  rows.forEach(r=>{
+    const m = L.circleMarker([r.lat,r.lon],{radius:8,color:"#1d2440",weight:1.5,fillColor:tempColor(r.temp),fillOpacity:.9})
+      .bindPopup(`<b>${r.zh} ${r.en}</b><br>🌡️ ${r.temp.toFixed(1)}°C（體感 ${r.feels.toFixed(1)}°C）<br>${WMO[r.code]||""} · 濕度 ${r.hum}% · 風 ${r.wind} km/h<br>當地時間 ${fmtTime(r.time)}`)
+      .addTo(map);
+    markers.push(m);
   });
 }
 
-/* quiz */
-function quiz(btn,ok){
-  document.getElementById('ans1').textContent=ok?'✅ 啱！冰島 84.7%，拋離第二名挪威（53.1%）成 30 個百分點。':'❌ 唔係呢個。再估下：最高嗰個係地熱 + 水力之國。';
-}
-function quiz2(btn,ok){
-  document.getElementById('ans2').textContent=ok?'✅ 啱！香港 2025 年得 1.2%，79 個國家排第 67 位。':'❌ 唔係。香港可再生能源佔比仲好低，低過世界平均 8.6% 好多。';
-}
+document.getElementById("q").addEventListener("input",render);
+document.getElementById("sort").addEventListener("change",render);
+document.querySelectorAll("#filters .chip").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#filters .chip").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); filter=b.dataset.f; render();
+}));
 
-/* live fetch attempt (OWID CSV); falls back to verified snapshot */
-function tryLive(){
-  var status=document.getElementById('status');
-  var ctl=new AbortController();var to=setTimeout(function(){ctl.abort();},9000);
-  fetch('https://ourworldindata.org/grapher/renewable-share-energy.csv',{signal:ctl.signal})
-    .then(function(r){clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);return r.text();})
-    .then(function(txt){
-      var lines=txt.trim().split('\n');var head=lines[0].split(',');
-      var yi=head.indexOf('Year'),vi=head.indexOf('Renewables');
-      var latest={};
-      for(var i=1;i<lines.length;i++){
-        var p=lines[i].split(',');if(p.length<4)continue;
-        var code=p[1],y=parseInt(p[2],10),v=parseFloat(p[3]);
-        if(code.length!==3||isNaN(y)||isNaN(v))continue;
-        if(!latest[p[0]]||y>latest[p[0]].y)latest[p[0]]={y:y,v:v,code:code};
-      }
-      var arr=Object.keys(latest).map(function(n){return {name:n,code:latest[n].code,value:latest[n].v,cn:CNMAP[n]||n,asia:ASIAMAP[n]||false};});
-      arr.sort(function(a,b){return b.value-a.value;});
-      var yr=arr.length?latest[arr[0].name].y:SNAP_YEAR;
-      if(arr.length>=50&&yr>=SNAP_YEAR){
-        data=arr;SNAP_YEAR=yr;liveOK=true;
-        status.textContent='✅ 已即時讀取 Our World in Data 最新數據（'+yr+' 年，'+arr.length+' 個國家／地區）。';
-        renderTable();
-      }else{
-        status.textContent='ℹ️ 即時讀取未有更新數據，顯示今朝核實嘅快照（'+SNAP_YEAR+' 年，'+data.length+' 個國家／地區）。';
-      }
-    })
-    .catch(function(e){
-      clearTimeout(to);
-      status.textContent='ℹ️ 即時讀取唔到（OWID 檔案暫未開放瀏覽器跨域讀取），顯示今朝 2026-11-26 07:00 HKT 核實嘅快照（'+SNAP_YEAR+' 年，'+data.length+' 個國家／地區）。';
-    });
+const QUIZ = {
+  q1:{ok:"anchorage", yes:"✅ 啱！安克雷奇 -6.7°C 係全場最凍，莫斯科 -4.7°C 第二凍，奧斯陸 -3.9°C。", no:"❌ 唔係呢個。答案係安克雷奇（阿拉斯加）-6.7°C，全場最凍。"},
+  q2:{ok:"reykjavik", yes:"✅ 啱！雷克雅未克風速 50.4 km/h，實際 5.7°C、體感 -3.3°C，差足 9°C。", no:"❌ 唔係呢個。答案係雷克雅未克：風速 50.4 km/h，體感比實際凍 9°C。"},
+  q3:{ok:"16", yes:"✅ 啱！香港 16.1°C，36 個城市入面排第 16 熱，啱啱好喺中間偏暖。", no:"❌ 唔係呢個。答案係第 16 熱 — 香港 16.1°C，36 城排第 16。"}
+};
+document.querySelectorAll(".quiz button[data-a]").forEach(b=>b.addEventListener("click",()=>{
+  const a=b.dataset.a, q=QUIZ[a];
+  document.getElementById("ans-"+a).textContent = (b.dataset.v===q.ok)? q.yes : q.no;
+}));
+
+async function loadLive(){
+  const status=document.getElementById("status");
+  try{
+    const lats=data.map(r=>r.lat).join(","), lons=data.map(r=>r.lon).join(",");
+    const url=`https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lons}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto`;
+    const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),12000);
+    const res=await fetch(url,{signal:ctrl.signal}); clearTimeout(t);
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const j=await res.json();
+    const arr=Array.isArray(j)?j:[j];
+    if(arr.length!==data.length) throw new Error("城市數量唔啱");
+    data=arr.map((cur,i)=>({...data[i], temp:cur.current.temperature_2m, feels:cur.current.apparent_temperature, hum:cur.current.relative_humidity_2m, code:cur.current.weather_code, wind:cur.current.wind_speed_10m, time:cur.current.time}));
+    const hot=data.reduce((a,b)=>b.temp>a.temp?b:a), cold=data.reduce((a,b)=>b.temp<a.temp?b:a);
+    document.getElementById("statHot").textContent=hot.temp.toFixed(1)+"°C";
+    document.getElementById("statCold").textContent=cold.temp.toFixed(1)+"°C";
+    status.className="status live";
+    status.innerHTML=`✅ 已即時讀到 Open-Meteo 最新數據（${new Date().toLocaleString("zh-HK",{timeZone:"Asia/Hong_Kong"})})：而家最熱 ${hot.zh} ${hot.temp.toFixed(1)}°C、最凍 ${cold.zh} ${cold.temp.toFixed(1)}°C。`;
+    render();
+  }catch(e){
+    status.className="status snap";
+    status.innerHTML=`⚠️ 即時讀取唔到（${e.message||"網絡問題"}），而家顯示查核快照（${SNAP_TIME__PLACEHOLDER__}），數字仍然係真實讀到嘅數據。`;
+    render();
+  }
 }
-var CNMAP={},ASIAMAP={};
-SNAPSHOT.forEach(function(c){CNMAP[c.name]=c.cn;ASIAMAP[c.name]=c.asia;});
-buildLegend();drawChart();renderTable();
-document.getElementById('status').textContent='⏳ 嘗試即時讀取 Our World in Data 最新數據…';
-tryLive();
+render();
+loadLive();
 </script>
 </body>
 </html>

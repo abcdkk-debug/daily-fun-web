@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌡️ 而家全世界邊度最凍？— 全球即時氣溫大比拼 | Daily Fun Web 第 014 期</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root{--ink:#1d2440;--paper:#fff8ec;--yellow:#ffc93c;--teal:#2ec4b6;--blue:#4361ee;--purple:#7b2fbe;--red:#ef476f;--cold:#4361ee;--hot:#ef476f}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"PingFang HK","Microsoft JhengHei",system-ui,sans-serif;background:var(--paper);color:var(--ink)}
+  header{background:linear-gradient(135deg,#4361ee,#2ec4b6 55%,#ffc93c);color:#fff;padding:38px 20px 30px;text-align:center}
+  header h1{font-size:clamp(26px,6vw,44px);margin:0 0 8px;text-shadow:2px 2px 0 rgba(0,0,0,.25)}
+  header p{opacity:.96;max-width:680px;margin:0 auto;line-height:1.7}
+  main{max-width:920px;margin:0 auto;padding:24px 16px 50px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+  .card{background:#fff;border:2.5px solid var(--ink);border-radius:16px;box-shadow:4px 4px 0 var(--ink);padding:14px;text-align:center}
+  .card .big{font-size:30px;font-weight:900}
+  .card .lbl{font-size:14px;color:#5a6076;margin-top:2px;line-height:1.5}
+  .hot .big{color:var(--red)} .cold .big{color:var(--blue)}
+  .panel{background:#fff;border:2.5px solid var(--ink);border-radius:16px;box-shadow:4px 4px 0 var(--ink);padding:18px 20px;margin:18px 0}
+  .panel h2{margin:0 0 10px;font-size:21px}
+  .panel p{line-height:1.7;margin:8px 0}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+  .controls input[type=search]{flex:1;min-width:180px;padding:10px 14px;border:2.5px solid var(--ink);border-radius:999px;font-size:16px;font-family:inherit}
+  .controls select{padding:10px 12px;border:2.5px solid var(--ink);border-radius:999px;font-size:15px;font-family:inherit;background:#fff}
+  .chip{border:2.5px solid var(--ink);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:700;background:#fff;cursor:pointer;font-family:inherit}
+  .chip.on{background:var(--yellow)}
+  .row{display:flex;align-items:center;gap:12px;padding:10px 6px;border-bottom:1.5px dashed #c9cede}
+  .row:last-child{border-bottom:none}
+  .rank{width:34px;text-align:center;font-weight:900;font-size:18px;flex:none}
+  .city{flex:1;min-width:0}
+  .city .nm{font-weight:800;font-size:17px}
+  .city .sub{font-size:13px;color:#5a6076}
+  .barwrap{flex:1.4;min-width:90px}
+  .bar{height:16px;border-radius:999px;background:linear-gradient(90deg,#4361ee,#7bdff2,#ffc93c,#ef476f)}
+  .barfill{height:16px;border-radius:999px;background:rgba(255,255,255,.55);margin-left:auto}
+  .temp{width:86px;text-align:right;font-weight:900;font-size:20px;flex:none}
+  .temp small{display:block;font-size:12px;color:#5a6076;font-weight:600}
+  #map{height:420px;border:2.5px solid var(--ink);border-radius:16px;box-shadow:4px 4px 0 var(--ink);z-index:0}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:#3c4257;margin-top:8px}
+  .dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:4px;vertical-align:middle}
+  .quiz button{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border:2.5px solid var(--ink);border-radius:12px;background:#fff;font-size:16px;font-family:inherit;cursor:pointer}
+  .quiz button:hover{background:var(--yellow)}
+  .quiz .ans{font-weight:800;margin-top:6px}
+  .status{font-size:14px;padding:10px 14px;border-radius:12px;background:#e8f6f3;border:2px solid var(--teal);margin:12px 0;line-height:1.6}
+  .status.live{background:#e8f6f3}
+  .status.snap{background:#fff3cd;border-color:#d9a400}
+  footer{max-width:920px;margin:0 auto;padding:0 16px 38px;color:#5a6076;font-size:14px;line-height:1.8}
+  a{color:var(--blue)}
+  .hk{background:#fff3cd}
+</style>
+</head>
+<body>
+<div data-past-nav style="background:#1d2440;color:#fff;padding:10px 16px;text-align:center;font-size:15px">📚 想睇返之前發佈過嘅嘢？ <a href="index.html" style="color:#ffc93c;font-weight:700">去「過往期數」總覽 →</a></div>
+<header>
+  <h1>🌡️ 而家全世界邊度最凍？</h1>
+  <p>同一時間，洛杉磯著短袖、安克雷奇凍到 -6.7°C。呢頁用 Open-Meteo 即時天氣數據，一次過比較全球 36 個城市而家幾多度，仲有互動地圖同排行榜。</p>
+</header>
+<main>
+  <div class="status live" id="status">⏳ 載入緊即時數據…</div>
+
+  <div class="cards">
+    <div class="card hot"><div class="big" id="statHot">27.7°C</div><div class="lbl">🔥 最熱：洛杉磯</div></div>
+    <div class="card cold"><div class="big" id="statCold">-6.7°C</div><div class="lbl">🥶 最凍：安克雷奇</div></div>
+    <div class="card"><div class="big">34.4°C</div><div class="lbl">↔️ 最熱同最凍相差</div></div>
+    <div class="card"><div class="big">12.1°C</div><div class="lbl">🌍 36 個城市平均氣溫</div></div>
+    <div class="card"><div class="big">16.1°C</div><div class="lbl">🇭🇰 香港而家 · 36 城排第 16 熱</div></div>
+    <div class="card"><div class="big">5 城</div><div class="lbl">❄️ 低過 0°C（柏林、斯德哥爾摩、奧斯陸、莫斯科、安克雷奇）</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>🗺️ 全球氣溫地圖</h2>
+    <p>每個點都係一個城市，顏色由藍（凍）去紅（熱），撳入去睇即時氣溫、體感溫度、濕度同天氣。</p>
+    <div id="map"></div>
+    <div class="legend">
+      <span><span class="dot" style="background:#4361ee"></span>低過 0°C</span>
+      <span><span class="dot" style="background:#7bdff2"></span>0–10°C</span>
+      <span><span class="dot" style="background:#ffc93c"></span>10–20°C</span>
+      <span><span class="dot" style="background:#f4842b"></span>20–25°C</span>
+      <span><span class="dot" style="background:#ef476f"></span>高過 25°C</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>🏆 36 個城市即時氣溫排行榜</h2>
+    <div class="controls">
+      <input type="search" id="q" placeholder="🔍 搜尋城市（中文／英文），例如：東京、Paris…">
+      <select id="sort">
+        <option value="hot">🔥 最熱排先</option>
+        <option value="cold">🥶 最凍排先</option>
+        <option value="name">🔤 按名稱</option>
+      </select>
+    </div>
+    <div class="controls" id="filters">
+      <button class="chip on" data-f="all">全部 36 城</button>
+      <button class="chip" data-f="cold">🥶 凍冰冰（&lt; 10°C）· 16 城</button>
+      <button class="chip" data-f="mild">😌 啱啱好（10–25°C）· 17 城</button>
+      <button class="chip" data-f="hot">🥵 熱辣辣（&gt; 25°C）· 3 城</button>
+    </div>
+    <div id="list"></div>
+    <p id="count" style="color:#5a6076;font-size:14px"></p>
+  </div>
+
+  <div class="panel quiz">
+    <h2>🧠 估下先：氣溫冷知識小測驗</h2>
+    <p><b>Q1：</b>呢 36 個城市入面，邊個而家最凍？</p>
+    <button data-a="q1" data-v="oslo">奧斯陸（挪威）</button>
+    <button data-a="q1" data-v="anchorage">安克雷奇（阿拉斯加）</button>
+    <button data-a="q1" data-v="moscow">莫斯科（俄羅斯）</button>
+    <p class="ans" id="ans-q1"></p>
+    <p><b>Q2：</b>邊個城市嘅風最大，搞到體感比實際氣溫凍足 9°C？</p>
+    <button data-a="q2" data-v="reykjavik">雷克雅未克（冰島）— 風速 50.4 km/h</button>
+    <button data-a="q2" data-v="chicago">芝加哥（美國）— 風速 36.2 km/h</button>
+    <button data-a="q2" data-v="nyc">紐約（美國）— 風速 38.0 km/h</button>
+    <p class="ans" id="ans-q2"></p>
+    <p><b>Q3：</b>香港 16.1°C，喺 36 個城市入面排第幾熱？</p>
+    <button data-a="q3" data-v="8">第 8 熱</button>
+    <button data-a="q3" data-v="16">第 16 熱</button>
+    <button data-a="q3" data-v="24">第 24 熱</button>
+    <p class="ans" id="ans-q3"></p>
+  </div>
+
+  <div class="panel">
+    <h2>🤔 點解同一時間可以差成 34.4°C？</h2>
+    <p>11 月尾北半球入冬，歐洲同北美北部已經跌穿 0°C；南半球就啱啱入夏，悉尼、墨爾本、布宜諾斯艾利斯都有 20°C 以上。緯度、季節同埋海洋調節，三樣加埋就係今朝呢個溫差。洛杉磯 27.7°C 仲要係凌晨時段嘅數字 — 佢哋嗰邊係 11 月 26 號下午。</p>
+    <p>體感溫度都好值得睇：雷克雅未克實際 5.7°C，但風速高達 50.4 km/h，體感得 -3.3°C，凍足 9°C；紐約落住中雨，實際 7.3°C、體感得 0.7°C。</p>
+  </div>
+</main>
+<footer>
+  <p>📊 <b>數據來源：</b>Open-Meteo 天氣 API（open-meteo.com，免金鑰、開放數據；原始數據來自各國國家氣象機構，包括美國 NWS、德國 DWD、法國 Météo-France、日本 JMA 等，CC BY 4.0）。頁面載入時即時讀取 36 個城市嘅 <code>current</code> 天氣數據（氣溫、體感溫度、相對濕度、天氣代碼、風速）。</p>
+  <p>🕒 <b>查核快照：</b><span id="snapTime">2026-11-27 06:55 HKT</span>（香港時間）讀到嘅數據；即時讀取失敗時會顯示呢份快照。快照數字：最熱洛杉磯 27.7°C、最凍安克雷奇 -6.7°C、香港 16.1°C（體感 16.6°C、濕度 87%、大致天晴）。</p>
+  <p>📚 過往期數：<a href="index.html">archive/index.html 總覽</a> · 第 014 期 · 2026-11-27 · Daily Fun Web</p>
+</footer>
+<script>
+const SNAPSHOT = [{"zh": "香港", "en": "Hong Kong", "lat": 22.32, "lon": 114.17, "temp": 16.1, "feels": 16.6, "hum": 87, "code": 1, "wind": 4.9, "time": "2026-11-27T06:45"}, {"zh": "新加坡", "en": "Singapore", "lat": 1.35, "lon": 103.82, "temp": 24.6, "feels": 29.8, "hum": 100, "code": 51, "wind": 7.8, "time": "2026-11-27T06:45"}, {"zh": "東京", "en": "Tokyo", "lat": 35.68, "lon": 139.69, "temp": 7.3, "feels": 5.6, "hum": 77, "code": 0, "wind": 1.1, "time": "2026-11-27T07:45"}, {"zh": "首爾", "en": "Seoul", "lat": 37.57, "lon": 126.98, "temp": 7.4, "feels": 5.6, "hum": 96, "code": 1, "wind": 7.0, "time": "2026-11-27T07:45"}, {"zh": "北京", "en": "Beijing", "lat": 39.9, "lon": 116.41, "temp": 7.3, "feels": 2.2, "hum": 35, "code": 1, "wind": 14.7, "time": "2026-11-27T06:45"}, {"zh": "上海", "en": "Shanghai", "lat": 31.23, "lon": 121.47, "temp": 8.5, "feels": 6.3, "hum": 85, "code": 0, "wind": 8.1, "time": "2026-11-27T06:45"}, {"zh": "台北", "en": "Taipei", "lat": 25.03, "lon": 121.57, "temp": 17.7, "feels": 19.6, "hum": 95, "code": 45, "wind": 3.9, "time": "2026-11-27T06:45"}, {"zh": "曼谷", "en": "Bangkok", "lat": 13.76, "lon": 100.5, "temp": 26.3, "feels": 30.8, "hum": 77, "code": 0, "wind": 2.2, "time": "2026-11-27T05:45"}, {"zh": "孟買", "en": "Mumbai", "lat": 19.08, "lon": 72.88, "temp": 23.2, "feels": 25.1, "hum": 67, "code": 0, "wind": 3.3, "time": "2026-11-27T04:15"}, {"zh": "新德里", "en": "New Delhi", "lat": 28.61, "lon": 77.21, "temp": 14.6, "feels": 14.0, "hum": 66, "code": 0, "wind": 1.5, "time": "2026-11-27T04:15"}, {"zh": "杜拜", "en": "Dubai", "lat": 25.2, "lon": 55.27, "temp": 25.8, "feels": 28.9, "hum": 67, "code": 0, "wind": 2.4, "time": "2026-11-27T02:45"}, {"zh": "悉尼", "en": "Sydney", "lat": -33.87, "lon": 151.21, "temp": 23.6, "feels": 24.5, "hum": 70, "code": 3, "wind": 14.0, "time": "2026-11-27T09:45"}, {"zh": "墨爾本", "en": "Melbourne", "lat": -37.81, "lon": 144.96, "temp": 20.8, "feels": 22.7, "hum": 84, "code": 51, "wind": 7.1, "time": "2026-11-27T09:45"}, {"zh": "奧克蘭", "en": "Auckland", "lat": -36.85, "lon": 174.76, "temp": 21.1, "feels": 21.5, "hum": 44, "code": 3, "wind": 7.6, "time": "2026-11-27T11:45"}, {"zh": "倫敦", "en": "London", "lat": 51.51, "lon": -0.13, "temp": 3.2, "feels": -0.7, "hum": 76, "code": 3, "wind": 11.2, "time": "2026-11-26T22:45"}, {"zh": "巴黎", "en": "Paris", "lat": 48.86, "lon": 2.35, "temp": 1.2, "feels": -2.2, "hum": 82, "code": 2, "wind": 6.8, "time": "2026-11-26T23:45"}, {"zh": "柏林", "en": "Berlin", "lat": 52.52, "lon": 13.41, "temp": -1.6, "feels": -5.9, "hum": 82, "code": 0, "wind": 10.8, "time": "2026-11-26T23:45"}, {"zh": "莫斯科", "en": "Moscow", "lat": 55.76, "lon": 37.62, "temp": -4.7, "feels": -9.1, "hum": 83, "code": 2, "wind": 9.7, "time": "2026-11-27T01:45"}, {"zh": "雷克雅未克", "en": "Reykjavik", "lat": 64.15, "lon": -21.94, "temp": 5.7, "feels": -3.3, "hum": 82, "code": 53, "wind": 50.4, "time": "2026-11-26T22:45"}, {"zh": "奧斯陸", "en": "Oslo", "lat": 59.91, "lon": 10.75, "temp": -3.9, "feels": -7.6, "hum": 79, "code": 3, "wind": 5.0, "time": "2026-11-26T23:45"}, {"zh": "斯德哥爾摩", "en": "Stockholm", "lat": 59.33, "lon": 18.07, "temp": -2.1, "feels": -6.1, "hum": 84, "code": 0, "wind": 8.3, "time": "2026-11-26T23:45"}, {"zh": "馬德里", "en": "Madrid", "lat": 40.42, "lon": -3.7, "temp": 5.0, "feels": 2.6, "hum": 72, "code": 0, "wind": 2.5, "time": "2026-11-26T23:45"}, {"zh": "羅馬", "en": "Rome", "lat": 41.9, "lon": 12.5, "temp": 11.3, "feels": 10.1, "hum": 86, "code": 2, "wind": 6.3, "time": "2026-11-26T23:45"}, {"zh": "紐約", "en": "New York", "lat": 40.71, "lon": -74.01, "temp": 7.3, "feels": 0.7, "hum": 92, "code": 63, "wind": 38.0, "time": "2026-11-26T17:45"}, {"zh": "洛杉磯", "en": "Los Angeles", "lat": 34.05, "lon": -118.24, "temp": 27.7, "feels": 24.9, "hum": 20, "code": 0, "wind": 7.5, "time": "2026-11-26T14:45"}, {"zh": "芝加哥", "en": "Chicago", "lat": 41.88, "lon": -87.63, "temp": 5.8, "feels": -1.1, "hum": 83, "code": 61, "wind": 36.2, "time": "2026-11-26T16:45"}, {"zh": "多倫多", "en": "Toronto", "lat": 43.65, "lon": -79.38, "temp": 4.0, "feels": -3.1, "hum": 39, "code": 3, "wind": 27.2, "time": "2026-11-26T17:45"}, {"zh": "溫哥華", "en": "Vancouver", "lat": 49.28, "lon": -123.12, "temp": 11.1, "feels": 7.8, "hum": 76, "code": 3, "wind": 18.1, "time": "2026-11-26T15:45"}, {"zh": "墨西哥城", "en": "Mexico City", "lat": 19.43, "lon": -99.13, "temp": 15.8, "feels": 14.4, "hum": 66, "code": 51, "wind": 8.6, "time": "2026-11-26T16:45"}, {"zh": "聖保羅", "en": "São Paulo", "lat": -23.55, "lon": -46.63, "temp": 17.6, "feels": 17.5, "hum": 88, "code": 3, "wind": 13.6, "time": "2026-11-26T19:45"}, {"zh": "布宜諾斯艾利斯", "en": "Buenos Aires", "lat": -34.6, "lon": -58.38, "temp": 21.9, "feels": 20.4, "hum": 49, "code": 0, "wind": 11.5, "time": "2026-11-26T19:45"}, {"zh": "開羅", "en": "Cairo", "lat": 30.04, "lon": 31.24, "temp": 16.3, "feels": 16.9, "hum": 88, "code": 1, "wind": 5.8, "time": "2026-11-27T00:45"}, {"zh": "內羅畢", "en": "Nairobi", "lat": -1.29, "lon": 36.82, "temp": 17.4, "feels": 18.6, "hum": 94, "code": 3, "wind": 7.3, "time": "2026-11-27T01:45"}, {"zh": "約翰內斯堡", "en": "Johannesburg", "lat": -26.2, "lon": 28.05, "temp": 16.2, "feels": 16.8, "hum": 90, "code": 0, "wind": 6.2, "time": "2026-11-27T00:45"}, {"zh": "檀香山", "en": "Honolulu", "lat": 21.31, "lon": -157.86, "temp": 23.8, "feels": 22.1, "hum": 45, "code": 2, "wind": 20.4, "time": "2026-11-26T12:45"}, {"zh": "安克雷奇", "en": "Anchorage", "lat": 61.22, "lon": -149.9, "temp": -6.7, "feels": -10.3, "hum": 75, "code": 2, "wind": 2.0, "time": "2026-11-26T13:45"}];
+const SNAP_TIME = "2026-11-27 06:55 HKT";
+const WMO = {0:"晴朗",1:"大致天晴",2:"間中有雲",3:"陰天",45:"薄霧",48:"霧淞",51:"毛毛雨（輕微）",53:"毛毛雨（中度）",55:"毛毛雨（密）",56:"凍毛毛雨（輕微）",57:"凍毛毛雨（密）",61:"小雨",63:"中雨",65:"大雨",66:"凍雨（輕微）",67:"凍雨（重）",71:"小雪",73:"中雪",75:"大雪",77:"雪粒",80:"小驟雨",81:"中驟雨",82:"大驟雨",85:"小雪驟",86:"大雪驟",95:"雷暴",96:"雷暴伴小冰雹",99:"雷暴伴大冰雹"};
+let data = SNAPSHOT.slice();
+let filter = "all";
+let map, markers = [];
+
+function tempColor(t){ if(t<0) return "#4361ee"; if(t<10) return "#38b6d3"; if(t<20) return "#ffc93c"; if(t<=25) return "#f4842b"; return "#ef476f"; }
+function fmtTime(iso){ return iso.replace("T"," ").slice(0,16); }
+
+function render(){
+  const q = (document.getElementById("q").value||"").trim().toLowerCase();
+  let rows = data.filter(r=>{
+    if(filter==="cold" && !(r.temp<10)) return false;
+    if(filter==="mild" && !(r.temp>=10 && r.temp<=25)) return false;
+    if(filter==="hot" && !(r.temp>25)) return false;
+    if(q && !(r.zh.includes(q) || r.en.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  const sort = document.getElementById("sort").value;
+  if(sort==="hot") rows.sort((a,b)=>b.temp-a.temp);
+  else if(sort==="cold") rows.sort((a,b)=>a.temp-b.temp);
+  else rows.sort((a,b)=>a.zh.localeCompare(b.zh,"zh-Hant"));
+  const min=-7, max=28;
+  document.getElementById("list").innerHTML = rows.map((r,i)=>{
+    const pct = Math.max(0,Math.min(100,(r.temp-min)/(max-min)*100));
+    return `<div class="row${r.zh==="香港"?" hk":""}"><div class="rank">${sort==="name"?"·":(i+1)}</div>
+    <div class="city"><div class="nm">${r.zh} <span style="color:#5a6076;font-weight:600">${r.en}</span></div>
+    <div class="sub">${WMO[r.code]||("天氣代碼 "+r.code)} · 濕度 ${r.hum}% · 風 ${r.wind} km/h · 當地 ${fmtTime(r.time)}</div></div>
+    <div class="barwrap"><div class="bar" style="background:${tempColor(r.temp)};width:${pct}%"></div></div>
+    <div class="temp">${r.temp.toFixed(1)}°C<small>體感 ${r.feels.toFixed(1)}°C</small></div></div>`;
+  }).join("") || "<p>搵唔到符合條件嘅城市，試下改關鍵字或者篩選。</p>";
+  document.getElementById("count").textContent = `顯示 ${rows.length} / 36 個城市`;
+  drawMap(rows);
+}
+
+function drawMap(rows){
+  if(!map){
+    map = L.map("map").setView([25,10],2);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+  }
+  markers.forEach(m=>m.remove()); markers=[];
+  rows.forEach(r=>{
+    const m = L.circleMarker([r.lat,r.lon],{radius:8,color:"#1d2440",weight:1.5,fillColor:tempColor(r.temp),fillOpacity:.9})
+      .bindPopup(`<b>${r.zh} ${r.en}</b><br>🌡️ ${r.temp.toFixed(1)}°C（體感 ${r.feels.toFixed(1)}°C）<br>${WMO[r.code]||""} · 濕度 ${r.hum}% · 風 ${r.wind} km/h<br>當地時間 ${fmtTime(r.time)}`)
+      .addTo(map);
+    markers.push(m);
+  });
+}
+
+document.getElementById("q").addEventListener("input",render);
+document.getElementById("sort").addEventListener("change",render);
+document.querySelectorAll("#filters .chip").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#filters .chip").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); filter=b.dataset.f; render();
+}));
+
+const QUIZ = {
+  q1:{ok:"anchorage", yes:"✅ 啱！安克雷奇 -6.7°C 係全場最凍，莫斯科 -4.7°C 第二凍，奧斯陸 -3.9°C。", no:"❌ 唔係呢個。答案係安克雷奇（阿拉斯加）-6.7°C，全場最凍。"},
+  q2:{ok:"reykjavik", yes:"✅ 啱！雷克雅未克風速 50.4 km/h，實際 5.7°C、體感 -3.3°C，差足 9°C。", no:"❌ 唔係呢個。答案係雷克雅未克：風速 50.4 km/h，體感比實際凍 9°C。"},
+  q3:{ok:"16", yes:"✅ 啱！香港 16.1°C，36 個城市入面排第 16 熱，啱啱好喺中間偏暖。", no:"❌ 唔係呢個。答案係第 16 熱 — 香港 16.1°C，36 城排第 16。"}
+};
+document.querySelectorAll(".quiz button[data-a]").forEach(b=>b.addEventListener("click",()=>{
+  const a=b.dataset.a, q=QUIZ[a];
+  document.getElementById("ans-"+a).textContent = (b.dataset.v===q.ok)? q.yes : q.no;
+}));
+
+async function loadLive(){
+  const status=document.getElementById("status");
+  try{
+    const lats=data.map(r=>r.lat).join(","), lons=data.map(r=>r.lon).join(",");
+    const url=`https://api.open-meteo.com/v1/forecast?latitude=${lats}&longitude=${lons}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto`;
+    const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),12000);
+    const res=await fetch(url,{signal:ctrl.signal}); clearTimeout(t);
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const j=await res.json();
+    const arr=Array.isArray(j)?j:[j];
+    if(arr.length!==data.length) throw new Error("城市數量唔啱");
+    data=arr.map((cur,i)=>({...data[i], temp:cur.current.temperature_2m, feels:cur.current.apparent_temperature, hum:cur.current.relative_humidity_2m, code:cur.current.weather_code, wind:cur.current.wind_speed_10m, time:cur.current.time}));
+    const hot=data.reduce((a,b)=>b.temp>a.temp?b:a), cold=data.reduce((a,b)=>b.temp<a.temp?b:a);
+    document.getElementById("statHot").textContent=hot.temp.toFixed(1)+"°C";
+    document.getElementById("statCold").textContent=cold.temp.toFixed(1)+"°C";
+    status.className="status live";
+    status.innerHTML=`✅ 已即時讀到 Open-Meteo 最新數據（${new Date().toLocaleString("zh-HK",{timeZone:"Asia/Hong_Kong"})})：而家最熱 ${hot.zh} ${hot.temp.toFixed(1)}°C、最凍 ${cold.zh} ${cold.temp.toFixed(1)}°C。`;
+    render();
+  }catch(e){
+    status.className="status snap";
+    status.innerHTML=`⚠️ 即時讀取唔到（${e.message||"網絡問題"}），而家顯示查核快照（${SNAP_TIME__PLACEHOLDER__}），數字仍然係真實讀到嘅數據。`;
+    render();
+  }
+}
+render();
+loadLive();
+</script>
+</body>
+</html>
