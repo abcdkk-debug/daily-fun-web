@@ -202,7 +202,7 @@ function render(){
 
 function drawMap(){
   if(!map){
-    map=L.map("map",{renderer:L.canvas()}).setView([1.352,103.84],11);
+    map=L.map("map",{renderer:L.canvas(),scrollWheelZoom:false}).setView([1.352,103.84],11);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
   }
   if(taxiLayer) taxiLayer.remove();
